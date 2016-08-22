@@ -1,0 +1,9 @@
+Halide is important, separation of algorithm and schedule, did not
+support parallel or *vectorized* reductions till now with changing
+algorithm (which fails to deliver core promise of language).\\
+
+We present a Halide scheduling primitive (DAG transformation) that
+creates a new data parallel axis out of a reduction.\\
+
+Importance of code reduction/purity/portability e.g. for
+auto-scheduling
