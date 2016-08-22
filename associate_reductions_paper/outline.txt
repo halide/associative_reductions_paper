@@ -1,0 +1,37 @@
+Paper outline
+
+** Intro: (what is the problem)
+
+Halide is important, separation of algorithm and schedule, didn’t
+support parallel or *vectorized* reductions till now with changing
+algorithm (which fails to deliver core promise of language)
+
+We present a Halide scheduling primitive (dag transformation) that
+creates a new data parallel axis out of a reduction.
+
+Importance of code reduction/purity/portability E.g. for
+autoscheduling
+
+** Background and Prior Work: (how does existing work not quite solve it)
+Enough information about Halide
+Work on synthesizing parallel (data parallelizing + vectorizing) reductions out of serial code
+Work on deducing associative operators
+
+** Meat: (how we solved the problem)
+
+* The Halide function dag transformation (rfactor) (Assuming associate operator is given)
+Figures with code before/after examples
+
+* Deducing the associative operator from an update definition (synthesis)
+Generate all associate ops and search
+Reduce the problem before the search by reasoning on the graph of cross-talk between tuple elements
+
+** Evaluation (did we solve the problem?)
+Performance results using rfactor (overall speedup)
+Synthetic functions (also to show limitations)
+Limitations: we need an identity, combiner = intermediate
+Real-world stuff (find something in HDR+?, Yun-Ta?)
+Performance of generation/search/synthesis
+Case study of Importance of “code reduction”?
+
+** Discussion/Summary (Don't forget to reiterate limitations)
