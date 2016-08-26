@@ -1,6 +1,17 @@
-How does existing work not quite solve it? \\
 Enough information about Halide. \\
-Work on synthesizing parallel (data parallelizing + vectorizing) reductions out of serial code. \\
-Work on deducing associative operators. \\
+
+How does existing work not quite solve it? \\
+
+Work on synthesizing parallel (data parallelism + vectorization) reductions out of serial code. \\
+
+Work on deducing associative operators: \\
+\begin{enumerate}
+	\item Deducing the map/reduce operators via theory of list homomorphisms + weak right inverse by Morita et al. Con: User have to specify the leftwards and rightwards forms of the sequential function which may not be obvious to derive. 
+	\item Using induction to derive the parallel form by Chin et al. Steps: derive 2 pre-parallel funcs through generalization and deduce the "unknowns" (initial/final reduction functions) through induction of those two funcs. Seems promising -> can solve for intermediate/combiner for complex multiplication, albeit through long derivation. Argmin is tricky though: need to be able to re-order chain of selects, which is not trivial, during the induction steps, e.g. transforming select(min(f(x0)[0], g(y)) < g(x), select(f(x)[0] < g(y), f(xs)[1], y), x) into select(f(xs)[0] < min(g(x), g(y)), f(xs)[1], select(g(x) < g(y), x, y)). 	 
+	\item Deducing the map/reduce operators via (backward) synthesis by Smith et al. Not sure how the whole pipeline actually works. They claims they can synthesize the right map/reduce ops given some input/output examples. Table 2 listed the components they used. I would assume they search for combination of components until they get the right one. The time it takes to synthesize the map/reduce seems to be okay, but they said they used only small inputs (3-8 samples) to get the benchmark data. \\
+\end{enumerate}
+	
+We are inspired by synthesis and tried "Sketch" (by Solar-Lezama) and "Rosette" (by Torlak et al) to synthesize initial/final reduction functions for the rfactor of 32-bit integer simplex complex multiplication. "Sketch" failed to find one within reasonable time; Rosette takes about one hour (with some constraints: x are fixed only to appear in RHS and depth is set to 1). Backward synthesis -> really slow, which inspires us to do forward synthesis.\\
+	
 Work on superoptimization (in particular, Regehr et al and Mangpo's ASPLOS16 paper, but also earlier work)
 
