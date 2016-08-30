@@ -4,7 +4,7 @@ List some associative reduction operations: histogram, sum over reduction dimens
 
 Proposed solution: new scheduling directive \textsc{rfactor}. Calling \textsc{rfactor} on a Halide associative update definition splits the update into an intermediate which computes the partial results and a new update definition which merges the partial results. \textsc{rfactor} makes a best-effort attempt to automatically infer the associative reduction operator and identity of the operator.
 
-\subsection{rfactor DAG Transformation}
+\subsection{\textsc{rfactor} DAG Transformation}
 
 Throughout this section, assume that the associative operator and its identity are known. \\
 
@@ -13,6 +13,99 @@ We present a Halide scheduling primitive (DAG transformation), \textsc{rfactor},
 <Insert DAG transformation using \textsc{rfactor} on some synthetic example> \\
 
 <Insert figures of code with and without using \textsc{rfactor}: histogram, matrix multiply, other associative ops with non-rectangular domain> \\
+
+<TODO: Matrix multiply> \\
+
+\begin{lstlisting}[caption={Histogram: serial version, hand-rollled parallel associative reduction version, and rfactor parallel associative reduction version}]
+// Serial version
+Func hist;
+Var x("x");
+hist(x) = 0;
+RDom r(input.width(), input.height());
+hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) =
+  hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) 
+  + 1;
+
+// Hand-rolled version: compute histogram along 
+// the x-scanline for each y in parallel, then 
+// reduce the partial results
+Func intm;
+Var u("u");
+intm(u) = 0;
+RDom rx(input.width());
+intm(clamp(cast<int>(input(rx, u)), 0, 255)) = 
+  intm(clamp(cast<int>(input(rx, u)), 0, 255)) 
+  + 1;
+intm.compute_root();
+intm.update(0).parallel(u);
+
+Func hist;
+Var x("x");
+hist(x) = 0;
+RDom ry(input.height());
+hist(clamp(cast<int>(intm(ry)), 0, 255)) =
+  hist(clamp(cast<int>(intm(ry)), 0, 255)) 
+  + 1;
+
+// rfactor version : compute histogram along  
+// the x-scanline for each y in parallel, then  
+// reduce the partial results
+Func hist;
+Var x("x");
+hist(x) = 0;
+RDom r(in.width(), in.height());
+hist(clamp(cast<int>(in(r.x, r.y)), 0, 255)) =
+  hist(clamp(cast<int>(in(r.x, r.y)), 0, 255)) 
+  + 1;
+
+Var u("u");
+Func intm = hist.update(0).rfactor(r.y, u);
+intm.compute_root();
+intm.update(0).parallel(u);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={2D summation over a circular reduction domain with radius of 10: serial version, hand-rollled parallel associative reduction version, and rfactor parallel associative reduction version}]
+// Serial version
+Func sum;
+sum() = 0;
+RDom r(in.width(), in.height());
+r.where(r.x*r.x + r.y*r.y <= 100);
+sum() = sum() + in(r.x, r.y);
+
+// Hand-rolled version: compute the sum along 
+// the x-scanline for each y in parallel, then 
+// reduce the partial results
+Func intm;
+Var u("u");
+intm(u) = 0;
+RDom rx(in.width());
+rx.where(rx*rx + u*u <= 100);
+intm(u) = intm(u) + in(rx, u);
+intm.compute_root();
+intm.update(0).parallel(u);
+
+Func sum;
+Var x("x");
+sum() = 0;
+RDom ry(in.height());
+sum() = sum() + intm(ry);
+
+// rfactor version : compute the sum along 
+// the x-scanline for each y in parallel, then 
+// reduce the partial results
+Func sum;
+Var x("x");
+sum() = 0;
+RDom r(in.width(), in.height());
+r.where(r.x*r.x + r.y*r.y <= 100);
+sum() = sum() + in(r.x, r.y);
+
+Var u("u");
+Func intm = sum.update(0).rfactor(r.y, u);
+intm.compute_root();
+intm.update(0).parallel(u);
+\end{lstlisting}
+
 
 Make sure to state the restriction of \textsc{rfactor}: the intermediate and merge functions have to be of the same form. For example: if the intermediate function is $min(x, y)$, the merge function has to be $min(x, y)$. \textsc{rfactor} also only handles binary associative operators: something of the form $op(x, y)$. $op(y)$ is okay, although it is no longer a 'reduction' operator. The associative ops also have to have identity. Consequences: restricted form of more general map/reduce -> we can't split the works in f() = f() -  g(r.x) for example. Theoretically this is possible, provided we use "-" for the intermediate with identity of 0 and "+" for the merge, but this is not supported by \textsc{rfactor} <Insert code snippet for the subtraction case> \\
 
