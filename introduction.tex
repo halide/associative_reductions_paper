@@ -6,6 +6,6 @@ However, Halide did not support parallel or *vectorized* reductions till now wit
 
 rfactor splits an update (**associative update**) into an intermediate which computes the partial results and a new update definition which merges the partial results. rfactor made the specified reduction dim "pure" in the intermediate definition, which allows it to be parallelized and vectorized. Combined with other Halide scheduling directives, such as split, this allows Halide to represent a broader class of schedules, including parallel associative reduction. \\
 
-<Insert some code snippet of pipeline produced by rfactor>
+<Insert some code snippet of pipeline produced by rfactor, including performance numbers for it>
 
 Other benefits: code reduction, supports purity/separation of algorithm and schedule, and portability, which is especially important for auto-scheduling \cite{Mullapudi:2016:ASH:2897824.2925952}. \\
