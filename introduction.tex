@@ -2,6 +2,27 @@ Halide \cite{Ragan-Kelley:2013:HLC:2491956.2462176} is important, provides separ
 
 One important class of problems: associative reduction. One way to optimize performance in associative reduction: split into smaller chunks of works, compute them separately, and merge the partial result. Associative property allows such optimization. \\
 
+Figure:
+
+Summation (easy example)
+
+Func out;
+out() = 0;
+RDom r(0, input.width());
+out() = out() + input(r.x);
+
+Index of 0 value closest to the origin (hard example. can we even handle this? We should use the hardest case we can handle here)
+
+Func out;
+out() = {0, 0, Inf};
+RDom r(0, input.width(), 0, input.height());
+Expr d = r.x*r.x + r.y*r.y;
+Expr c = (d < out()[2]) && (input(r.x, r.y) == 0);
+out() = {select(c, r.x, out()[0]),
+         select(c, r.y, out()[1]),
+         select(c, d, out()[2])};
+
+
 However, Halide did not support parallel or *vectorized* reductions till now without changing algorithm (which fails to deliver core promise of language in which schedule and algorithm should be separate and not affect each other). We present a Halide scheduling primitive (DAG transformation) that creates a new data parallelizable/vectorizable axis out of a reduction. \\
 
 rfactor splits an update (**associative update**) into an intermediate which computes the partial results and a new update definition which merges the partial results. rfactor made the specified reduction dim "pure" in the intermediate definition, which allows it to be parallelized and vectorized. Combined with other Halide scheduling directives, such as split, this allows Halide to represent a broader class of schedules, including parallel associative reduction. \\
