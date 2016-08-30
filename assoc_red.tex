@@ -1,7 +1,5 @@
 \subsection{Reduction in Halide}
 
-Brief explanation on Halide's definition and update definition, using reduction domain to specify update definition, differences between pure and reduction dimension (can only parallelize / vectorize across pure dimension). \\
-
 List some associative reduction operations: histogram, sum over reduction dimension, etc. Old way to parallelize / vectorize such operations: user need to manually define intermediate functions that do reduction over partial domain and combine the partial results. Pretty tedious and error prone to do manually, especially when the domain is not rectangular (user can specify predicate on the reduction domain via the 'where' directives) -> have to make sure the intermediate functions have the correct new reduction domain, etc. Other issue: some equations are not obviously associative, e.g. $x + y + k*y$ where $k$ is a constant. \\
 
 Proposed solution: new scheduling directive \textsc{rfactor}. Calling \textsc{rfactor} on a Halide associative update definition splits the update into an intermediate which computes the partial results and a new update definition which merges the partial results. \textsc{rfactor} makes a best-effort attempt to automatically infer the associative reduction operator and identity of the operator.
@@ -16,7 +14,7 @@ We present a Halide scheduling primitive (DAG transformation), \textsc{rfactor},
 
 <Insert figures of code with and without using \textsc{rfactor}: histogram, matrix multiply, other associative ops with non-rectangular domain> \\
 
-Make sure to state the restriction of \textsc{rfactor}: the intermediate and merge functions have to be of the same form. For example: if the intermediate function is $min(x, y)$, the merge function has to be $min(x, y)$. \textsc{rfactor} also only handles binary associative operators: something of the form $op(x, y)$. $op(y)$ is okay, although it is no longer a 'reduction' operator. The associative ops also have to have identity. Consequences: restricted form of more general map/reduce -> we can't split the works in f() -= g(r.x) for example. Theoretically this is possible, provided we use "-" for the intermediate with identity of 0 and "+" for the merger, but this is not supported by \textsc{rfactor} <Insert code snippet for the subtraction case> \\
+Make sure to state the restriction of \textsc{rfactor}: the intermediate and merge functions have to be of the same form. For example: if the intermediate function is $min(x, y)$, the merge function has to be $min(x, y)$. \textsc{rfactor} also only handles binary associative operators: something of the form $op(x, y)$. $op(y)$ is okay, although it is no longer a 'reduction' operator. The associative ops also have to have identity. Consequences: restricted form of more general map/reduce -> we can't split the works in f() -= g(r.x) for example. Theoretically this is possible, provided we use "-" for the intermediate with identity of 0 and "+" for the merge, but this is not supported by \textsc{rfactor} <Insert code snippet for the subtraction case> \\
 
 <TODO: Find better terms for the intermediate and merge functions returned by \textsc{rfactor}> \\
 
@@ -24,11 +22,11 @@ Make sure to state the restriction of \textsc{rfactor}: the intermediate and mer
 
 \subsubsection{Forward Synthesis}
 
-We took the forward synthesis approach to deduce the associative operator from an update definition: perform a wild-card matching over a list of pre-generated associative op patterns. We synthesize a bunch of math expressions (using min/max/add/sub/etc) for 1-element, 2-element tuple, etc., and use Z3 theorem prover to prove the associativity of the math expression and compute its identity. \\
+We took the forward synthesis approach to deduce the associative operator from an update definition: perform a wild-card matching over a list of pre-generated associative op patterns. We synthesize a bunch of math expressions (using min/max/add/sub/etc) for 1-element, 2-element tuple, etc., and use Z3 theorem prover \cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the math expression and compute its identity. \\
 
 <Insert some baby example + code snippet on how we come up with the right associative op given some Halide udpate definition> \\
 
-Why not backward synthesis (try to "sketch" the intermediate and merge functions)? We tried MIT Sketch and Rosette, but it is too slow to be practical for runtime deduction: Sketch didn't terminate for complex multiplication, Rosette finished in about 1 hour for a very restricted form of the complex multiplication synthesis problem (restrict x to be in LHS only -> can't have y*x, and we also *tell* Rosette that the answer is probably of the form op(op(x??, y??), op(x??, y??))). \\
+Why not backward synthesis (try to "sketch" the intermediate and merge functions)? We tried MIT Sketch and Rosette, but it is too slow to be practical for runtime deduction: Sketch didn't terminate for complex multiplication, Rosette finished in about 1 hour for a very restricted form of the complex multiplication synthesis problem (restrict x to be in LHS only -> can't have y*x, and we also *tell* Rosette that the answer is probably of the form op(op(x??, y??), op(x??, y??))). Instead, we use synthesis to pre-generate list of binary associative ops, that we can use to infer the correct associative forms when calling rfactor on an update definition. \\
 
 \subsubsection{Subgraph Decomposition}
 

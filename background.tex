@@ -1,4 +1,10 @@
-Enough information about Halide. \\
+\subsubsection{Halide}
+
+Halide definition: pure (init) and update definition. Pure does not allow race (computation of one iteration should not depend on value produced by other iteration)/conflicts -> hence pure dimensions (Var):  everything is completely parallelizable and vectorizable.
+
+To specify dependency (useful for recursion, etc), user can define an update definition. Use RVar for that -> reduction dimension: allow conflicts, hence not parallelizable -> serial. We can only parallelize / vectorize across pure dimension.
+
+Unlike normal reduction operation, which is commonly defined in explicit binary form (something of the form val = f(x, y)), reduction in Halide is expressed implicitly in term of the previous update definition: f(x) += x. There is no clear distinction which one is "x" and which one is "y" in Halide's update definition, whcih makes things trickier, e.g. f(x) += y + 2. Most of previous works assumes the explicit binary form, which is not suitable for our purposes: automatic associative reduction op inference in Halide.	
 
 How does existing work not quite solve it? \\
 
@@ -6,12 +12,12 @@ Work on synthesizing parallel (data parallelism + vectorization) reductions out 
 
 Work on deducing associative operators: \\
 \begin{enumerate}
-	\item Deducing the map/reduce operators via theory of list homomorphisms + weak right inverse by Morita et al. Con: User have to specify the leftwards and rightwards forms of the sequential function which may not be obvious to derive. 
-	\item Using induction to derive the parallel form by Chin et al. Steps: derive 2 pre-parallel funcs through generalization and deduce the "unknowns" (initial/final reduction functions) through induction of those two funcs. Seems promising -> can solve for intermediate/combiner for complex multiplication, albeit through long derivation. Argmin is tricky though: need to be able to re-order chain of selects, which is not trivial, during the induction steps, e.g. transforming select(min(f(x0)[0], g(y)) < g(x), select(f(x)[0] < g(y), f(xs)[1], y), x) into select(f(xs)[0] < min(g(x), g(y)), f(xs)[1], select(g(x) < g(y), x, y)). 	 
-	\item Deducing the map/reduce operators via (backward) synthesis by Smith et al. Not sure how the whole pipeline actually works. They claims they can synthesize the right map/reduce ops given some input/output examples. Table 2 listed the components they used. I would assume they search for combination of components until they get the right one. The time it takes to synthesize the map/reduce seems to be okay, but they said they used only small inputs (3-8 samples) to get the benchmark data. \\
+	\item Deducing the map/reduce operators via theory of list homomorphisms + weak right inverse by Morita et al \cite{Morita:2007:AIG:1250734.1250752}. Con: User have to specify the leftwards and rightwards forms of the sequential function which may not be obvious to derive. 
+	\item Using induction to derive the parallel form of recurrence function by Chin et al \cite{Teo:1997:DEP:266670.266697} (This is the closest to Halide update definition). Steps: derive 2 pre-parallel funcs through generalization and deduce the "unknowns" (initial/final reduction functions) through induction of those two funcs. Seems promising -> can solve for intermediate/combiner for complex multiplication, albeit through long derivation. Argmin is tricky though: need to be able to re-order chain of selects, which is not trivial, during the induction steps, e.g. transforming select(min(f(x0)[0], g(y)) < g(x), select(f(x)[0] < g(y), f(xs)[1], y), x) into select(f(xs)[0] < min(g(x), g(y)), f(xs)[1], select(g(x) < g(y), x, y)). 	 
+	\item Deducing the map/reduce operators via (backward) synthesis by Smith et al \cite{Smith:2016:MPS:2908080.2908102}. Not sure how the whole pipeline actually works. They claims they can synthesize the right map/reduce ops given some input/output examples. Table 2 listed the components they used. I would assume they search for combination of components until they get the right one. The time it takes to synthesize the map/reduce seems to be okay, but they said they used only small inputs (3-8 samples) to get the benchmark data. \\
 \end{enumerate}
 	
-We are inspired by synthesis and tried "Sketch" (by Solar-Lezama) and "Rosette" (by Torlak et al) to synthesize initial/final reduction functions for the rfactor of 32-bit integer simplex complex multiplication. "Sketch" failed to find one within reasonable time; Rosette takes about one hour (with some constraints: x are fixed only to appear in RHS and depth is set to 1). Backward synthesis -> really slow, which inspires us to do forward synthesis.\\
+We are inspired by synthesis: use the original update definition (serial version) as *assertion* and 'sketch' for the holes (intermediate function, merge function, initial value for the intermediate function). We tried "Sketch" (by Solar-Lezama \cite{Solar-Lezama:2008:PSS:1714168}) and "Rosette" (by Torlak et al \cite{Torlak:2013:GSL:2509578.2509586}) to synthesize intermediate/mergelreduction functions for the rfactor of 32-bit integer simplex complex multiplication. "Sketch" failed to find one within reasonable time; Rosette takes about one hour (with some constraints: x are fixed only to appear in RHS and depth is set to 1). Backward synthesis -> really slow, which inspires us to do forward synthesis.\\
 	
 Work on superoptimization (in particular, Regehr et al and Mangpo's ASPLOS16 paper, but also earlier work)
 

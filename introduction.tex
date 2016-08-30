@@ -1,5 +1,11 @@
-Halide is important, separation of algorithm and schedule, did not support parallel or *vectorized* reductions till now with changing algorithm (which fails to deliver core promise of language).\\
+Halide \cite{Ragan-Kelley:2013:HLC:2491956.2462176} is important, provides separation of algorithm and schedule. Ability to try various schedules with guaranteed correctness and consistency: different schedules are guaranteed to produce the same output as long they define the same computation. \\
 
-We present a Halide scheduling primitive (DAG transformation) that creates a new data parallel axis out of a reduction.\\
+One important class of problems: associative reduction. One way to optimize performance in associative reduction: split into smaller chunks of works, compute them separately, and merge the partial result. Associative property allows such optimization. \\
 
-Importance of code reduction/purity/portability e.g. for auto-scheduling
+However, Halide did not support parallel or *vectorized* reductions till now without changing algorithm (which fails to deliver core promise of language in which schedule and algorithm should be separate and not affect each other). We present a Halide scheduling primitive (DAG transformation) that creates a new data parallelizable/vectorizable axis out of a reduction. \\
+
+rfactor splits an update (**associative update**) into an intermediate which computes the partial results and a new update definition which merges the partial results. rfactor made the specified reduction dim "pure" in the intermediate definition, which allows it to be parallelized and vectorized. Combined with other Halide scheduling directives, such as split, this allows Halide to represent a broader class of schedules, including parallel associative reduction. \\
+
+<Insert some code snippet of pipeline produced by rfactor>
+
+Other benefits: code reduction, supports purity/separation of algorithm and schedule, and portability, which is especially important for auto-scheduling \cite{Mullapudi:2016:ASH:2897824.2925952}. \\
