@@ -48,6 +48,8 @@
 \documentclass{main}
 \pagenumbering{arabic}
 
+\usepackage{listings}
+
 \begin{document}
 
 % Copyright
@@ -60,7 +62,7 @@
 %\setcopyright{cagovmixed}
 
 
-\title{Associative Reduction in Halide}
+\title{Parallel Associative Reductions in Halide}
 
 %\numberofauthors{3}
 %\author{
@@ -91,7 +93,7 @@
 \maketitle
 \begin{abstract}
 
-<Insert abstracts here>
+Halide is a domain-specific language for fast image processing in heavy use in industry. It partitions pipelines into the \emph{algorithm}, which defines \emph{what} values are computed, and the \emph{schedule}, which defines \emph{how} they are computed. While Halide supports parallelizing and vectorizing naturally data-parallel operations, such as resizing an image, it doesn't have first-class parallel reductions. To parallelize or vectorize a reduction, the programmer must manually factor a reduction into multiple stages to create new opportunities for data parallelism. For example, one might parallelize the computation of the histogram of an image by first computing the histogram of each row in parallel, and then summing those partial histograms. This manipulation of the \emph{algorithm} can introduce bugs, make the algorithm harder to understand, and hurts portability. We describe a new Halide scheduling primitive ``rfactor'' which moves this factoring into the \emph{schedule}, and provides the same guarantees as the rest of the scheduling language: changes to the schedule can't change the output values or introduce race conditions. Our technique take serial Halide reductions (expressed using unstructured ``update'' definitions), and synthesizes an equivalent binary associative reduction operator and its identity. During compilation, we replace the original pipeline stage with a pair of stages that first computes partial results over slices of the domain of the reduction, and then combines them. Our technique permits parallelization and vectorization of Halide algorithms for which this was not previously possible, and can thus accelerate them by more than an order of magnitude.
 
 \end{abstract}
 
