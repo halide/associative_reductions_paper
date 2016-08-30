@@ -14,7 +14,7 @@ We present a Halide scheduling primitive (DAG transformation), \textsc{rfactor},
 
 <Insert figures of code with and without using \textsc{rfactor}: histogram, matrix multiply, other associative ops with non-rectangular domain> \\
 
-Make sure to state the restriction of \textsc{rfactor}: the intermediate and merge functions have to be of the same form. For example: if the intermediate function is $min(x, y)$, the merge function has to be $min(x, y)$. \textsc{rfactor} also only handles binary associative operators: something of the form $op(x, y)$. $op(y)$ is okay, although it is no longer a 'reduction' operator. The associative ops also have to have identity. Consequences: restricted form of more general map/reduce -> we can't split the works in f() -= g(r.x) for example. Theoretically this is possible, provided we use "-" for the intermediate with identity of 0 and "+" for the merge, but this is not supported by \textsc{rfactor} <Insert code snippet for the subtraction case> \\
+Make sure to state the restriction of \textsc{rfactor}: the intermediate and merge functions have to be of the same form. For example: if the intermediate function is $min(x, y)$, the merge function has to be $min(x, y)$. \textsc{rfactor} also only handles binary associative operators: something of the form $op(x, y)$. $op(y)$ is okay, although it is no longer a 'reduction' operator. The associative ops also have to have identity. Consequences: restricted form of more general map/reduce -> we can't split the works in f() = f() -  g(r.x) for example. Theoretically this is possible, provided we use "-" for the intermediate with identity of 0 and "+" for the merge, but this is not supported by \textsc{rfactor} <Insert code snippet for the subtraction case> \\
 
 <TODO: Find better terms for the intermediate and merge functions returned by \textsc{rfactor}> \\
 
@@ -43,4 +43,7 @@ Definition of subgraph of $S_V$: set of all vertices that are reachable from a g
 
 Reduce the associative op deduction problem via subgraph decomposition. Overlaps are okay. If a subgraph is fully contained in (subset of) another subgraph, no need to consider it during the deduction. For the 2D argmin examples above, there are 2 relevant subgraphs (the ones originated from f()[1] and f()[2]). Subgraph of f()[0] is subset of either f()[1] or f()[2] -> we can ignore f()[0] from consideration. The problem boils down to deducing associative ops and its identity for 1D argmin. Merging the results: if an element $x_i$ is in both subgraph $V_p$ and $V_q$, need to ensure that binary operators (plus identities) deduced from $V_p$ and $V_q$ are consistent. If there is contradiction, bails out. <TODO: Is it necessarily true that if there is contradiction, the tuple is not associative? If not, find an example.> \\
 
+\paragraph{Proof}
 <TODO: Derive formal proof. Why is it okay to decompose the problem into subgraphs and perform the deduction separately?> \\
+
+

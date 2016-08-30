@@ -1,14 +1,12 @@
-\subsubsection{Halide}
+Halide functions have a sequence of stages. Before scheduling, each of these stages represents a perfect loop nest whose body computes and stores a single value of the function. Stages beyond the first are called ``update'' stages, and are permitted to recursively refer to the function. Some of the loops are data parallel and made race-condition free by syntactic restrictions. These are represented as Vars. The bounds of these loops are inferred by Halide using interval arithmetic. Other loops have user-specified bounds and a user-specified nesting order, and fewer syntactic restrictions on their use. These are known as RVars, which comprise RDoms. They are used to express reductions, scattering, scans, etc. 
 
-Halide functions have a sequence of stages. Before scheduling, each of these stages represents a perfect loop nest whose body computes and stores a single value of the function. Stages beyond the first are called ``update'' stages, and are permitted to recursively refer to the function. Some of the loops are data parallel and made race-condition free by syntactic restrictions. These are represented as Vars. The bounds of these loops are inferred by Halide using interval arithmetic. Other loops have user-specified bounds and a user-specified nesting order, and fewer syntactic restrictions on their use. These are known as RVars, which comprise RDoms. They are used to express reductions, scattering, scans, etc.
-
-Each type of loop can be manipulated in various ways by Halide's scheduling primitives. They can be tiled, unrolled, mutually interchanged (provided RVar nesting order is respected) etc. The difference: Vars are safe to parallelize over by construction - they represent the naturally data-parallel axes of a problem, whereas RVars cannot be parallelized or vectorized unless Halide can prove that no race condition exists. This makes it hard to find ways to parallelize or vectorize definitions that use only RVars.
+Each type of loop can be manipulated in various ways by Halide's scheduling primitives. They can be tiled, unrolled, mutually interchanged (provided RVar nesting order is respected) etc. The difference: Vars are safe to parallelize ore vectorize over by construction - they represent the naturally data-parallel axes of a problem, whereas RVars cannot be parallelized or vectorized unless Halide can prove that no race condition exists. This makes it hard to find ways to parallelize or vectorize definitions that use only RVars.
 
 Examples (convolution - x and y are Vars, iteration over kernel is RVars easy to parallelize, histogram is only RVars - hard to parallelize)
 
 So Halide does not have the idea of a reduction using a binary operator as a first-class primitive. It merely has these non-data-parallel RVars which can be used to implement reductions. Much of the problem we need to solve is deducing the associative binary operator that corresponds to one of Halide's update stages.
 
-How does existing work not quite solve it? \\
+How does existing work not quite solve it? Most of previous works assumes the explicit binary form of associative op, which is not suitable for our purposes.
 
 Work on synthesizing parallel (data parallelism + vectorization) reductions out of serial code. \\
 
