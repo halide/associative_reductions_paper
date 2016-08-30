@@ -1,9 +1,11 @@
 Halide \cite{Ragan-Kelley:2013:HLC:2491956.2462176} is important, provides separation of algorithm and schedule. Ability to try various schedules with guaranteed correctness and consistency: different schedules are guaranteed to produce the same output as long they define the same computation. \\
 
-One important class of problems: associative reduction. This can be as simple as single-dimensional sum or some complex multidimensional associative ops (e.g. find the coordinate of a red pixel closest to the center of the image -> point detector filter) <Insert 2 code snippets + figures, one for the simple and one for the multidimensional associative ops (in Halide???), NOTE: avoid += syntax>. One way to optimize performance in associative reduction: split into smaller chunks of works, compute them separately, and merge the partial result. Associative property allows such optimization. \\
+One important class of problems: associative reduction. This can be as simple as single-dimensional sum or some complex multidimensional associative ops (see Figure 1). One way to optimize performance in associative reduction: split into smaller chunks of works, compute them separately, and merge the partial result. Associative property allows such optimization. \\
 
 Figure:
 
+\begin{lstlisting}[
+caption = {make the case that they're both associative reductions, but it's not obvious what the binary operator is from the code for the second one}]
 Summation (easy example)
 
 Func out;
@@ -11,17 +13,21 @@ out() = 0;
 RDom r(0, input.width());
 out() = out() + input(r.x);
 
-Index of 0 value closest to the origin (hard example. can we even handle this? We should use the hardest case we can handle here)
+The complex number with the greatest magnitude, and its location (hard example)
 
 Func out;
-out() = {0, 0, Inf};
+out() = {0, 0, 0};
 RDom r(0, input.width(), 0, input.height());
-Expr d = r.x*r.x + r.y*r.y;
-Expr c = (d < out()[2]) && (input(r.x, r.y) == 0);
-out() = {select(c, r.x, out()[0]),
-         select(c, r.y, out()[1]),
-         select(c, d, out()[2])};
-
+Expr real = input(r.x, r.y)[0];
+Expr imag = input(r.x, r.y)[1];
+Expr mag = real * real + imag * imag;
+Expr best_mag = out()[0] * out()[0] + out()[1] * out()[1];
+Expr c = mag > best_mag;
+out() = {select(c, real, out()[0]),
+         select(c, imag, out()[1]),
+         select(c, r.x, out()[2]),
+         select(c, r.y, out()[3])};
+\end{lstlisting}
 
 However, Halide did not support parallel or *vectorized* reductions till now without changing algorithm (which fails to deliver core promise of language in which schedule and algorithm should be separate and not affect each other). We present a Halide scheduling primitive (DAG transformation) that creates a new data parallelizable/vectorizable axis out of a reduction. \\
 
