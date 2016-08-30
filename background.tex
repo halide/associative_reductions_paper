@@ -1,8 +1,6 @@
 \subsubsection{Halide}
 
-Halide definition: pure (init) and update definition. Pure does not allow race (computation of one iteration should not depend on value produced by other iteration)/conflicts -> hence pure dimensions (Var):  everything is completely parallelizable and vectorizable.
-
-To specify dependency (useful for recursion, etc), user can define an update definition. Use RVar for that -> reduction dimension: allow conflicts, hence not parallelizable -> serial. We can only parallelize / vectorize across pure dimension.
+Defining computation in Halide through Halide definition. There are two types of definitions: pure (initial) and update definition. Pure definition does not allow race/conflicts (computation of one iteration should not depend on value produced by other iteration) -> hence pure dimensions (Var):  everything is completely parallelizable and vectorizable. To specify dependency (useful for recursion, etc), user can define an update definition. Can use reduction domain -> Use RVar for that -> reduction dimension: allow conflicts, hence not parallelizable -> serial. We can only parallelize / vectorize across pure dimension. \\
 
 Unlike normal reduction operation, which is commonly defined in explicit binary form (something of the form val = f(x, y)), reduction in Halide is expressed implicitly in term of the previous update definition: f(x) += x. There is no clear distinction which one is "x" and which one is "y" in Halide's update definition, whcih makes things trickier, e.g. f(x) += y + 2. Most of previous works assumes the explicit binary form, which is not suitable for our purposes: automatic associative reduction op inference in Halide.	
 
