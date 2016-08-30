@@ -2,7 +2,7 @@ Performance results using rfactor (overall speedup): 2D argmin, complex multipli
 
 Synthetic functions (also to show limitations): approximating 128-bit add with 2 64-bit integers -> z3 cannot prove that it is associative, although the max/min forms are provable with z3. \\
 
-Limitations: we need an identity, symmetric intermediate and merge functions: they should be of the same form, constrained by the look-up table (we can only match to whatever are in the table -> whatever z3 can prove to be associative). Some associative ops (e.g. 4x4 matrix multiply) are just expensive to generate. Technically it's doable, provided we limit the ops to addition and multiplication and restricting the variables involved in the expr to be unique (no repeats) during lookup table generation. \\
+Limitations: we need an identity, symmetric intermediate and merge functions: they should be of the same form, constrained by the look-up table (we can only match to whatever are in the table -> whatever z3 can prove to be associative) + whatever we thought to generate. Some associative ops (e.g. 4x4 matrix multiply) are just expensive to generate. Technically it's doable, provided we limit the ops to addition and multiplication and restricting the variables involved in the expr to be unique (no repeats) during lookup table generation. Other ops may not be covered in our search (e.g. one that exploits a special property unique to some large constant). \\
 
 Real-world stuff: same code that can be simplified when using rfactor \\
 
