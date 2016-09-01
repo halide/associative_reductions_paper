@@ -1,59 +1,39 @@
-Halide functions have a sequence of stages. Before scheduling, each of these stages represents a perfect loop nest whose body computes and stores a single value of the function. Stages beyond the first are called ``update'' stages, and are permitted to recursively refer to the function. Some of the loops are data parallel and made race-condition free by syntactic restrictions. These are represented as Vars. The bounds of these loops are inferred by Halide using interval arithmetic. Other loops have user-specified bounds and a user-specified nesting order, and fewer syntactic restrictions on their use. These are known as RVars, which comprise RDoms. They are used to express reductions, scattering, scans, etc. 
+Programmer defines \emph{algorithm} in Halide through a Halide \emph{function}. Halide \emph{function} consists of sequence of stages, and is the unit by which we schedule things. By default, each of these stages represents a perfectly-nested loop nests in which a single value of the \emph{function} is computed and stored in the innermost loop per iteration. Stages beyond the first are called \emph{update} stages, and are allowed to recursively refer to the function. Some of the loops are data parallel and are constrained to be race-condition free by syntactic restrictions. These are represented as \code{Var}s. The bounds of these loops are inferred by Halide using interval arithmetic. Some other loops may have user-specified bounds and a user-specified nesting order, and fewer syntactic restrictions on their use. These are known as \code{RVar}s, which comprise \code{RDom}s. \code{RVar}s are used to express reductions, scattering, scans, etc. Each of these loop types, \code{Var} and \code{RVar}, can be manipulated in various ways through Halide scheduling primitives: they can be tiled, unrolled, mutually interchanged, etc., provided that the nesting order of \code{RVar}s is respected. 
 
-Each type of loop can be manipulated in various ways by Halide's scheduling primitives. They can be tiled, unrolled, mutually interchanged (provided RVar nesting order is respected) etc. The difference: Vars are safe to parallelize ore vectorize over by construction - they represent the naturally data-parallel axes of a problem, whereas RVars cannot be parallelized or vectorized unless Halide can prove that no race condition exists. This makes it hard to find ways to parallelize or vectorize definitions that use only RVars.
+While \code{Var}s are safe to parallelize or vectorize by construction -- \code{Var}s represents the naturally data-parallel axes of an \emph{algorithm} -- , \code{RVar}s can be parallelized or vectorized if and only if Halide can prove that no race condition exists. This makes parallelizing or vectorizing stages that use only \code{RVar}s difficult. For example, consider the two-dimensional convolution blur kernel shown in Listing \ref{lst:blur_loopness}, which is easily parallelizable across \code{Var} $x$ and $y$. Histogram of an image (see Listing \ref{lst:histogram_loopness}), on the other hand, is harder to parallelize since its update stage only involves \code{RVar}s. In order to parallelize a reduction like histogram, one needs to be able to factorize it into slices that have no dependencies on each other.
 
-Examples (convolution - x and y are Vars, iteration over kernel is RVars easy to parallelize, histogram is only RVars - hard to parallelize) (See Listing \ref{lst:histogram_loopness})
+Although there have been several works in automatic generation of parallel associative reductions from a serial reduction, most of those works assume an explicit associative binary reduction operator, which is not applicable to Halide. Since Halide does not support reduction using a binary operator as a first-class primitive, reduction in Halide is implemented through usage of non-data-parallel \code{RVar}s. For Halide to support parallel reductions, it needs to be able to deduce an equivalent binary associative reduction operator and its identity from a serial reduction expressed as an imperative Halide \emph{update}. 
 
-So Halide does not have the idea of a reduction using a binary operator as a first-class primitive. It merely has these non-data-parallel RVars which can be used to implement reductions. Much of the problem we need to solve is deducing the associative binary operator that corresponds to one of Halide's update stages.
+Prior work by Morita et al.~\cite{Morita:2007:AIG:1250734.1250752} introduced automatic generations of divide-and-conquer parallel programs framework based on the third homomorphism theorem and derivation of weak-right inverse. However, it requires programmer to specify the leftwards and rightwards forms of the sequential function which may not be obvious to derive. Teo et al.~\cite{Teo:1997:DEP:266670.266697} proposed a method to synthesize parallel divide-and-conquer
+programs from recurrence function (which has the closest form to Halide serial reduction) through induction. They first derive two equivalent pre-parallel forms of the recurrence function by applying some generalization rules and deduce the "unknowns", the intermediate and merge reduction functions, through induction of those two pre-parallel forms. Although, it can be applied to solve some complex recurrences, such as reduction of complex multiplication, it requires long derivation and is unable to deal with argmin, which requires non-trivial re-ordering of chain of select nodes during the induction steps. 
 
-How does existing work not quite solve it? Most of previous works assumes the explicit binary form of associative op, which is not suitable for our purposes.
+Superoptimization~\cite{Granlund:1992:EBU:143095.143146, Massalin:1987:SLS:36206.36194} searches for the shortest or most optimized way to compute a branch-free sequence of instructions, by exhaustively searching over a space of possible programs. These rewrites can then be turned into peephole optimizations in compilers. More recent work has used stochastic search~\cite{Phothilimthana:2016:SUS:2872362.2872387, Schkufza:2013:SS:2490301.2451150} and program synthesis~\cite{Lopes:2015:PCP:2737924.2737965} to find replacements for larger sequences of instructions. Smith et al.~\cite{Smith:2016:MPS:2908080.2908102} used program synthesis to automatically generate MapReduce-style distributed programs from input-output examples. 
 
-Work on synthesizing parallel (data parallelism + vectorization) reductions out of serial code. \\
+In this work, we find equivalent replacements of a Halide reduction through a combination of enumeration and synthesis; in addition, though our domain is more restricted, we search for larger replacements than most superoptimizers.
 
-Work on deducing associative operators: \\
-\begin{enumerate}
-	\item Deducing the map/reduce operators via theory of list homomorphisms + weak right inverse by Morita et al \cite{Morita:2007:AIG:1250734.1250752}. Con: User have to specify the leftwards and rightwards forms of the sequential function which may not be obvious to derive.
-	\item Using induction to derive the parallel form of recurrence function by Chin et al \cite{Teo:1997:DEP:266670.266697} (This is the closest to Halide update definition). Steps: derive 2 pre-parallel funcs through generalization and deduce the "unknowns" (initial/final reduction functions) through induction of those two funcs. Seems promising -> can solve for intermediate/combiner for complex multiplication, albeit through long derivation. Argmin is tricky though: need to be able to re-order chain of selects, which is non trivial, during the induction steps, e.g. transforming select(min(f(x0)[0], g(y)) < g(x), select(f(x)[0] < g(y), f(xs)[1], y), x) into select(f(xs)[0] < min(g(x), g(y)), f(xs)[1], select(g(x) < g(y), x, y)).
-	\item Deducing the map/reduce operators via (backward) synthesis by Smith et al \cite{Smith:2016:MPS:2908080.2908102}. Not sure how the whole pipeline actually works. They claims they can synthesize the right map/reduce ops given some input/output examples. Table 2 listed the components they used. I would assume they search for combination of components until they get the right one. The time it takes to synthesize the map/reduce seems to be okay, but they said they used only small inputs (3-8 samples) to get the benchmark data. \\
-\end{enumerate}
 
-We are inspired by synthesis: use the original update definition (serial version) as *assertion* and 'sketch' for the holes (intermediate function, merge function, initial value for the intermediate function). We tried "Sketch" (by Solar-Lezama \cite{Solar-Lezama:2008:PSS:1714168}) and "Rosette" (by Torlak et al \cite{Torlak:2013:GSL:2509578.2509586}) to synthesize intermediate/mergelreduction functions for the rfactor of 32-bit integer simplex complex multiplication. "Sketch" failed to find one within reasonable time; Rosette takes about one hour (with some constraints: x are fixed only to appear in RHS and depth is set to 1). Backward synthesis -> really slow, which inspires us to do forward synthesis.\\
+\begin{lstlisting}[caption={Convolution blur kernel is easily parallelizable across \code{Var} $x$ adn $y$}, label={lst:blur_loopness}]
+// First stage
+for y in range(input.height()):
+  for x in range(input.width()):
+    blur[x][y] = 0
+// Update stage
+parallel for y in range(input.height()):
+  parallel for x in range(input.width()):
+    for ry in range(kernel.height()):
+      for rx in range(kernel.width()):    
+        blur[x][y] = 
+          blur[x][y] + 
+          kernel[rx][ry]*input[x+rx-1][y+ry-1] 
+\end{lstlisting}
 
-\textbf{Superoptimization}~\cite{Granlund:1992:EBU:143095.143146, Massalin:1987:SLS:36206.36194} searches for the shortest or most optimized way to compute a branch-free sequence of instructions, by exhaustively searching over a space of possible programs.  These rewrites can then be turned into peephole optimizations in compilers.  More recent work has used stochastic search~\cite{Phothilimthana:2016:SUS:2872362.2872387, Schkufza:2013:SS:2490301.2451150} and program synthesis~\cite{Lopes:2015:PCP:2737924.2737965} to find replacements for larger sequences of instructions.  In this work, we find equivalent replacements through a combination of enumeration and synthesis; in addition, though our domain is more restricted, we search for larger replacements than most superoptimizers.
-
-\begin{lstlisting}[caption={Histogram loop-ness generated by: serial version, hand-rollled parallel associative reduction version, and rfactor parallel associative reduction version}, label={lst:histogram_loopness}]
+\begin{lstlisting}[caption={Histogram of an image is hard to parallelize since its update stage does not involve \code{RVar}s}, label={lst:histogram_loopness}]
 // Serial version
+// First stage
 for x in range(256):
   hist[x] = 0
+// Update stage
 for ry in range(input.height()):
   for rx in range(input.width()):
     hist[clamp(int(input[rx][ry]), 0, 255)] += 1
-
-// Hand-rolled version: compute histogram along 
-// the x-scanline for each y in parallel, then 
-// reduce the partial results
-for u in range(input.height()):
-  intm[u] = 0
-parallel for u in range(input.height()):
-  for rx in range(input.width()):
-    intm[clamp(int(input[rx][u]), 0, 255)] += 1
-for x in range(256):
-  hist[x] = 0
-for ry in range(input.height()):
-  hist[clamp(int(intm[ry]), 0, 255)] += 1
-
-// rfactor version : compute histogram along  
-// the x-scanline for each y in parallel, then  
-// reduce the partial results
-
-for u in range(input.height()):
-  intm[u] = 0
-parallel for u in range(input.height()):
-  for rx in range(input.width()):
-    intm[clamp(int(input[rx][u]), 0, 255)] += 1
-for x in range(256):
-  hist[x] = 0
-for ry in range(input.height()):
-  hist[clamp(int(intm[ry]), 0, 255)] += 1
 \end{lstlisting}
-

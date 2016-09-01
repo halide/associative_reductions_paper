@@ -111,30 +111,3 @@ Make sure to state the restriction of \textsc{rfactor}: the intermediate and mer
 
 <TODO: Find better terms for the intermediate and merge functions returned by \textsc{rfactor}> \\
 
-\section{Deducing Associative Operator}
-
-\subsection{Forward Synthesis}
-
-We took the forward synthesis approach to deduce the associative operator from an update definition: perform a wild-card matching over a list of pre-generated associative op patterns. We synthesize a bunch of math expressions (using min/max/add/sub/etc) for 1-element, 2-element tuple, etc., and use Z3 theorem prover \cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the math expression and compute its identity. \\
-
-<Insert some baby example + code snippet on how we come up with the right associative op given some Halide udpate definition> \\
-
-Why not backward synthesis (try to "sketch" the intermediate and merge functions)? We tried MIT Sketch and Rosette, but it is too slow to be practical for runtime deduction: Sketch didn't terminate for complex multiplication, Rosette finished in about 1 hour for a very restricted form of the complex multiplication synthesis problem (restrict x to be in LHS only -> can't have y*x, and we also *tell* Rosette that the answer is probably of the form \code{op(op(x??, y??), op(x??, y??)))}. Instead, we use synthesis to pre-generate list of binary associative ops, that we can use to infer the correct associative forms when calling rfactor on an update definition. \\
-
-\subsection{Subgraph Decomposition}
-
-Given a tuple of update definition, reduce the problem before the search by reasoning on the graph of dependencies between tuple elements. Construct a directed graph of dependencies between tuple elements, and decompose it into subgraphs. Each tuple element is assigned as a vertex in the graph. For tuple with arity $N$, there will be $N$ vertices. Example: list of vertices of update definition \code{f() = \{f()[0] + g(r.x), f()[1]*h(r.x)\} is \{f()[0], f()[1]\}}. \\
-
-<TODO: Find a better term for 'subgraph'. Maybe there is already one?> \\
-
-Definition of subgraph of $S_V$: set of all vertices that are reachable from a given vertex $V$. A graph of $N$ vertices will have $N$ subgraphs which members may overlap. Examples:
-\begin{enumerate}
- \item Computing reduction of complex-number addition over g: \code{f() = \{f()[0] + g(r.x)[0], f()[1] + g(r.x)[1]\}} -> list of subgraphs: \code{f()[0] : \{f()[0]\}, f()[1] : \{f()[1]\}} <Insert figure of the graph/subgraphs>
- \item Computing reduction ofo complex-number multiplication over g: \code{f() = \{f()[0]*g(r.x)[0] - f()[1]*g(r.x)[1], f()[1]*g(r.x)[0] + f()[0]*g(r.x)[1]\}} -> list of subgraphs: \code{f()[0] : \{f()[0], f()[1]\}, f()[1] : \{f()[0], f()[1]\}} <Insert figure of the graph/subgraphs>
- \item Computing 2D argmin of g: \code{f() = \{min(f()[0], g(r.x, r.y)), select(f()[0] < g(r.x, r.y), f()[1], r.x), select(f()[0] < g(r.x), f()[1], r.y)\}} -> list of subgraphs: \code{f()[0] : \{f(x)[0]\}, f()[1] : \{f(x)[0], f(x)[1]\}, f()[2] : \{f(x)[0], f(x)[2]\}} <Insert figure of the graph/subgraphs>
-\end{enumerate}
-
-Reduce the associative op deduction problem via subgraph decomposition. Overlaps are okay. If a subgraph is fully contained in (subset of) another subgraph, no need to consider it during the deduction. For the 2D argmin examples above, there are 2 relevant subgraphs (the ones originated from \code{f()[1]} and \code{f()[2]}). Subgraph of \code{f()[0]} is subset of either \code{f()[1]} or \code{f()[2]} -> we can ignore \code{f()[0]} from consideration. The problem boils down to deducing associative ops and its identity for 1D argmin. Merging the results: if an element $x_i$ is in both subgraph $V_p$ and $V_q$, need to ensure that binary operators (plus identities) deduced from $V_p$ and $V_q$ are consistent. If there is contradiction, bails out. <TODO: Is it necessarily true that if there is contradiction, the tuple is not associative? If not, find an example.> \\
-
-\paragraph{Proof}
-<TODO: Derive formal proof. Why is it okay to decompose the problem into subgraphs and perform the deduction separately?> \\
