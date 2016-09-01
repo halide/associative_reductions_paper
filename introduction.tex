@@ -1,14 +1,20 @@
-Halide \cite{Ragan-Kelley:2013:HLC:2491956.2462176} is a domain-specific language designed for fast-image processing and computational photography. Halide decouples the \emph{algorithm}, which defines the values computed, and the \emph{schedule}, which defines how the values are computed, that allows programmers to explore different schedules with guaranteed correctness and consistency: different schedules on the same algorithm are guaranteed to produce the same results. Although, data-parallel operations, such as resizing an image, can be naturally parallelized or vectorized in Halide, Halide does not support first-class parallel reductions. To parallelize or vectorize a reduction, the programmer has to manually factor the reduction into multiple stages to expose more data parallelism, that, in a sense, violates the core promise of Halide in which algorithm and schedule should be separable and independent of each other. This manipulation of \emph{algorithm} to enable parallel reductions is also bug-prone and may hamper code readability and portability.
+Halide \cite{Ragan-Kelley:2013:HLC:2491956.2462176} is a domain-specific language designed for fast-image processing and computational photography. Halide decouples the \emph{algorithm}, which defines the values computed, and the \emph{schedule}, which defines how the values are computed, that allows programmers to explore different schedules with guaranteed correctness and consistency: different schedules on the same algorithm are guaranteed to produce the same results. Although, data-parallel operations, such as resizing an image, can be naturally parallelized or vectorized in Halide, Halide does not support first-class parallel reductions. To parallelize or vectorize a reduction, the programmer has to manually factor the reduction into multiple stages to expose more data parallelism, that, in a sense, violates the core promise of Halide in which algorithm and schedule should be separable and independent of each other. This manipulation of \emph{algorithm} to enable parallel reductions is also 
+bug-prone and may hamper code readability and portability. 
 
-In this paper, we present a new Halide scheduling primitive \code{rfactor}, which moves this factoring of a reduction into the \emph{schedule}, while maintaining Halide's correctness and consistency guarantees. \code{rfactor} takes a Halide serial reduction (expressed by unstructured Halide "update" definitions), and synthesizes the equivalent binary associative reduction operator with its identity. The reduction operator can be as simple as summation over one-dimensional vector or some multidimensional reduction operators such as two-dimensional argmin over an image. During the compilation process, \code{rfactor} splits the original stage into pair of stages: the \emph{intermediate} stage that computes partial results over slices of the domain of the reduction and the \emph{merge} stage that combines those partial results . \code{rfactor} introduces new data parallelizable/vectorizable dimensions out of a reduction that enables parallelization or vectorization of a Halide algorithm which was previously not possible. 
+In this paper, we present a new Halide scheduling primitive \code{rfactor}, which moves this factoring of a reduction into the \emph{schedule}, while maintaining Halide's correctness and consistency guarantees. \code{rfactor} takes a Halide serial reduction (expressed by unstructured Halide "update" definitions), and synthesizes the equivalent binary associative reduction operator with its identity. This reduction can be as simple as summation over a one-dimensional vector (See Listing \ref{lst:sum}) or some multidimensional reduction operators which equivalent binary associative reduction operator is not immediately obvious, e.g. finding the complex number with the greatest magnitude and its location in a two-dimensional array (See Listing \ref{lst:complex_magnitude}). During the compilation process, \code{rfactor} splits the original stage into pair of stages: the \emph{intermediate} stage that computes partial results over slices of the domain of the reduction and the \emph{merge} stage that combines those partial results . \code{rfactor} introduces new data parallelizable/vectorizable dimensions out of a reduction that enables parallelization or vectorization of a Halide algorithm which was previously not possible. 
 
-Combined with other Halide scheduling primitives, such as \code{split}, this allows Halide to represent a much broader class of schedules, including parallel associative reduction. For example, one might schedule a parallel divide-and-conquer summation over one-dimensional array in Halide by first splitting the array reduction dimension into inner and outer sub-dimensions using \code{split}, then computes the partial sum of the inner subarrays and combines those partial results using \code{rfactor} (See Listing \ref{lst:sum}). In addition to improved code readability and portability (See Listing \ref{lst:complex_magnitude}), \code{rfactor} further supports separation of \emph{algorithm} and \emph{schedule} by moving factorization of a reduction into \emph{schedule}, which is especially important for auto-scheduling \cite{Mullapudi:2016:ASH:2897824.2925952} since auto-scheduling is only allowed to modify \emph{schedule} without changing the \emph{algorithm}.
+Combined with other Halide scheduling primitives, such as \code{split}, this allows Halide to represent a much broader class of schedules, including parallel associative reduction. For example, one might schedule a parallel divide-and-conquer summation over one-dimensional array in Halide by first splitting the array reduction dimension into inner and outer subdimensions using \code{split}, then computes the partial sum of the inner subarrays and iterates over the outer subdimensions combining those partial results using \code{rfactor} (See Listing \ref{lst:sum}). In addition to improved code readability and portability, \code{rfactor} further supports separation of \emph{algorithm} and \emph{schedule} by moving factorization of a reduction into \emph{schedule}, which is especially important for auto-scheduling \cite{Mullapudi:2016:ASH:2897824.2925952} since auto-scheduling is only allowed to modify \emph{schedule} without changing the \emph{algorithm}.
 
+Our work makes the following key contributions:
+\begin{itemize}
+  \item introduces a new Halide scheduling primitive \code{rfactor} which transforms a Halide reduction stage into pair of stages: \emph{intermediate} stage that computes partial results over slices of reduction domain and \emph{merge} stage that combines those partial results;
+  \item automatic deduction of an equivalent associative binary reduction operator with its identity from a Halide serial reduction through \emph{forward} synthesis and wildcard pattern matching.
+\end{itemize}	
+
+The paper is structured as follows. Section \ref{background} provides background on Halide and discussion on related work. Sections \ref{assoc_red} presents the \code{rfactor} scheduling primitive and the automatic associative binary reduction operator deduction technique from a Halide serial reduction. Section \ref{evaluation} show our benchmarks and performance results. Finally, Section \ref{conclusion} concludes.
 
 \begin{lstlisting}[
-caption = {make the case that they're both associative reductions, but it's not obvious what the binary operator is from the code for the second one}, label={lst:sum}]
-Summation (easy example)
-
+caption = {Halide sum reduction over a one-dimensional vector}, label={lst:sum}]
 Func out;
 out() = 0;
 RDom r(0, input.width());
@@ -16,21 +22,18 @@ out() = out() + input(r.x);
 \end{lstlisting}
 
 \begin{lstlisting}[
-caption = {make the case that they're both associative reductions, but it's not obvious what the binary operator is from the code for the second one}, label={lst:complex_magnitude}]
-The complex number with the greatest magnitude, 
-and its location (hard example)
-
+caption = {Halide reduction which finds the complex number with the greatest magnitude and its location in a two-dimensional array}, label={lst:complex_magnitude}]
 Func out;
-out() = {0, 0, 0};
+out() = {0, 0, 0, 0};
 RDom r(0, input.width(), 0, input.height());
 Expr real = input(r.x, r.y)[0];
 Expr imag = input(r.x, r.y)[1];
 Expr mag = real * real + imag * imag;
 Expr best_mag = out()[0] * out()[0] + 
-                out()[1] * out()[1];
+                          out()[1] * out()[1];
 Expr c = mag > best_mag;
 out() = {select(c, real, out()[0]),
-         select(c, imag, out()[1]),
-         select(c, r.x, out()[2]),
-         select(c, r.y, out()[3])};
+             select(c, imag, out()[1]),
+             select(c, r.x, out()[2]),
+             select(c, r.y, out()[3])};
 \end{lstlisting}
