@@ -33,7 +33,7 @@ parallel for y in range(input.height()):
 for x in range(256):
   hist[x] = 0
 // Update stage
-for ry in range(input.height()):
-  for rx in range(input.width()):
-    hist[clamp(int(input[rx][ry]), 0, 255)] += 1
+for ry in range(in.height()):
+  for rx in range(in.width()):
+    hist[clamp(int(in[rx][ry]), 0, 255)] += 1
 \end{lstlisting}
