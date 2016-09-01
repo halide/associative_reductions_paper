@@ -1,4 +1,4 @@
-\subsection{Reduction in Halide}
+\subsection{Reductions in Halide}
 
 List some associative reduction operations: histogram, sum over reduction dimension, etc. Old way to parallelize / vectorize such operations: user need to manually define intermediate functions that do reduction over partial domain and combine the partial results. Pretty tedious and error prone to do manually, especially when the domain is not rectangular (user can specify predicate on the reduction domain via the 'where' directives) -> have to make sure the intermediate functions have the correct new reduction domain, etc. Other issue: some equations are not obviously associative, e.g. \code{x + y + k*x*y} where \code{k} is a constant. \\
 
@@ -23,18 +23,18 @@ Var x("x");
 hist(x) = 0;
 RDom r(input.width(), input.height());
 hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) =
-  hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) 
+  hist(clamp(cast<int>(input(r.x, r.y)), 0, 255))
   + 1;
 
-// Hand-rolled version: compute histogram along 
-// the x-scanline for each y in parallel, then 
+// Hand-rolled version: compute histogram along
+// the x-scanline for each y in parallel, then
 // reduce the partial results
 Func intm;
 Var u("u");
 intm(u) = 0;
 RDom rx(input.width());
-intm(clamp(cast<int>(input(rx, u)), 0, 255)) = 
-  intm(clamp(cast<int>(input(rx, u)), 0, 255)) 
+intm(clamp(cast<int>(input(rx, u)), 0, 255)) =
+  intm(clamp(cast<int>(input(rx, u)), 0, 255))
   + 1;
 intm.compute_root();
 intm.update(0).parallel(u);
@@ -44,18 +44,18 @@ Var x("x");
 hist(x) = 0;
 RDom ry(input.height());
 hist(clamp(cast<int>(intm(ry)), 0, 255)) =
-  hist(clamp(cast<int>(intm(ry)), 0, 255)) 
+  hist(clamp(cast<int>(intm(ry)), 0, 255))
   + 1;
 
-// rfactor version : compute histogram along  
-// the x-scanline for each y in parallel, then  
+// rfactor version : compute histogram along
+// the x-scanline for each y in parallel, then
 // reduce the partial results
 Func hist;
 Var x("x");
 hist(x) = 0;
 RDom r(in.width(), in.height());
 hist(clamp(cast<int>(in(r.x, r.y)), 0, 255)) =
-  hist(clamp(cast<int>(in(r.x, r.y)), 0, 255)) 
+  hist(clamp(cast<int>(in(r.x, r.y)), 0, 255))
   + 1;
 
 Var u("u");
@@ -72,8 +72,8 @@ RDom r(in.width(), in.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
 sum() = sum() + in(r.x, r.y);
 
-// Hand-rolled version: compute the sum along 
-// the x-scanline for each y in parallel, then 
+// Hand-rolled version: compute the sum along
+// the x-scanline for each y in parallel, then
 // reduce the partial results
 Func intm;
 Var u("u");
@@ -90,8 +90,8 @@ sum() = 0;
 RDom ry(in.height());
 sum() = sum() + intm(ry);
 
-// rfactor version : compute the sum along 
-// the x-scanline for each y in parallel, then 
+// rfactor version : compute the sum along
+// the x-scanline for each y in parallel, then
 // reduce the partial results
 Func sum;
 Var x("x");
@@ -111,9 +111,9 @@ Make sure to state the restriction of \textsc{rfactor}: the intermediate and mer
 
 <TODO: Find better terms for the intermediate and merge functions returned by \textsc{rfactor}> \\
 
-\subsection{Deducing Associative Operator}
+\section{Deducing Associative Operator}
 
-\subsubsection{Forward Synthesis}
+\subsection{Forward Synthesis}
 
 We took the forward synthesis approach to deduce the associative operator from an update definition: perform a wild-card matching over a list of pre-generated associative op patterns. We synthesize a bunch of math expressions (using min/max/add/sub/etc) for 1-element, 2-element tuple, etc., and use Z3 theorem prover \cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the math expression and compute its identity. \\
 
@@ -121,13 +121,13 @@ We took the forward synthesis approach to deduce the associative operator from a
 
 Why not backward synthesis (try to "sketch" the intermediate and merge functions)? We tried MIT Sketch and Rosette, but it is too slow to be practical for runtime deduction: Sketch didn't terminate for complex multiplication, Rosette finished in about 1 hour for a very restricted form of the complex multiplication synthesis problem (restrict x to be in LHS only -> can't have y*x, and we also *tell* Rosette that the answer is probably of the form \code{op(op(x??, y??), op(x??, y??)))}. Instead, we use synthesis to pre-generate list of binary associative ops, that we can use to infer the correct associative forms when calling rfactor on an update definition. \\
 
-\subsubsection{Subgraph Decomposition}
+\subsection{Subgraph Decomposition}
 
 Given a tuple of update definition, reduce the problem before the search by reasoning on the graph of dependencies between tuple elements. Construct a directed graph of dependencies between tuple elements, and decompose it into subgraphs. Each tuple element is assigned as a vertex in the graph. For tuple with arity $N$, there will be $N$ vertices. Example: list of vertices of update definition \code{f() = \{f()[0] + g(r.x), f()[1]*h(r.x)\} is \{f()[0], f()[1]\}}. \\
 
 <TODO: Find a better term for 'subgraph'. Maybe there is already one?> \\
 
-Definition of subgraph of $S_V$: set of all vertices that are reachable from a given vertex $V$. A graph of $N$ vertices will have $N$ subgraphs which members may overlap. Examples: 
+Definition of subgraph of $S_V$: set of all vertices that are reachable from a given vertex $V$. A graph of $N$ vertices will have $N$ subgraphs which members may overlap. Examples:
 \begin{enumerate}
  \item Computing reduction of complex-number addition over g: \code{f() = \{f()[0] + g(r.x)[0], f()[1] + g(r.x)[1]\}} -> list of subgraphs: \code{f()[0] : \{f()[0]\}, f()[1] : \{f()[1]\}} <Insert figure of the graph/subgraphs>
  \item Computing reduction ofo complex-number multiplication over g: \code{f() = \{f()[0]*g(r.x)[0] - f()[1]*g(r.x)[1], f()[1]*g(r.x)[0] + f()[0]*g(r.x)[1]\}} -> list of subgraphs: \code{f()[0] : \{f()[0], f()[1]\}, f()[1] : \{f()[0], f()[1]\}} <Insert figure of the graph/subgraphs>
@@ -138,5 +138,3 @@ Reduce the associative op deduction problem via subgraph decomposition. Overlaps
 
 \paragraph{Proof}
 <TODO: Derive formal proof. Why is it okay to decompose the problem into subgraphs and perform the deduction separately?> \\
-
-
