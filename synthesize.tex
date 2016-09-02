@@ -2,9 +2,9 @@ Synthesizing an equivalent binary associative operator and its identity from a H
 
 \subsection{Forward Synthesis}
 
-To deduce the equivalent binary associative operator from a Halide \emph{update} definition, we perform a wild-card pattern matching of the \emph{update} over a table of precomputed binary associative reduction operator patterns. To generate the table, we synthesize a list of expression trees (involving min/max/add/sub/etc.) for 1-element, 2-element tuple, etc., and use Z3 theorem prover~\cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the expression tree and to compute its identity. \\
+To deduce the equivalent binary associative operator from a Halide \emph{update} definition, we perform a wild-card pattern matching of the \emph{update} over a table of precomputed binary associative reduction operator patterns. To generate the table, we synthesize a list of expression trees (involving min, max, add, sub, etc.) for 1-element, 2-element tuple, etc., and use Z3 theorem prover~\cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the expression tree and to compute its identity. \\
 
-<Insert some baby example + code snippet on how we come up with the right associative op given some Halide udpate definition> \\
+<TODO: Insert some baby example + code snippet on how we come up with the right associative op given some Halide udpate definition> \\
 
 \subsection{Subgraph Decomposition}
 
@@ -29,7 +29,6 @@ Given a directed dependency graph $G$ of a multi-element tuple reduction, we fir
 
 After processing each subgraph separately, we need to merge the results. If any of the subgraph is non-associative (or we fail to find the equivalent binary associative operator or an identity), we bail out. If a vertex $x_i$ is in both subgraph $S_{G, p}$ and $S_{G, q}$, we need to ensure that the binary associative operators for that particular tuple element (including their identities) deduced from $S_{G, p}$ and $S_{G, q}$ are consistent. If there is contradiction, we bail out.  
 
-<TODO: update the figure to include the subgraph decomposition>
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{system}
