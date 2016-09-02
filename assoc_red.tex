@@ -1,26 +1,22 @@
 \subsection{Reductions in Halide}
 
-Serial reduction operations in Halide (e.g. summation over an array, histogram, etc.) is implemented through usage of non-data-parallel \code{RVar}s. Since \code{RVar}s are not readily parallelizable or vectorizable, programmer needs to manually \emph{factorize} the reduction stage into an \emph{intermediate} stage that performs reduction over some partial domains, and a \emph{merge} stage that combines those partial results. This whole manipulation process can be pretty tedious and error-prone to do manually, especially when the reduction domain is non-rectangular -- In Halide, programmer can specify predicates on a reduction domain via the \code{where} directive (see Listing \ref{lst:circular_sum}). To further complicate matters, some reduction operations are not obviously associative, e.g. \code{x + y + k*x*y} in which \code{k} is an integer constant.
+Serial reduction operations in Halide (e.g. summation over an array, histogram, etc.) is implemented through usage of non-data-parallel \code{RVar}s. Since \code{RVar}s are not readily parallelizable or vectorizable, programmer needs to manually \emph{factorize} the reduction stage into an \emph{intermediate} stage that performs reduction over some partial domains, and a \emph{merge} stage that combines those partial results. This whole manipulation process can be pretty tedious and error-prone to do manually, especially when the reduction domain is non-rectangular -- In Halide, programmer can specify predicates on a reduction domain via the \code{where} directive (see Listing \ref{lst:circular_max}). To further complicate matters, some reduction operations are not obviously associative, e.g. \code{x + y + k*x*y} in which \code{k} is an integer constant.
 
 To remove the burden of \emph{factorizing} a reduction from the programmer, we introduce a new scheduling primitive called \code{rfactor} in Halide. \code{rfactor} makes a best-effort attempt to automatically synthesize an equivalent binary associative reduction operator and its identity from a serial Halide reduction, and uses them to automatically generate the \emph{intermediate} and \emph{merge} stages.
 
 \subsection{\code{rfactor} DAG Transformation}
 
-Throughout this section, we will assume that the equivalent binary associative reduction operator of a Halide reduction and its identity are known. We present a Halide scheduling primitive, \code{rfactor}, that splits a reduction stage into pair of stages: \emph{intermediate} and \emph{merge} stages. \code{rfactor} takes as input \code{preserved}, which is a list of \code{<RVar, Var>} pairs. \code{RVar}s not in \code{preserved} are removed from the \emph{merge} stage and are lifted to the \emph{intermediate} stage. The remaining \code{RVar} (the ones in \code{preserved}) are made into \code{Var}s in the \emph{intermediate} stage, which allows them to be parallelized or vectorized. Listing \ref{lst:histogram_rfactor} and \ref{lst:circular_sum} demonstrate usage of \code{rfactor} to parallelize histogram of two-dimensional image and summation over a circular reduction domain with radius of 10. 
+Throughout this section, we will assume that the equivalent binary associative reduction operator of a Halide reduction and its identity are known. We present a Halide scheduling primitive, \code{rfactor}, that splits a reduction stage into pair of stages: \emph{intermediate} and \emph{merge} stages. \code{rfactor} takes as input \code{preserved}, which is a list of \code{<RVar, Var>} pairs. \code{RVar}s not in \code{preserved} are removed from the \emph{merge} stage and are lifted to the \emph{intermediate} stage. The remaining \code{RVar} (the ones in \code{preserved}) are made into \code{Var}s in the \emph{intermediate} stage, which allows them to be parallelized or vectorized. Listing \ref{lst:histogram_rfactor} and \ref{lst:circular_max} demonstrate usage of \code{rfactor} to parallelize histogram of two-dimensional image and max over a circular reduction domain with radius of 10. 
 
 It is worth noting that we limit the scope of \code{rfactor} to reductions where the \emph{intermediate} and \emph{merge} stages have the same equivalent binary associative reduction operator; for instance, if the equivalent binary associative reduction operator of the \emph{intermediate} stage is \code{min(x, y)}, then that of the \emph{merge} stage must also be \code{min(x, y)}. Another restriction is that the binary associative operator must have an identity as it is used to initialize the \emph{intermediate} stage.
 
-<TODO: Insert rfactor for matrix multiply> \\
-
-\begin{lstlisting}[caption={Histogram of a two-dimensional image: serial vs. parallel hand-rolled vs. parallel rfactor}, label={lst:histogram_rfactor}]
+\begin{lstlisting}[caption={Histogram of a two-dimensional image: serial vs. parallel hand-rolled vs. parallel rfactor.}, label={lst:histogram_rfactor}]
 // Serial version
 Func hist;
 Var x("x");
 hist(x) = 0;
-RDom r(input.width(), input.height());
-hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) =
-  hist(clamp(cast<int>(input(r.x, r.y)), 0, 255))
-  + 1;
+RDom r(0, input.width(), 0, input.height());
+hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) += 1;
 
 // Hand-rolled version: compute the histogram 
 // along the x scanline for each y in parallel, 
@@ -28,29 +24,25 @@ hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) =
 Func intm;
 Var u("u");
 intm(u) = 0;
-RDom rx(input.width());
-intm(clamp(cast<int>(input(rx, u)), 0, 255)) =
-  intm(clamp(cast<int>(input(rx, u)), 0, 255)) + 1;
+RDom rx(0, input.width());
+intm(clamp(cast<int>(input(rx, u)), 0, 255)) += 1;
 intm.compute_root();
 intm.update(0).parallel(u);
 
 Func hist;
 Var x("x");
 hist(x) = 0;
-RDom ry(input.height());
-hist(clamp(cast<int>(intm(ry)), 0, 255)) =
-  hist(clamp(cast<int>(intm(ry)), 0, 255)) + 1;
+RDom ry(0, input.height());
+hist(clamp(cast<int>(intm(ry)), 0, 255)) += 1;
 
 // rfactor version: compute the histogram 
-// along the x-scanline for each y in parallel, 
+// along the x scanline for each y in parallel, 
 // then reduce the partial results
 Func hist;
 Var x("x");
 hist(x) = 0;
-RDom r(input.width(), input.height());
-hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) =
-  hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) 
-  + 1;
+RDom r(0, input.width(), 0, input.height());
+hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) += 1;
 
 Var u("u");
 Func intm = hist.update(0).rfactor(r.y, u);
@@ -58,44 +50,44 @@ intm.compute_root();
 intm.update(0).parallel(u);
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Summation over a circular reduction domain with radius of 10: serial vs. parallel hand-rolled vs. parallel rfactor}, label={lst:circular_sum}]
+\begin{lstlisting}[caption={Computing max over a circular reduction domain with radius of 10: serial vs. parallel hand-rolled vs. parallel rfactor.}, label={lst:circular_max}]
 // Serial version
-Func sum;
-sum() = 0;
-RDom r(input.width(), input.height());
+Func max_val;
+max_val() = SOME_CONSTANT;
+RDom r(0, input.width(), 0, input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
-sum() = sum() + in(r.x, r.y);
+max_val() = max(max_val(), input(r.x, r.y));
 
-// Hand-rolled version: compute the sum 
+// Hand-rolled version: compute the max 
 // along the x scanline for each y in 
 // parallel, then reduce the partial results
 Func intm;
 Var u("u");
-intm(u) = 0;
-RDom rx(input.width());
+intm(u) = INT_MIN;
+RDom rx(0, input.width());
 rx.where(rx*rx + u*u <= 100);
-intm(u) = intm(u) + input(rx, u);
+intm(u) = max(intm(u), input(rx, u));
 intm.compute_root();
 intm.update(0).parallel(u);
 
-Func sum;
+Func max_val;
 Var x("x");
-sum() = 0;
-RDom ry(input.height());
-sum() = sum() + intm(ry);
+max_val() = SOME_CONSTANT;
+RDom ry(0, input.height());
+max_val() = max(max_val(), intm(ry));
 
-// rfactor version : compute the sum along
+// rfactor version : compute the max along
 // the x scanline for each y in parallel, 
 // then reduce the partial results
-Func sum;
+Func max_val;
 Var x("x");
-sum() = 0;
-RDom r(input.width(), input.height());
+max_val() = SOME_CONSTANT;
+RDom r(0, input.width(), 0, input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
-sum() = sum() + input(r.x, r.y);
+max_val() = max(max_val(), input(r.x, r.y));
 
 Var u("u");
-Func intm = sum.update(0).rfactor(r.y, u);
+Func intm = max_val.update(0).rfactor(r.y, u);
 intm.compute_root();
 intm.update(0).parallel(u);
 \end{lstlisting}

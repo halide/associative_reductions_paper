@@ -23,8 +23,7 @@ parallel for y in range(input.height()):
   parallel for x in range(input.width()):
     for ry in range(kernel.height()):
       for rx in range(kernel.width()):    
-        blur[x][y] = 
-          blur[x][y] + 
+        blur[x][y] += 
           kernel[rx][ry]*input[x+rx-1][y+ry-1] 
 \end{lstlisting}
 
