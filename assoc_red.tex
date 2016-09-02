@@ -30,8 +30,7 @@ Var u("u");
 intm(u) = 0;
 RDom rx(input.width());
 intm(clamp(cast<int>(input(rx, u)), 0, 255)) =
-  intm(clamp(cast<int>(input(rx, u)), 0, 255))
-  + 1;
+  intm(clamp(cast<int>(input(rx, u)), 0, 255)) + 1;
 intm.compute_root();
 intm.update(0).parallel(u);
 
@@ -40,8 +39,7 @@ Var x("x");
 hist(x) = 0;
 RDom ry(input.height());
 hist(clamp(cast<int>(intm(ry)), 0, 255)) =
-  hist(clamp(cast<int>(intm(ry)), 0, 255))
-  + 1;
+  hist(clamp(cast<int>(intm(ry)), 0, 255)) + 1;
 
 // rfactor version: compute the histogram 
 // along the x-scanline for each y in parallel, 
@@ -49,9 +47,9 @@ hist(clamp(cast<int>(intm(ry)), 0, 255)) =
 Func hist;
 Var x("x");
 hist(x) = 0;
-RDom r(in.width(), in.height());
-hist(clamp(cast<int>(in(r.x, r.y)), 0, 255)) =
-  hist(clamp(cast<int>(in(r.x, r.y)), 0, 255))
+RDom r(input.width(), input.height());
+hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) =
+  hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) 
   + 1;
 
 Var u("u");
@@ -64,7 +62,7 @@ intm.update(0).parallel(u);
 // Serial version
 Func sum;
 sum() = 0;
-RDom r(in.width(), in.height());
+RDom r(input.width(), input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
 sum() = sum() + in(r.x, r.y);
 
@@ -74,16 +72,16 @@ sum() = sum() + in(r.x, r.y);
 Func intm;
 Var u("u");
 intm(u) = 0;
-RDom rx(in.width());
+RDom rx(input.width());
 rx.where(rx*rx + u*u <= 100);
-intm(u) = intm(u) + in(rx, u);
+intm(u) = intm(u) + input(rx, u);
 intm.compute_root();
 intm.update(0).parallel(u);
 
 Func sum;
 Var x("x");
 sum() = 0;
-RDom ry(in.height());
+RDom ry(input.height());
 sum() = sum() + intm(ry);
 
 // rfactor version : compute the sum along
@@ -92,9 +90,9 @@ sum() = sum() + intm(ry);
 Func sum;
 Var x("x");
 sum() = 0;
-RDom r(in.width(), in.height());
+RDom r(input.width(), input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
-sum() = sum() + in(r.x, r.y);
+sum() = sum() + input(r.x, r.y);
 
 Var u("u");
 Func intm = sum.update(0).rfactor(r.y, u);
