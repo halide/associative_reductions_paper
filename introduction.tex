@@ -35,10 +35,10 @@ Expr real = input(r.x, r.y)[0];
 Expr imag = input(r.x, r.y)[1];
 Expr mag = real * real + imag * imag;
 Expr best_mag = out()[0] * out()[0] +
-                          out()[1] * out()[1];
+                out()[1] * out()[1];
 Expr c = mag > best_mag;
 out() = {select(c, real, out()[0]),
-             select(c, imag, out()[1]),
-             select(c, r.x, out()[2]),
-             select(c, r.y, out()[3])};
+         select(c, imag, out()[1]),
+         select(c, r.x, out()[2]),
+         select(c, r.y, out()[3])};
 \end{lstlisting}

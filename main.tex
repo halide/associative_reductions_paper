@@ -48,8 +48,17 @@
 \documentclass{main}
 \pagenumbering{arabic}
 
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
 \usepackage{listings}
 \usepackage{caption}
+
+\usepackage{xcolor}
+
+\definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
 
 \lstset{
 language=C++,
@@ -57,8 +66,20 @@ basicstyle=\small\ttfamily,
 numbers=left,
 numbersep=5pt,
 xleftmargin=15pt,
+keepspaces=true,
 frame=tb,
-framexleftmargin=15pt
+framexleftmargin=15pt,
+breaklines=true,                 % sets automatic line breaking
+captionpos=b,                    % sets the caption-position to bottom
+commentstyle=\color{commentsColor}\textit,    % comment style
+escapeinside={\%*}{*)},     % if you want to add LaTeX within your code
+numberstyle=\tiny\color{commentsColor},
+columns=flexible,
+showtabs=false,
+stringstyle=\color{stringColor},
+tabsize=2,
+keywords={for, parallel, update, rfactor, compute_root, where},
+keywordstyle=\color{keywordsColor}\bfseries,
 }
 
 \newcommand{\code}[1]{\texttt{#1}}
