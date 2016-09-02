@@ -58,23 +58,23 @@ intm.compute_root();
 intm.update(0).parallel(u);
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Sum of squares reduction over a circular reduction domain with radius of 10: serial vs. parallel hand-rolled vs. parallel rfactor}, label={lst:circular_sum}]
+\begin{lstlisting}[caption={Summation over a circular reduction domain with radius of 10: serial vs. parallel hand-rolled vs. parallel rfactor}, label={lst:circular_sum}]
 // Serial version
 Func sum;
 sum() = 0;
 RDom r(input.width(), input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
-sum() = sum() + input(r.x, r.y)*input(r.x, r.y);
+sum() = sum() + in(r.x, r.y);
 
-// Hand-rolled version: compute the sum of  
-// squares along the x scanline for each y in 
+// Hand-rolled version: compute the sum 
+// along the x scanline for each y in 
 // parallel, then reduce the partial results
 Func intm;
 Var u("u");
 intm(u) = 0;
 RDom rx(input.width());
 rx.where(rx*rx + u*u <= 100);
-intm(u) = intm(u) + input(rx, u)*input(rx, u);
+intm(u) = intm(u) + input(rx, u);
 intm.compute_root();
 intm.update(0).parallel(u);
 
@@ -84,15 +84,15 @@ sum() = 0;
 RDom ry(input.height());
 sum() = sum() + intm(ry);
 
-// rfactor version : compute the sum of 
-// squares along the x scanline for each y in  
-// parallel, then reduce the partial results
+// rfactor version : compute the sum along
+// the x scanline for each y in parallel, 
+// then reduce the partial results
 Func sum;
 Var x("x");
 sum() = 0;
 RDom r(input.width(), input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
-sum() = sum() + input(r.x, r.y)*input(r.x, r.y);
+sum() = sum() + input(r.x, r.y);
 
 Var u("u");
 Func intm = sum.update(0).rfactor(r.y, u);
