@@ -1,0 +1,81 @@
+Benchmark Codes:
+summation, 2D histogram, 4D argmin, complex multiplication, dot product (vectorize inner or parallelize outer), matrix multiply vs. the serial versions, convolution with large kernels (vectorizing the inner reduction?). 
+
+\begin{lstlisting}[caption={Benchmark code for histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
+Func hist;
+Var x("x");
+hist(x) = 0;
+RDom r(0, input.width(), 0, input.height());
+hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) += 1;
+
+// Compute the histogram along x for each y in
+// parallel, then reduce the results
+Var u("u");
+Func intm = hist.update(0).rfactor(r.y, u);
+intm.compute_root();
+intm.update(0).parallel(u);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Benchmark code for argmin over 4D array}, label={lst:benchmark_argmin}]
+RDom r(0, size, 0, size, 0, size, 0, size);
+Func amin;
+amin() = Tuple(1, 2, 3, 4, 5);
+amin() = Tuple(
+  min(amin()[0], in(r.x, r.y)),
+  select(amin()[0] < in(r.x, r.y), amin()[1], r.x),
+  select(amin()[0] < in(r.x, r.y), amin()[2], r.y),
+  select(amin()[0] < in(r.x, r.y), amin()[3], r.z),
+  select(amin()[0] < in(r.x, r.y), amin()[4], r.w)
+);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Benchmark code for multiplication of complex number}, label={lst:benchmark_complex_multiply}]
+Func mult;
+mult() = Tuple(2, 3);
+RDom r(0, input0.width(), 0, input0.height());
+mult() = Tuple(
+  mult()[0]*input0(r.x) - mult()[1]*input1(r.x),
+  mult()[0]*input1(r.x) + mult()[1]*input0(r.x)
+);
+// Split the computation into partial chunks
+RVar rxi("rxi"), rxo("rxo");
+mult.update(0).split(r.x, rxo, rxi, 128);
+// Compute the chunks in parallel, then reduce 
+// the results
+Var u("u");
+Func intm = mult.update(0).rfactor(rxo, u);
+RVar rxio("rxio"), rxii("rxii");
+intm.compute_root();
+intm.update(0).parallel(u);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Benchmark code for dot product}, label={lst:benchmark_dot_product}]
+Func dot("dot");
+dot() = 0;
+RDom r(0, input.width());
+dot() += A(r.x)*B(r.x);
+// Split the computation into partial chunks
+RVar rxo("rxo"), rxi("rxi");
+dot.update(0).split(r.x, rxo, rxi, 128);
+// Compute the reduction of those chunks in parallel
+Var u("u");
+Func intm1 = dot.update(0).rfactor(rxo, u);
+RVar rxio("rxio"), rxii("rxii");
+intm1.compute_root();
+intm1.update(0).parallel(u);
+// Vectorize the reduction computation inside 
+// the chunk
+intm1.update(0).split(rxi, rxio, rxii, 8);
+Var v("v");
+Func intm2 = intm1.update(0).rfactor(rxii, v);
+intm2.compute_at(intm1, u);
+intm2.update(0).vectorize(v, 8);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Benchmark code for square matrix multiplication.}, label={lst:benchmark_matrix}]
+Func hist;
+Var x("x"), y("y");
+matrix_mul(x, y) = 0;
+RDom k(0, matrix_size);
+matrix_mul(x, y) += A(k, y) * B(x, k);
+\end{lstlisting}
