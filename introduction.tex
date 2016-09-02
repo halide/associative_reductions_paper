@@ -16,10 +16,10 @@ Combined with other Halide scheduling primitives, such as \code{split}, \code{rf
 %  \item We descibe a method for automatic synthesis of an equivalent associative binary reduction operator and its identity from a serial reduction expressed as an imperative Halide \emph{update}.
 %\end{itemize}
 
-The paper is structured as follows. Section \ref{background} provides background on Halide and a discussion of related work. Section \ref{assoc_red} presents the \code{rfactor} scheduling primitive and how it transforms Halide programs. Section \ref{synthesis} describes the associative binary reduction operator synthesis technique. Section \ref{evaluation} describes limitations of the technique, and demonstrates that this technique does indeed produce the expected performance gains from vectorization and parallelization.
+The paper is structured as follows. Section \ref{background} provides background on Halide and a discussion of related work. Section \ref{assoc_red} presents the \code{rfactor} scheduling primitive and how it transforms Halide programs. Section \ref{synthesize} describes the associative binary reduction operator synthesis technique. Section \ref{evaluation} describes limitations of the technique, and demonstrates that this technique does indeed produce the expected performance gains from vectorization and parallelization.
 
 \begin{lstlisting}[
-caption = {Halide sum reduction over a one-dimensional vector}, label={lst:sum}]
+caption = {Halide sum reduction over a one-dimensional vector.}, label={lst:sum}]
 Func out;
 out() = 0;
 RDom r(0, input.width());
@@ -27,7 +27,7 @@ out() = out() + input(r.x);
 \end{lstlisting}
 
 \begin{lstlisting}[
-caption = {Halide reduction which finds the complex number with the greatest magnitude and its location in a two-dimensional array}, label={lst:complex_magnitude}]
+caption = {Halide reduction which finds the complex number with the greatest magnitude and its location in a two-dimensional array.}, label={lst:complex_magnitude}]
 Func out;
 out() = {0, 0, 0, 0};
 RDom r(0, input.width(), 0, input.height());
