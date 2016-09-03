@@ -1,10 +1,8 @@
 Synthesizing an equivalent binary associative operator and its identity from a Halide reduction is an important step in reduction factorization by \code{rfactor}. In the next subsections, we will describe the approach we use to deduce the binary associative operator from a Halide \emph{update} definition and some techniques we may use to reduce the deduction problem for multi-element tuple reduction, e.g. argmin that returns tuple of the lowest value and its coordinate in an image.
 
-\subsection{Forward Synthesis}
+\subsection{Deducing Associative Binary Operators}
 
 To deduce the equivalent binary associative operator from a Halide \emph{update} definition, we perform a wild-card pattern matching of the \emph{update} over a table of precomputed binary associative reduction operator patterns. To generate the table, we synthesize a list of expression trees (involving min, max, add, sub, etc.) for 1-element, 2-element tuple, etc., and use Z3 theorem prover~\cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the expression tree and to compute its identity. \\
-
-<TODO: Insert some baby example + code snippet on how we come up with the right associative op given some Halide udpate definition> \\
 
 \subsection{Subgraph Decomposition}
 
