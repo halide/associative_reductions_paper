@@ -6,14 +6,22 @@ In this work, we present a new Halide scheduling primitive called \code{rfactor}
 
 During the compilation process, \code{rfactor} splits the original serial reduction into a pair of stages: The \emph{intermediate} stage computes partial results over slices of the domain of the reduction, and the \emph{merge} stage combines those partial results. The intermediate stage is now data parallel over the slices, which means that it can now be vectorized or parallelized using Halide's existing scheduling primitives.
 
-Combined with other Halide scheduling primitives, such as \code{split}, \code{rfactor} allows Halide to represent a broad class of schedules for parallel and vectorized reductions. For example, one might schedule a parallel divide-and-conquer summation over a one-dimensional array by first splitting the array reduction dimension into inner and outer subdimensions using \code{split}, then using \code{rfactor} to compute the partial sums over the inner subarrays independently, which then allows parallelizing over the outer subdimension (see Listing~\ref{lst:sum} \textbf{SK:this is pretty complex.  I think a graphic would be helpful}). A second application of \code{split} and \code{rfactor} could vectorize the summation within each subarray, adding a second intermediate stage which sums over vector lanes.
+Combined with other Halide scheduling primitives, such as \code{split}, \code{rfactor} allows Halide to represent a broad class of schedules for parallel and vectorized reductions. For example, rfactor can express several divide-and-conquer strategies for parallelizing and vectorizing the summation of a one-dimensional array (see Figure \ref{fig:rfactor}).
 
-\code{rfactor} further separates the \emph{algorithm} from its \emph{schedule} by making it possible to factor reductions using the schedule alone. This means that tools that automatically generate schedules (\cite{Mullapudi:2016:ASH:2897824.2925952},\cite{Ragan-Kelley:2013:HLC:2491956.2462176}) are now capable of parallelizing reductions, which was previously a task outside of their purview.
+\begin{figure}
+\centering
+\includegraphics[width=3.2in]{rfactor}
+\caption{
+\code{split} followed by \code{rfactor} used to vectorize or parallelize a one-dimensional summation. 1) A serial summation of 11 elements over a one-dimensional domain \code{r}. 2) The \code{split} scheduling directive reshapes the domain into a two-dimensional reduction. The reduction is still serial. 3a) The \code{rfactor} directive creates and returns a new (orange) \emph{intermediate} stage which computes partial results along each row. The intermediate stage is now data parallel over its outer loop, which is now indexed with the new pure variable \code{v}. The merge stage (blue) retains only the serial loop over the reduction variable \code{ry}. We have emph{reassociated} the summation. 3b) Alternatively, one can use rfactor to make the \emph{inner} loop data parallel. This can be used to vectorize reductions. The intermediate stage computes sums of whole vectors, data parallel across the vector lanes, and then the merge stage sums the lanes of the vector result. The strategy in 3a and 3b can be combined to both vectorize \emph{and} parallelize a summation.
+}
+\label{fig:rfactor}
+\end{figure}
 
-\textbf{SK: unfortunately, the CGO community really likes these kinds of contribution lists}
+\code{rfactor} further separates the \emph{algorithm} from its \emph{schedule} by making it possible to factor reductions using the schedule alone. In addition to the readability and portability benefits, this means that tools that automatically generate schedules (\cite{Mullapudi:2016:ASH:2897824.2925952},\cite{Ragan-Kelley:2013:HLC:2491956.2462176}) are now capable of parallelizing reductions, which was previously a task outside of their purview.
+
 Our work makes the following contributions:
 \begin{itemize}
-  \item We introduce a new Halide scheduling primitive \code{rfactor} which transforms a Halide reduction stage into pair of stages: an \emph{intermediate} stage that computes partial results over slices of reduction domain and \emph{merge} stage that combines those partial results;
+  \item We introduce a new Halide scheduling primitive \code{rfactor} which factors a Halide reduction into pair of reductions: an \emph{intermediate} stage that computes partial results over slices of reduction domain and \emph{merge} stage that combines those partial results;
   \item We descibe a method for automatic synthesis of an equivalent associative binary reduction operator and its identity from a serial reduction expressed as an imperative Halide \emph{update}.
   \item We implement a new stage in the Halide compiler that matches arbitrary reductions with a set of XXX fragments that are pre-generated using our synthesis method, and show that this enables the compiler to effectively transform a large set of reductions into their parallel equivalents.
 \end{itemize}

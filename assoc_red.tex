@@ -1,95 +1,107 @@
 \subsection{Reductions in Halide}
 
-Serial reduction operations in Halide (e.g. summation over an array, histogram, etc.) is implemented through usage of non-data-parallel \code{RVar}s. Since \code{RVar}s are not readily parallelizable or vectorizable, programmer needs to manually \emph{factorize} the reduction stage into an \emph{intermediate} stage that performs reduction over some partial domains, and a \emph{merge} stage that combines those partial results. This whole manipulation process can be pretty tedious and error-prone to do manually, especially when the reduction domain is non-rectangular -- In Halide, programmer can specify predicates on a reduction domain via the \code{where} directive (see Listing \ref{lst:circular_max}). To further complicate matters, some reduction operations are not obviously associative, e.g. \code{x + y + k*x*y} in which \code{k} is an integer constant.
+Serial reductions in Halide (e.g. summation over an array, histogram, etc.) are implemented using \code{RVar}s or \code{RDom}s. An \code{RVar} is an implicit serial loop, and an \code{RDom} is an ordered list of \code{RVar}s specifying a serial loop nest. Since \code{RVar}s are not trivially parallelizable or vectorizable, a programmer must manually \emph{factor} a reduction into an \emph{intermediate} function that performs reduction over distinct slices of the domain, and a \emph{merge} function that combines those partial results.
 
-To remove the burden of \emph{factorizing} a reduction from the programmer, we introduce a new scheduling primitive called \code{rfactor} in Halide. \code{rfactor} makes a best-effort attempt to automatically synthesize an equivalent binary associative reduction operator and its identity from a serial Halide reduction, and uses them to automatically generate the \emph{intermediate} and \emph{merge} stages.
+This manual manipulation is tedious and error-prone, especially when the reduction domain is non-rectangular (see Listing \ref{lst:circular_max}). To further complicate matters, it is hard to infer what binary reduction operator is equivalent to a Halide update definition, and even then, many binary operators are not obviously associative (e.g. $x + y + 7xy$ is in fact associative). We will defer these issues to section \ref{sec:synthesize}, and for now assume that given a Halide update definition we can deduce the equivalent associative binary operator and its identity. Note that we do not require the binary operators to be commutative.
 
-\subsection{\code{rfactor} DAG Transformation}
+\subsection{The \code{rfactor} Transformation}
 
-Throughout this section, we will assume that the equivalent binary associative reduction operator of a Halide reduction and its identity are known. We present a Halide scheduling primitive, \code{rfactor}, that splits a reduction stage into pair of stages: \emph{intermediate} and \emph{merge} stages. \code{rfactor} takes as input \code{preserved}, which is a list of \code{<RVar, Var>} pairs. \code{RVar}s not in \code{preserved} are removed from the \emph{merge} stage and are lifted to the \emph{intermediate} stage. The remaining \code{RVar} (the ones in \code{preserved}) are made into \code{Var}s in the \emph{intermediate} stage, which allows them to be parallelized or vectorized. Listing \ref{lst:histogram_rfactor} and \ref{lst:circular_max} demonstrate usage of \code{rfactor} to parallelize histogram of two-dimensional image and max over a circular reduction domain with radius of 10. 
+To remove the burden of \emph{factoring} a reduction from the programmer, we introduce a new scheduling primitive called \code{rfactor}. This splits a reduction into pair of reductions, which we will call the \emph{intermediate} stage and the \emph{merge} stage. \code{rfactor} takes as input a list of \code{<RVar, Var>} pairs. \code{RVar}s not in the list are removed from the \emph{merge} stage and lifted to the \emph{intermediate} stage. The remaining \code{RVar}s become \code{Var}s in the \emph{intermediate} stage, which allows them to be parallelized or vectorized. See Figure \ref{fig:rfactor} for a simple example. The listings below demonstrate more complex usage.
 
-In Listing \ref{lst:histogram_rfactor}, we call \code{rfactor} on \code{hist} with arguments \code{\{r.y, u\}}, which factorizes the reduction along the \code{y} dimension. \code{rfactor} generates an \emph{intermediate} stage, \code{intm}, that computes the histogram along the original $x$ scanline for every $y$ denoted by each iteration of dimension $u$. The original \code{hist} is replaced by the new \emph{merge} stage that combines the partial histogram results by iterating over $y$. Since loop dimension $u$ in \code{intm} is race-condition-free, it is legal to parallelize \code{intm} across $u$. The computations in both \emph{intm} and \emph{merge} are defined by the equivalent binary associative operator of the original definition, which is equal to ``+'' in this case. Note that, the associative property makes it legal to split the computation into chunks and combine the partial results sequentially. The \emph{intermediate} is initialized to 0, which is the identity of the sum operator. 
+ Note that we limit the scope of \code{rfactor} to reductions where the \emph{intermediate} and \emph{merge} stages have the same equivalent binary associative reduction operator. For instance, if the equivalent binary associative reduction operator of the \emph{intermediate} stage is \code{min(x, y)}, then that of the \emph{merge} stage must also be \code{min(x, y)}. Another restriction is that the binary associative operator must have an identity, as it is used to initialize the \emph{intermediate} stage. Not all associative binary operators have identities (e.g. $2xy$, where $x, y \in \mathds{Z}$).
 
-It is worth noting that we limit the scope of \code{rfactor} to reductions where the \emph{intermediate} and \emph{merge} stages have the same equivalent binary associative reduction operator; for instance, if the equivalent binary associative reduction operator of the \emph{intermediate} stage is \code{min(x, y)}, then that of the \emph{merge} stage must also be \code{min(x, y)}. Another restriction is that the binary associative operator must have an identity as it is used to initialize the \emph{intermediate} stage.
-
-\begin{lstlisting}[caption={Histogram of a two-dimensional image: serial vs. parallel hand-rolled vs. parallel rfactor.}, label={lst:histogram_rfactor}]
-// Serial version
+\begin{lstlisting}[caption={Computing the histogram of a two-dimensional image in Halide. The RDom defines an implicit loop nest over \code{r.x} and \code{r.y}. Halide will not permit either of these loops to be parallelized, as that would introduce a race condition on the += operation.}, label={lst:histogram_rfactor_1}]
+// Algorithm
 Func hist;
-Var x("x");
-hist(x) = 0;
+Var i;
+hist(i) = 0;
 RDom r(0, input.width(), 0, input.height());
-hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) += 1;
+hist(input(r.x, r.y)) += 1;
 
-// Hand-rolled version: compute the histogram 
-// along the x scanline for each y in parallel, 
-// then reduce the partial results
-Func intm;
-Var u("u");
-intm(u) = 0;
-RDom rx(0, input.width());
-intm(clamp(cast<int>(input(rx, u)), 0, 255)) += 1;
-intm.compute_root();
-intm.update(0).parallel(u);
-
-Func hist;
-Var x("x");
-hist(x) = 0;
-RDom ry(0, input.height());
-hist(clamp(cast<int>(intm(ry)), 0, 255)) += 1;
-
-// rfactor version: compute the histogram 
-// along the x scanline for each y in parallel, 
-// then reduce the partial results
-Func hist;
-Var x("x");
-hist(x) = 0;
-RDom r(0, input.width(), 0, input.height());
-hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) += 1;
-
-Var u("u");
-Func intm = hist.update(0).rfactor(r.y, u);
-intm.compute_root();
-intm.update(0).parallel(u);
+// Schedule
+hist.compute_root();
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Computing max over a circular reduction domain with radius of 10: serial vs. parallel hand-rolled vs. parallel rfactor.}, label={lst:circular_max}]
-// Serial version
+\begin{lstlisting}[caption={A manually-factored histogram. The programmer has introduced an intermediate function that computes the histogram over each row of the input. This intermediate is data-parallel over y, and so it can be parallelized. The original function \code{hist} now merely sums these partial histograms. It is data-parallel over histogram buckets, and the programmer has vectorized it.}, label={lst:histogram_rfactor_2}]
+// Algorithm
+Func intm;
+Var i, y;
+intm(i, y) = 0;
+RDom rx(0, input.width());
+intm(input(rx, y)) += 1;
+
+Func hist;
+hist(i) = 0;
+RDom ry(0, input.height());
+hist(i) += intm(i, ry);
+
+// Schedule
+intm.compute_root().update().parallel(y);
+hist.compute_root().update().vectorize(i, 4);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Using \code{rfactor}, the programmer can produce the same machine code as in \ref{lst:histogram_rfactor_2}, using the simpler algorithm in \ref{lst:histogram_rfactor_1}. While the schedule is more complex, recall that it is only the five lines of algorithm that determines correctness. The programmer was able to transform the code to exploit parallelism without risking introducing a correctness bug.}, label={lst:histogram_rfactor_3}]
+// Algorithm
+Func hist;
+Var i;
+hist(i) = 0;
+RDom r(0, input.width(), 0, input.height());
+hist(input(r.x, r.y)) += 1;
+
+// Schedule
+Var y;
+hist.compute_root()
+Func intm = hist.update().rfactor(r.y, y);
+intm.compute_root().update().parallel(y);
+hist.update().vectorize(i, 4);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Computing the maximum over a circular domain. Reduction domains need not be rectangular. In this case we use \code{RDom::where} to restrict it to the points that lie within a circle of radius 10.}, label={lst:circular_max_1}]
+// Algorithm
 Func max_val;
-max_val() = SOME_CONSTANT;
+max_val() = 0;
 RDom r(0, input.width(), 0, input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
 max_val() = max(max_val(), input(r.x, r.y));
 
-// Hand-rolled version: compute the max 
-// along the x scanline for each y in 
-// parallel, then reduce the partial results
+// Schedule
+max_val.compute_root();
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Manually factoring this reduction requires also manipulating the predicate associated with the RDom. The identity for \code{max} is the minimum value of the type in question.}, label={lst:circular_max_2}]
+// Algorithm
 Func intm;
-Var u("u");
-intm(u) = INT_MIN;
+Var y;
+intm(y) = input.type().min();
 RDom rx(0, input.width());
-rx.where(rx*rx + u*u <= 100);
-intm(u) = max(intm(u), input(rx, u));
-intm.compute_root();
-intm.update(0).parallel(u);
+rx.where(rx*rx + y*y <= 100);
+intm(y) = max(intm(y), input(rx, y));
 
 Func max_val;
-Var x("x");
-max_val() = SOME_CONSTANT;
+max_val() = 0;
 RDom ry(0, input.height());
 max_val() = max(max_val(), intm(ry));
 
-// rfactor version : compute the max along
-// the x scanline for each y in parallel, 
-// then reduce the partial results
+// Schedule
+intm.compute_root();
+    .update().parallel(y);
+max_val.compute_root();
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Using \code{rfactor} in the schedule can produce the same machine code from the simpler form of the algorithm.}]
+// Algorithm
 Func max_val;
-Var x("x");
-max_val() = SOME_CONSTANT;
+max_val() = 0;
 RDom r(0, input.width(), 0, input.height());
 r.where(r.x*r.x + r.y*r.y <= 100);
 max_val() = max(max_val(), input(r.x, r.y));
 
-Var u("u");
-Func intm = max_val.update(0).rfactor(r.y, u);
+// Schedule
+Var y;
+max_val.compute_root();
+Func intm = max_val.update().rfactor(r.y, y);
 intm.compute_root();
-intm.update(0).parallel(u);
+    .update().parallel(y);
 \end{lstlisting}
+
+
