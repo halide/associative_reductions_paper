@@ -1,5 +1,5 @@
 Benchmark Codes:
-summation, 2D histogram, 4D argmin, complex multiplication, dot product (vectorize inner or parallelize outer), matrix multiply vs. the serial versions, convolution with large kernels (vectorizing the inner reduction?). 
+2D histogram, 4D argmin, complex multiplication, saturating addition, dot product (vectorize inner or parallelize outer), matrix multiply vs. the serial versions, convolution with large kernels (vectorizing the inner reduction?). 
 
 \begin{lstlisting}[caption={Benchmark code for histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
 Func hist;
@@ -73,7 +73,7 @@ intm2.update(0).vectorize(v, 8);
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Benchmark code for square matrix multiplication.}, label={lst:benchmark_matrix}]
-Func hist;
+Func matrix_mul;
 Var x("x"), y("y");
 matrix_mul(x, y) = 0;
 RDom k(0, matrix_size);

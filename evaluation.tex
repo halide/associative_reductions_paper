@@ -1,4 +1,28 @@
-Performance results using rfactor (overall speedup): 2D argmin, complex multiplication, 2D histogram, dot product, matrix multiply vs. the serial versions. \\
+Performance results using rfactor (overall speedup): 
+2D histogram, 4D argmin, complex multiplication, saturating addition, dot product (vectorize inner or parallelize outer), matrix multiply vs. the serial versions, convolution with large kernels (vectorizing the inner reduction?). \\
+
+\begin{table*}[h!]
+\caption{Benchmark results: serial vs. parallel \code{rfactor}}
+\label{tab:table}
+\centering
+%\setlength\tabcolsep{3.5pt} % default value: 6pt
+\begin{center}
+\begin{tabular}{p{5cm}ddd}
+\toprule
+\multicolumn{1}{C{5cm}}{Benchmark} & \multicolumn{1}{C{2cm}}{Serial (ms)} & \multicolumn{1}{C{2cm}}{\code{rfactor} (ms)} & \multicolumn{1}{C{2cm}}{Speed-up}\\
+\midrule 
+2D histogram 							&  &  & \\
+4D argmin 								&  &  & \\
+Complex multiplication 			&  &  & \\
+Saturating addition	 				&  &  & \\
+Dot-product 							&  &  & \\
+Square matrix multiplication 	&  &  & \\
+(size??)x(size??) convolution  &  &  & \\
+\bottomrule 
+\end{tabular}
+\end{center}
+\label{default}
+\end{table*}
 
 Synthetic functions (also to show limitations): approximating 128-bit add with 2 64-bit integers -> z3 cannot prove that it is associative, although the max/min forms are provable with z3. \\
 

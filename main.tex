@@ -51,12 +51,13 @@
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 
+\usepackage{tabularx, booktabs, array, dcolumn}
 \usepackage{dsfont}
-
 \usepackage{listings}
 \usepackage{caption}
-
 \usepackage{xcolor}
+
+\newcolumntype{Z}{>{\raggedright}X}
 
 \definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
 \definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
@@ -87,6 +88,9 @@ keywordstyle=\color{keywordsColor}\bfseries,
 \newcommand{\code}[1]{\texttt{#1}}
 
 \newdef{definition}{Definition}
+
+\newcolumntype{d}{D{.}{.}{2.3}}
+\newcolumntype{C}{>{\centering}p}
 
 \begin{document}
 

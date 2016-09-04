@@ -2,7 +2,9 @@ Synthesizing an equivalent binary associative operator and its identity from a H
 
 \subsection{Deducing Associative Binary Operators}
 
-To deduce the equivalent binary associative operator from a Halide \emph{update} definition, we perform a wild-card pattern matching of the \emph{update} over a table of precomputed binary associative reduction operator patterns. To generate the table, we synthesize a list of expression trees (involving min, max, add, sub, etc.) for 1-element, 2-element tuple, etc., and use Z3 theorem prover~\cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the expression tree and to compute its identity. \\
+We asked \textsc{Sketch} and \textsc{Rosette} to synthesize the equivalent binary associative reduction operator (including its identity) for a Halide multiply reduction of 32-bit integer complex number. Unfortunately, they are too slow to be practical for runtime deduction during compilation. \textsc{Sketch} did not terminate, while \textsc{Rosette} finished in about 1 hour. For both cases, we limit the search space by giving \textsc{Sketch} and \textsc{Rosette} partially completed binary associative reduction operator of the form \code{op(op(x??, y??), op(x??, y??)))}, where \code{op} is the associative binary operator we are trying to infer and \code{??} indicates choices of tuple elements (i.e. 0 or 1 for the real or imaginary part of the complex number respectively) . 
+
+In our final design, to deduce the equivalent binary associative operator from a Halide \emph{update} definition, we perform a wild-card pattern matching of the \emph{update} over a table of precomputed binary associative reduction operator patterns. To generate the table, we synthesize a list of expression trees (involving min, max, add, sub, etc.) for 1-element, 2-element tuple, etc., and use Z3 theorem prover~\cite{DeMoura:2008:ZES:1792734.1792766} to prove the associativity of the expression tree and to compute its identity. \\
 
 \subsection{Subgraph Decomposition}
 
