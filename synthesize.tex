@@ -65,7 +65,7 @@ f() = {min(f()[0], in(r.x, r.y)),
 
 There are no dependencies between the first two components and the last two. This is now a composition of two one-dimensional argmin operations. Two-dimensional argmin is therefore not an elementary associative reduction, but is rather the composition of two one-dimensional argmin reductions.
 
-Consider the directed graph of dependencies between tuple components. If we repeatedly duplicate tuple components (vertices) to break dependencies in this way, in the limit, we partition the graph into the set of subgraphs reachable from each vertex. If each such subgraph is an associative reduction, then the original reduction is a associative. See Figure~\ref{fig:subgraph} for several examples.
+Consider the directed graph of dependencies between tuple components. If we repeatedly duplicate tuple components (vertices) to break dependencies in this way, in the limit, we partition the graph into the set of subgraphs reachable from each vertex. If each such subgraph is an associative reduction, then the original reduction is associative. See Figure~\ref{fig:subgraph} for several examples.
 
 %The general way to apply these two rules to decompose an arbitrary reduction into its components is to construct the directed graph $G$ of dependencies between tuple components. There is a vertex $N_i$ for each tuple component $i$, and there is an edge from $N_i$ to $N_j$ whenever the value of tuple component $i$ depends on tuple component $j$. The two rules above can then be stated as:
 
