@@ -26,7 +26,7 @@ parallel for y in range(input.height()):
           kernel[rx][ry]*input[x+rx-1][y+ry-1] 
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Histogram of an image is hard to parallelize since its update stage does not involve \code{RVar}s.}, label={lst:histogram_loopness}]
+\begin{lstlisting}[caption={Histogram of an image is hard to parallelize since its update stage does not involve \code{RVar}s.\textbf{SK: it doesn't involve Rvars?}}, label={lst:histogram_loopness}]
 // Serial version
 // First stage
 for x in range(256):
