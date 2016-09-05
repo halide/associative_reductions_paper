@@ -2,15 +2,18 @@
 
 Serial reductions in Halide (e.g.\ summation over an array, histogram, etc.) are implemented using \code{RVar}s or \code{RDom}s. An \code{RVar} is an implicit serial loop, and an \code{RDom} is an ordered list of \code{RVar}s specifying a serial loop nest. Since \code{RVar}s are not trivially parallelizable or vectorizable, a programmer must manually \emph{factor} a reduction into an \emph{intermediate} function that performs reduction over distinct slices of the domain, and a \emph{merge} function that combines those partial results.
 
-This manual manipulation is tedious and error-prone, especially when the reduction domain is non-rectangular (see Listing~\ref{lst:circular_max_1}). To further complicate matters, it is hard to infer what binary reduction operator is equivalent to a Halide update definition, and even then, many binary operators are not obviously associative (e.g. $x + y + 7xy$ is in fact associative). We will defer these issues to Section~\ref{synthesize}, and for now assume that given a Halide update definition we can deduce the equivalent associative binary operator and its identity. Note that we do not require the binary operators to be commutative.
+This manual manipulation is tedious and error-prone, especially when the reduction domain is non-rectangular, as shown in Section~\ref{sec:rfactor_transformation}. To further complicate matters, it is hard to infer what binary reduction operator is equivalent to a Halide update definition, and even then, many binary operators are not obviously associative (e.g. $x + y + 7xy$ is in fact associative). We will defer these issues to Section~\ref{synthesize}, and for now assume that given a Halide update definition we can deduce the equivalent associative binary operator and its identity. Note that we do not require the binary operators to be commutative.
 
 \subsection{The \code{rfactor} Transformation}
+\label{sec:rfactor_transformation}
 
 To remove the burden of \emph{factoring} a reduction from the programmer, we introduce a new scheduling primitive called \code{rfactor}. This splits a reduction into pair of reductions, which we will call the \emph{intermediate} stage and the \emph{merge} stage. \code{rfactor} takes as input a list of \code{<RVar, Var>} pairs. \code{RVar}s not in the list are removed from the \emph{merge} stage and lifted to the \emph{intermediate} stage. The remaining \code{RVar}s become \code{Var}s in the \emph{intermediate} stage, which allows them to be parallelized or vectorized. See Figure~\ref{fig:rfactor} for a simple example. The listings below demonstrate more complex usage.
 
  Note that we limit the scope of \code{rfactor} to reductions where the \emph{intermediate} and \emph{merge} stages have the same equivalent binary associative reduction operator. For instance, if the equivalent binary associative reduction operator of the \emph{intermediate} stage is \code{min(x, y)}, then that of the \emph{merge} stage must also be \code{min(x, y)}. Another restriction is that the binary associative operator must have an identity, as it is used to initialize the \emph{intermediate} stage. Not all associative binary operators have identities (e.g. $2xy$, where $x, y \in \mathds{Z}$).
 
-\begin{lstlisting}[caption={Computing the histogram of a two-dimensional image in Halide. The RDom defines an implicit loop nest over \code{r.x} and \code{r.y}. Halide will not permit either of these loops to be parallelized, as that would introduce a race condition on the += operation.}, label={lst:histogram_rfactor_1}]
+ As a first example, consider computing the histogram of a two-dimensional image in Halide. Th \code{RDom} defines an implicit loop nest over \code{r.x} and \code{r.y}. Halide will not permit either of these loops to be parallelized, as that would introduce a race condition on the \code{+=} operation.
+
+\begin{lstlisting}
 // Algorithm
 Func hist;
 Var i;
@@ -22,7 +25,9 @@ hist(input(r.x, r.y)) += 1;
 hist.compute_root();
 \end{lstlisting}
 
-\begin{lstlisting}[caption={A manually-factored histogram. The programmer has introduced an intermediate function that computes the histogram over each row of the input. This intermediate is data-parallel over y, and so it can be parallelized. The original function \code{hist} now merely sums these partial histograms. It is data-parallel over histogram buckets, and the programmer has vectorized it.}, label={lst:histogram_rfactor_2}]
+Without the \code{rfactor} transformation, a user would need to rewrite the algorithm to manually factor the histogram:
+
+\begin{lstlisting}
 // Algorithm
 Func intm;
 Var i, y;
@@ -40,7 +45,11 @@ intm.compute_root().update().parallel(y);
 hist.compute_root().update().vectorize(i, 4);
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Using \code{rfactor}, the programmer can produce the same machine code as in \ref{lst:histogram_rfactor_2}, using the simpler algorithm in \ref{lst:histogram_rfactor_1}. While the schedule is more complex, recall that it is only the five lines of algorithm that determines correctness. The programmer was able to transform the code to exploit parallelism without risking introducing a correctness bug.}, label={lst:histogram_rfactor_3}]
+Above, the programmer introduced an intermediate function \code{intm} that computes the histogram over each row of the input. This intermediate function is data-parallel over \code{y}, and so it can be parallelized. The original function \code{hist} now merely sums these partial histograms; since \code{hist} is data-parallel over histogram buckets, the programmer has vectorized it.
+
+Using \code{rfactor}, the programmer can produce the same machine code as the manually-transformed version, using the simpler algorithm in the original \code{hist} implementation. While the schedule is more complex, recall that it is only the five lines of the algorithm that determine correctness. The programmer can freely transform the code to exploit parallelism without risking introducing a correctness bug:
+
+\begin{lstlisting}
 // Algorithm
 Func hist;
 Var i;
@@ -56,7 +65,9 @@ intm.compute_root().update().parallel(y);
 hist.update().vectorize(i, 4);
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Computing the maximum over a circular domain. Reduction domains need not be rectangular. In this case we use \code{RDom::where} to restrict it to the points that lie within a circle of radius 10.}, label={lst:circular_max_1}]
+Reduction domains need not be rectangular. Consider the function below, which computes the maximum over a circular domain using \code{RDom::where} to restrict the reduction domain to the points that lie within a circle of radius 10.
+
+\begin{lstlisting}
 // Algorithm
 Func max_val;
 max_val() = 0;
@@ -68,7 +79,10 @@ max_val() = max(max_val(), input(r.x, r.y));
 max_val.compute_root();
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Manually factoring this reduction requires also manipulating the predicate associated with the RDom. The identity for \code{max} is the minimum value of the type in question.}, label={lst:circular_max_2}]
+In this case, manually factoring the reduction requires also manipulating the predicate associated with the \code{RDom}. The identity for \code{max} is the minimum value of the type in question,
+so the newly-factored algorithm becomes:
+
+\begin{lstlisting}
 // Algorithm
 Func intm;
 Var y;
@@ -88,7 +102,9 @@ intm.compute_root();
 max_val.compute_root();
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Using \code{rfactor} in the schedule can produce the same machine code from the simpler form of the algorithm.}]
+This is especially tedious and error-prone.  Using \code{rfactor} in the schedule, the programmer can produce the same machine code from the simpler form of the algorithm without needing to reason about the predicate.
+
+\begin{lstlisting}
 // Algorithm
 Func max_val;
 max_val() = 0;
