@@ -30,7 +30,21 @@ In the table of expressions that this produces, $x$ represents the partial resul
 
 This would match against the pattern $x + y$, where $x$ matches \code{f(in(r) \% 2)}, and $y$ matches \code{pow(in(r), 2)}.
 
-We terminate our enumeration at trees with TODO leaves and TODO tuple components. This takes TODO hours and generates TODO elementary operators to match against. The practical limit on this is the number of operators in the resulting table, rather than the time taken to generate them. As the table size grows, matching takes more time, and the table of operators itself takes longer to compile and bloats the binary size of the Halide compiler. At the same time, the operators become more and more esoteric and improbable to encounter. There are however meaningful operators that we never reach because we terminate our enumeration. For example, we never generate fully unrolled 3x3 matrix multiplication. It is an elementary associative operator in 9 tuple elements, where every expression tree has 6 leaf nodes.
+We terminate our enumeration at trees with TODO leaves and TODO tuple components. We generate separate tables for each of Halide's scalar types, as some operations are associative in one type by not another. This takes TODO hours and generates TODO elementary operators to match against. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}. The practical limit on this is the number of operators in the resulting table, rather than the time taken to generate them. As the table size grows, matching takes more time, and the table of operators itself takes longer to compile and bloats the binary size of the Halide compiler. At the same time, the operators become more and more esoteric and improbable to encounter. There are however meaningful operators that we never reach because we terminate our enumeration. For example, we never generate fully unrolled 3x3 matrix multiplication. It is an elementary associative operator in 9 tuple elements, where every expression tree has 6 leaf nodes.
+
+\begin{lstlisting}[caption={The first 10 elementary associative operators for 32-bit signed integers}, label={lst:top10}]
+x + y
+x * y
+min(x, y) 
+max(x, y) 
+max(min(x, k), y) 
+min(max(x, k), y) 
+max(min(y, k), x) 
+min(max(y, k), x) 
+max(min(k - x, y), x) 
+min(max(k - x, y), x) 
+\end{lstlisting}
+
 
 \subsection{Subgraph Decomposition}
 \label{subsec:decomposition}
@@ -55,7 +69,7 @@ f() = {min(f()[0], in(r.x, r.y)),
 
 All three tuple components depend on \code{f()[0]}, so we can't decompose this into independent reductions immediately. Let's duplicate the first tuple component to break the dependency:
 
-\begin{lstlisting}[caption={Two-dimensional argmin with the value redundantly computed}]
+\begin{lstlisting}[caption={Two-dimensional argmin with the minimum value redundantly computed as \code{f()[0]} and \code{f()[2]}}]
 f() = {min(f()[0], in(r.x, r.y)),
        select(f()[0] < in(r.x, r.y), f()[1], r.x),
        min(f()[2], in(r.x, r.y)),
@@ -78,8 +92,8 @@ Consider the directed graph of dependencies between tuple components. If we repe
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{subgraphs}
-\caption{Dependency graphs (in blue) of various Halide $update$ definitions and their subgraph decomposition (each subgraph is marked by a red box).}
+\includegraphics[width=3.2in]{subgraphs}
+\caption{Dependency graphs of various multi-valued Halide \emph{update} definitions. Their subgraph decompositions are shown in red. We search for each subgraph in our precomputed table of elementary operators, and then recompose the results.}
 \label{fig:subgraphs}
 \end{figure}
 
@@ -88,7 +102,7 @@ After finding the associative operator equivalent to each subgraph separately, w
 
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{system}
-\caption{To generate the precomputed associative operator table, we synthesize expression tress and use Z3 prover to verify the associativity of an expression tree and to compute its identity. \code{rfactor} takes in Halide \emph{update} definition and the precomputed table to generate the factorized \emph{update} definition. If the directed dependency graph of the \emph{update} is decomposable, \emph{rfactor} reduces the problem into sub-problems which are solved separately and merges those results.}
+\includegraphics[width=3.2in]{system}
+\caption{To factor a reduction written as a Halide update definition, we must first synthesize the equivalent associative binary operator. We generate a large table of elementary associative operators offline by enumerating all non-trivial expression trees and filtering out the ones that are not associative operators. At compile-time, we then decompose the given update definition into simpler definitions and match each against the table. Combining the results gives us the equivalent associative binary operator, which we can use to generate the factored form of the reduction}
 \label{fig:system}
 \end{figure}
