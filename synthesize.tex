@@ -93,7 +93,7 @@ Consider the directed graph of dependencies between tuple components. If we repe
 \begin{figure}
 \centering
 \includegraphics[width=3.2in]{subgraphs}
-\caption{Dependency graphs of various multi-valued Halide \emph{update} definitions. Their subgraph decompositions are shown in red. We search for each subgraph in our precomputed table of elementary operators, and then recompose the results.}
+\caption{Dependency graphs of various multi-valued Halide \emph{update} definitions. Their subgraph decompositions are shown in red. To find the associative operator equivalent to a complex Halide update definition, we first decompose it into subgraphs, then search for each subgraph in our precomputed table of elementary operators, then recompose the results into a single multi-valued associative operator.}
 \label{fig:subgraphs}
 \end{figure}
 
