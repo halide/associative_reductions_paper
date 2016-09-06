@@ -14,25 +14,34 @@ In this work, we find equivalent replacements for a Halide reduction through a c
 
 \begin{lstlisting}[caption={Convolution blur kernel is easily parallelizable across \code{Var} $x$ adn $y$.}, label={lst:blur_loopness}]
 // First stage
-for y in range(input.height()):
-  for x in range(input.width()):
-    blur[x][y] = 0
+for (int y = 0; y < input.height(); ++y) {
+  for (int x = 0; x < input.width(); ++x) {
+    blur[x][y] = 0;
+  }
+}
 // Update stage
-parallel for y in range(input.height()):
-  parallel for x in range(input.width()):
-    for ry in range(kernel.height()):
-      for rx in range(kernel.width()):    
+parallel for (int y = 0; y < input.height(); ++y) {
+  parallel for (int x = 0; x < input.width(); ++x) {
+    for (int ry = 0; ry < kernel.height(); ++ry) {
+      for (int rx = 0; rx < kernel.width(); ++rx) {
         blur[x][y] += 
-          kernel[rx][ry]*input[x+rx-1][y+ry-1] 
+          kernel[rx][ry]*input[x+rx-1][y+ry-1];
+      }
+    }
+  }
+} 
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Histogram of an image is hard to parallelize since its update stage does not involve \code{RVar}s.\textbf{SK: it doesn't involve Rvars?}}, label={lst:histogram_loopness}]
+\begin{lstlisting}[caption={Histogram of an image is hard to parallelize since its update stage does not involve \code{Var}s.}, label={lst:histogram_loopness}]
 // Serial version
 // First stage
-for x in range(256):
-  hist[x] = 0
+for (int x = 0; x < 256; ++x) {
+  hist[x] = 0;
+}
 // Update stage
-for ry in range(input.height()):
-  for rx in range(input.width()):
-    hist[clamp(int(input[rx][ry]), 0, 255)] += 1
+for (ry = 0; ry < input.height(); ++ry) {
+  for (rx = 0; rx < input.width(); ++rx) {
+    hist[clamp(int(input[rx][ry]), 0, 255)] += 1;
+  }
+}
 \end{lstlisting}

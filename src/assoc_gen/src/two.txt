@@ -1,0 +1,1280 @@
+******************************************************************
+Leaves (0): 2
+{ (x0 + y0), (x1 + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (x1 - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (x0 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (x0 + y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (x0 + y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (x0 + y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (x0 + y0), (min(max(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (x0 + y0), (max(min(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (x0 + y0), (min(max(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (x0 + y0), (max(min(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (x0 + y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (x0 + y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (x0 + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (x0 + y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (x0 + y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (x0 + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (x0 + y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (x0 + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (x0 + y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (x0 + y0), (max(min(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (max(min(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y0), (min(max(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (x0*y0), (x1*y0) } -> Right-associativity with identity: { 1, 0 }
+{ (x0*y0), (x0*y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (x1 + y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (x1*y1) } -> Left-associativity with identity: { 1, 1 }
+{ (x0*y0), min(x1, y1) } -> Left-associativity with identity: { 1, 2147483647 }
+{ (x0*y0), max(x1, y1) } -> Left-associativity with identity: { 1, -2147483648 }
+{ (x0*y0), ((x0*y1)*x0) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 1, 0 }
+{ (x0*y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 1, 0 }
+{ (x0*y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 1, 0 }
+{ (x0*y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 1, 0 }
+{ (x0*y0), ((x0*x0)*y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), ((x1*y0) + y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), ((x0*y1)*(x0*x0)) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (((x0*y1)*x0)*x0) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (((x0*x0)*y1)*x0) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (((x0*y0)*x0)*y0) } -> Unknown-associativity
+{ (x0*y0), (max(min(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (x0*y0), (min(max(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (x0*y0), (max(min(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (x0*y0), (min(max(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (x0*y0), (max(min(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (x0*y0), (min(max(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (x0*y0), (max(min(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 574627072 }
+{ (x0*y0), (min(max(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, -805273600 }
+{ (x0*y0), (((x0*x0)*y0)*y0) } -> Unknown-associativity
+{ (x0*y0), ((x0*x0)*(y0*y0)) } -> Unknown-associativity
+{ (x0*y0), ((x1*y0) + (y1 + y0)) } -> Left-associativity with identity: { 1, -1 }
+{ (x0*y0), ((x0*y0) + (y1 - y0)) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), ((x1*y0) + (y1 - y0)) } -> Left-associativity with identity: { 1, 1 }
+{ (x0*y0), (((x0*x0)*x0)*y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), ((x0*x0)*(x0*y1)) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (max(min(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (x0*y0), (min(max(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (x0*y0), (max(min(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (x0*y0), (min(max(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (x0*y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (x0*y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 1, 2147483647 }
+{ (x0*y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 1, -2147483648 }
+{ (x0*y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (x0*y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 1, 2147483647 }
+{ (x0*y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 1, -2147483648 }
+{ (x0*y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (x0*y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 1, -2147483648 }
+{ (x0*y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 1, 0 }
+{ (x0*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (x0*y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 1, 2147483647 }
+{ (x0*y0), ((x1*y0) + (y0 + y1)) } -> Left-associativity with identity: { 1, -1 }
+{ min(x0, y0), min(x1, y0) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), min(x0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), (x1 + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), (x1*y1) } -> Left-associativity with identity: { 2147483647, 1 }
+{ min(x0, y0), min(x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(x0, y0), max(x1, y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(x0, y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), max(min(x1, y0), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(x0, y0), min(min(max(x0, y0), x0), y0) } -> Unknown-associativity
+{ min(x0, y0), min(max(min(x0, y1), x0), y0) } -> Unknown-associativity
+{ min(x0, y0), min(min(max(x0, y1), x0), y0) } -> Unknown-associativity
+{ min(x0, y0), min(min(max(x1, y0), x1), y0) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), min(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 1105002494 }
+{ min(x0, y0), min(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 1105002494 }
+{ min(x0, y0), (min(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), max(min(x0, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(x0, y0), max(min(x1, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(x0, y0), max(min(x0, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(x0, y0), max(min(x1, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(x0, y0), min(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), min(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), min(min(max(x0, y1), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(x0, y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(x0, y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(x0, y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(x0, y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(x0, y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(x0, y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(x0, y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(x0, y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(x0, y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(x0, y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(x0, y0), max(min(x0, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(x0, y0), max(min(x1, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(x0, y0), max(min(x0, y1), max(y0, y1)) } -> Unknown-associativity
+{ min(x0, y0), max(min(x1, y1), max(y0, y1)) } -> Unknown-associativity
+{ max(x0, y0), max(x1, y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), max(x0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), (x1 + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), (x1*y1) } -> Left-associativity with identity: { -2147483648, 1 }
+{ max(x0, y0), min(x1, y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(x0, y0), max(x1, y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(x0, y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), min(max(x1, y0), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(x0, y0), max(max(min(x0, y0), x0), y0) } -> Unknown-associativity
+{ max(x0, y0), max(max(min(x0, y1), x0), y0) } -> Unknown-associativity
+{ max(x0, y0), max(min(max(x0, y1), x0), y0) } -> Unknown-associativity
+{ max(x0, y0), max(max(min(x1, y0), x1), y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), max(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), max(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, 1106326132 }
+{ max(x0, y0), (max(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), min(max(x0, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(x0, y0), min(max(x1, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(x0, y0), min(max(x0, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(x0, y0), min(max(x1, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(x0, y0), max(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), max(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), max(max(min(x0, y1), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(x0, y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(x0, y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(x0, y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(x0, y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(x0, y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(x0, y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(x0, y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(x0, y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(x0, y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(x0, y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(x0, y0), min(max(x0, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(x0, y0), min(max(x1, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(x0, y0), min(max(x0, y1), min(y0, y1)) } -> Unknown-associativity
+{ max(x0, y0), min(max(x1, y1), min(y0, y1)) } -> Unknown-associativity
+{ (x1 + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x1 + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x1 + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x1 + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x1 + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (x1*y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (x1*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (x1*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (x1*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (x1*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ min(x1, y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(x1, y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(x1, y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(x1, y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ max(x1, y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(x1, y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(x1, y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(x1, y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (x0 + y1), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y1), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y1), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y1), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 + y1), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 - y1), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 - y1), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 - y1), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 - y1), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0 - y1), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (x0*y1), (x1*y1) } -> Right-associativity with identity: { 0, 1 }
+{ (x0*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { -938735600, 1 }
+{ (x0*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { -2080374784, 1 }
+{ (x0*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (x0*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(x0, y1), min(x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ min(x0, y1), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 1105002494, 2147483647 }
+{ min(x0, y1), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 1105002494, 2147483647 }
+{ min(x0, y1), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ max(x0, y1), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(x0, y1), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(x0, y1), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 1106326132, -2147483648 }
+{ max(x0, y1), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ (x1 + y1), (max(min(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (x1 + y1), (min(max(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (x1 + y1), (max(min(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (x1 + y1), (min(max(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (x1*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (x1*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (x1*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ (x1*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ min(x1, y1), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(x1, y1), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(x1, y1), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(x1, y1), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(x1, y1), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(x1, y1), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+
+******************************************************************
+Leaves (0): 3
+{ max(min(x0, y0), x0), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y0), x0), (x1*y1) } -> Right-associativity with identity: { 0, 1 }
+{ max(min(x0, y0), x0), min(x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ max(min(x0, y0), x0), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(min(x0, y0), x0), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y0), x0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ max(min(x0, y0), x0), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 735512318, 2147483647 }
+{ max(min(x0, y0), x0), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ max(min(x0, y0), x0), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y0), x0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 268436488, 1 }
+{ max(min(x0, y0), x0), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 44687624, 2147483647 }
+{ max(min(x0, y0), x0), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 442207778, -2147483648 }
+{ max(min(x0, y0), x0), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y0), x0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ max(min(x0, y0), x0), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(min(x0, y0), x0), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y0), x0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ max(min(x0, y0), x0), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ min(max(x0, y0), x0), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y0), x0), (x1*y1) } -> Right-associativity with identity: { 0, 1 }
+{ min(max(x0, y0), x0), min(x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ min(max(x0, y0), x0), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ min(max(x0, y0), x0), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y0), x0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(max(x0, y0), x0), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { -33562112, 2147483647 }
+{ min(max(x0, y0), x0), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y0), x0), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y0), x0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 251658240, 1 }
+{ min(max(x0, y0), x0), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 44687624, 2147483647 }
+{ min(max(x0, y0), x0), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 442207778, -2147483648 }
+{ min(max(x0, y0), x0), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y0), x0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(max(x0, y0), x0), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ min(max(x0, y0), x0), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y0), x0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(max(x0, y0), x0), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ max(min(x0, y1), x0), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y1), x0), (x1*y1) } -> Right-associativity with identity: { 0, 1 }
+{ max(min(x0, y1), x0), min(x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ max(min(x0, y1), x0), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(min(x0, y1), x0), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y1), x0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ max(min(x0, y1), x0), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { -33562112, 2147483647 }
+{ max(min(x0, y1), x0), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ max(min(x0, y1), x0), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y1), x0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 251658240, 1 }
+{ max(min(x0, y1), x0), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 44687624, 2147483647 }
+{ max(min(x0, y1), x0), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 442207778, -2147483648 }
+{ max(min(x0, y1), x0), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y1), x0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ max(min(x0, y1), x0), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(min(x0, y1), x0), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ max(min(x0, y1), x0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ max(min(x0, y1), x0), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ min(max(x0, y1), x0), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y1), x0), (x1*y1) } -> Right-associativity with identity: { 0, 1 }
+{ min(max(x0, y1), x0), min(x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ min(max(x0, y1), x0), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ min(max(x0, y1), x0), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y1), x0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(max(x0, y1), x0), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { -1812234241, 2147483647 }
+{ min(max(x0, y1), x0), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y1), x0), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y1), x0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 251658240, 1 }
+{ min(max(x0, y1), x0), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 44687624, 2147483647 }
+{ min(max(x0, y1), x0), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 442207778, -2147483648 }
+{ min(max(x0, y1), x0), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y1), x0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(max(x0, y1), x0), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ min(max(x0, y1), x0), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ min(max(x0, y1), x0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(max(x0, y1), x0), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ ((x1*y0)*x1), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ ((x1*y0)*x1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y0)*x1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y0)*x1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y0)*x1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ ((x1*x1)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x0*y1) + y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ ((x0*y1) + y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x0*y1) + y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x0*y1) + y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x0*y1) + y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ max(min(x0, y1), y0), min(x1, y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(x0, y1), y0), max(min(x1, y1), y0) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(x0, y1), y0), min(max(x1, y0), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(x0, y1), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(x0, y1), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(x0, y1), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ min(max(x0, y1), y0), max(x1, y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y1), y0), min(max(x1, y1), y0) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y1), y0), max(min(x1, y0), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y1), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y1), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y1), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ max(min(x0, y0), y1), max(min(x1, y0), y1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(x0, y0), y1), min(max(x1, y0), y1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+
+******************************************************************
+Leaves (0): 4
+{ ((x1*y0)*(x1*x1)), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ ((x1*y0)*(x1*x1)), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y0)*(x1*x1)), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y0)*(x1*x1)), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y0)*(x1*x1)), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*y0)*x1)*x1), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (((x1*y0)*x1)*x1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*y0)*x1)*x1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*y0)*x1)*x1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*y0)*x1)*x1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*x1)*y0)*x1), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (((x1*x1)*y0)*x1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*x1)*y0)*x1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*x1)*y0)*x1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*x1)*y0)*x1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y0), x0) + y0), (x0 + y0) } -> Unknown-associativity
+{ (max(min(x0, y0), x0) + y0), (x1 + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (x1 - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (x0 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (max(min(x0, y0), x0) + y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y0), x0) + y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y0), x0) + y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (max(min(x0, y0), x0) + y0), (max(min(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (max(min(x0, y0), x0) + y0), (min(max(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y0), x0) + y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y0), x0) + y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y0), x0) + y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y0), x0) + y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y0), x0) + y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y0), x0) + y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (max(min(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y0), (min(max(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0)*y0), (x0*y0) } -> UNKNOWN associative
+{ (max(min(x0, y0), x0)*y0), (x1*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (x0*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (x1 + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), min(x1, y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y0), x0)*y0), max(x1, y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y0), x0)*y0), ((x0*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), max(min(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), min(max(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), max(min(x1, y1), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), min(max(x1, y1), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), ((x0*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), ((x1*y0) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), ((x0*y1)*(x0*x0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (((x0*y1)*x0)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (((x0*x0)*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (((x0*y0)*x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y0), x0)*y0), (min(max(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y0), x0)*y0), (max(min(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y0), x0)*y0), (min(max(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y0), x0)*y0), (max(min(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (max(min(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), (((x0*x0)*y0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y0), x0)*y0), ((x0*x0)*(y0*y0)) } -> UNKNOWN associative
+{ (max(min(x0, y0), x0)*y0), ((x1*y0) + (y1 + y0)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ (max(min(x0, y0), x0)*y0), ((x0*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), ((x1*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), (((x0*x0)*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), ((x0*x0)*(x0*y1)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (max(min(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (max(min(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (max(min(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), min(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y0), x0)*y0), max(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), min(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y0), x0)*y0), max(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y0), x0)*y0), (max(min(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), max(max(min(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y0), x0)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y0), x0)*y0), min(min(max(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y0), x0)*y0), ((x1*y0) + (y0 + y1)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ max(max(min(x0, y0), x0), y0), max(x0, y0) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), max(x1, y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), max(x0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), (x1 + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), (x1*y1) } -> Left-associativity with identity: { -2147483648, 1 }
+{ max(max(min(x0, y0), x0), y0), min(x1, y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y0), x0), y0), max(x1, y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y0), x0), y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), min(max(x1, y0), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y0), x0), y0), max(max(min(x0, y1), x0), y0) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), max(min(max(x0, y1), x0), y0) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), max(max(min(x1, y0), x1), y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), max(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y0), x0), y0), max(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, 1783238182 }
+{ max(max(min(x0, y0), x0), y0), (max(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), min(max(x0, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), min(max(x1, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), min(max(x0, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), min(max(x1, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), max(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), max(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), max(max(min(x0, y1), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y0), x0), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y0), x0), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y0), x0), y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y0), x0), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y0), x0), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y0), x0), y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y0), x0), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y0), x0), y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y0), x0), y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y0), x0), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y0), x0), y0), min(max(x0, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), min(max(x1, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), min(max(x0, y1), min(y0, y1)) } -> Unknown-associativity
+{ max(max(min(x0, y0), x0), y0), min(max(x1, y1), min(y0, y1)) } -> Unknown-associativity
+{ (min(max(x0, y0), x0) + y0), (x0 + y0) } -> Unknown-associativity
+{ (min(max(x0, y0), x0) + y0), (x1 + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (x1 - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (x0 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (min(max(x0, y0), x0) + y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y0), x0) + y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y0), x0) + y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (min(max(x0, y0), x0) + y0), (max(min(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (min(max(x0, y0), x0) + y0), (min(max(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y0), x0) + y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y0), x0) + y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y0), x0) + y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y0), x0) + y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y0), x0) + y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y0), x0) + y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (max(min(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y0), (min(max(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0)*y0), (x0*y0) } -> UNKNOWN associative
+{ (min(max(x0, y0), x0)*y0), (x1*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (x0*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (x1 + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y0), x0)*y0), min(x1, y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y0), x0)*y0), max(x1, y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y0), x0)*y0), ((x0*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), max(min(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), min(max(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), max(min(x1, y1), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), min(max(x1, y1), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), ((x0*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), ((x1*y0) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), ((x0*y1)*(x0*x0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (((x0*y1)*x0)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (((x0*x0)*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (((x0*y0)*x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y0), x0)*y0), (max(min(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y0), x0)*y0), (max(min(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y0), x0)*y0), (min(max(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y0), x0)*y0), (max(min(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (max(min(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 2 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, -2139084794 }
+{ (min(max(x0, y0), x0)*y0), (((x0*x0)*y0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y0), x0)*y0), ((x0*x0)*(y0*y0)) } -> UNKNOWN associative
+{ (min(max(x0, y0), x0)*y0), ((x1*y0) + (y1 + y0)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ (min(max(x0, y0), x0)*y0), ((x0*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), ((x1*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y0), x0)*y0), (((x0*x0)*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), ((x0*x0)*(x0*y1)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (max(min(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (max(min(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (max(min(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y0), x0)*y0), min(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y0), x0)*y0), max(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y0), x0)*y0), min(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y0), x0)*y0), max(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y0), x0)*y0), (max(min(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y0), x0)*y0), max(max(min(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y0), x0)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y0), x0)*y0), min(min(max(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y0), x0)*y0), ((x1*y0) + (y0 + y1)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ min(min(max(x0, y0), x0), y0), min(x0, y0) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), min(x1, y0) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), min(x0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), (x1 + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), (x1*y1) } -> Left-associativity with identity: { 2147483647, 1 }
+{ min(min(max(x0, y0), x0), y0), min(x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y0), x0), y0), max(x1, y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y0), x0), y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), max(min(x1, y0), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y0), x0), y0), min(max(min(x0, y1), x0), y0) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), min(min(max(x0, y1), x0), y0) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), min(min(max(x1, y0), x1), y0) } -> Right-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), min(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 1174743096 }
+{ min(min(max(x0, y0), x0), y0), min(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 1845328583 }
+{ min(min(max(x0, y0), x0), y0), (min(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), max(min(x0, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), max(min(x1, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), max(min(x0, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), max(min(x1, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), min(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), min(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), min(min(max(x0, y1), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y0), x0), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y0), x0), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y0), x0), y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y0), x0), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y0), x0), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y0), x0), y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y0), x0), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y0), x0), y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y0), x0), y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y0), x0), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y0), x0), y0), max(min(x0, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), max(min(x1, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), max(min(x0, y1), max(y0, y1)) } -> Unknown-associativity
+{ min(min(max(x0, y0), x0), y0), max(min(x1, y1), max(y0, y1)) } -> Unknown-associativity
+{ (max(min(x0, y1), x0) + y0), (x0 + y0) } -> Unknown-associativity
+{ (max(min(x0, y1), x0) + y0), (x1 + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (x1 - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (x0 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (max(min(x0, y1), x0) + y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y1), x0) + y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y1), x0) + y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (max(min(x0, y1), x0) + y0), (min(max(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (max(min(x0, y1), x0) + y0), (min(max(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y1), x0) + y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y1), x0) + y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y1), x0) + y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y1), x0) + y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y1), x0) + y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x0, y1), x0) + y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (max(min(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y0), (min(max(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0)*y0), (x0*y0) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), (x1*y0) } -> UNKNOWN associative with right-identity: { 1, 1610629120 }
+{ (max(min(x0, y1), x0)*y0), (x0*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (x1 + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y1), x0)*y0), min(x1, y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y1), x0)*y0), max(x1, y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y1), x0)*y0), ((x0*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), max(min(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, -2109075456 }
+{ (max(min(x0, y1), x0)*y0), min(max(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, 4194324 }
+{ (max(min(x0, y1), x0)*y0), max(min(x1, y1), x1) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), min(max(x1, y1), x1) } -> UNKNOWN associative with right-identity: { 1, 69207043 }
+{ (max(min(x0, y1), x0)*y0), ((x0*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), ((x1*y0) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), ((x0*y1)*(x0*x0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (((x0*y1)*x0)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (((x0*x0)*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (((x0*y0)*x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), (max(min(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), (min(max(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), (min(max(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), (max(min(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 134283264 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 1413570560 }
+{ (max(min(x0, y1), x0)*y0), (max(min(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (((x0*x0)*y0)*y0) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), ((x0*x0)*(y0*y0)) } -> UNKNOWN associative
+{ (max(min(x0, y1), x0)*y0), ((x1*y0) + (y1 + y0)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ (max(min(x0, y1), x0)*y0), ((x0*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), ((x1*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y1), x0)*y0), (((x0*x0)*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), ((x0*x0)*(x0*y1)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (max(min(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (max(min(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (max(min(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y1), x0)*y0), min(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y1), x0)*y0), max(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y1), x0)*y0), min(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y1), x0)*y0), max(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y1), x0)*y0), (max(min(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y1), x0)*y0), max(max(min(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (max(min(x0, y1), x0)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (max(min(x0, y1), x0)*y0), min(min(max(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (max(min(x0, y1), x0)*y0), ((x1*y0) + (y0 + y1)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ min(max(min(x0, y1), x0), y0), min(x0, y0) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), min(x1, y0) } -> Right-associativity with identity: { 2147483647, 1425532662 }
+{ min(max(min(x0, y1), x0), y0), min(x0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), (x1 + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), (x1*y1) } -> Left-associativity with identity: { 2147483647, 1 }
+{ min(max(min(x0, y1), x0), y0), min(x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(max(min(x0, y1), x0), y0), max(x1, y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(min(x0, y1), x0), y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 1444258952 }
+{ min(max(min(x0, y1), x0), y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 1444258952 }
+{ min(max(min(x0, y1), x0), y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 1444258952 }
+{ min(max(min(x0, y1), x0), y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 1444258952 }
+{ min(max(min(x0, y1), x0), y0), max(min(x1, y0), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(min(x0, y1), x0), y0), min(min(max(x0, y0), x0), y0) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), min(min(max(x0, y1), x0), y0) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), min(min(max(x1, y0), x1), y0) } -> Right-associativity with identity: { 2147483647, 1425532662 }
+{ min(max(min(x0, y1), x0), y0), min(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 1944639110 }
+{ min(max(min(x0, y1), x0), y0), min(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 352159282 }
+{ min(max(min(x0, y1), x0), y0), (min(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), max(min(x0, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), max(min(x1, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), max(min(x0, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), max(min(x1, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), min(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), min(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), min(min(max(x0, y1), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(max(min(x0, y1), x0), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(max(min(x0, y1), x0), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(min(x0, y1), x0), y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(max(min(x0, y1), x0), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(max(min(x0, y1), x0), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(min(x0, y1), x0), y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(max(min(x0, y1), x0), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(max(min(x0, y1), x0), y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(max(min(x0, y1), x0), y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(max(min(x0, y1), x0), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(max(min(x0, y1), x0), y0), max(min(x0, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), max(min(x1, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), max(min(x0, y1), max(y0, y1)) } -> Unknown-associativity
+{ min(max(min(x0, y1), x0), y0), max(min(x1, y1), max(y0, y1)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), max(x0, y0) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), max(x1, y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), max(x0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), (x1 + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), (x1*y1) } -> Left-associativity with identity: { -2147483648, 1 }
+{ max(max(min(x0, y1), x0), y0), min(x1, y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), max(x1, y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y1), x0), y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), min(max(x1, y0), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), max(max(min(x0, y0), x0), y0) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), max(min(max(x0, y1), x0), y0) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), max(max(min(x1, y0), x1), y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), max(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, -2145386496 }
+{ max(max(min(x0, y1), x0), y0), max(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, -1854881406 }
+{ max(max(min(x0, y1), x0), y0), (max(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), min(max(x0, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), min(max(x1, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), min(max(x0, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), min(max(x1, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), max(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), max(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), max(max(min(x0, y1), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y1), x0), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y1), x0), y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y1), x0), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y1), x0), y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y1), x0), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(max(min(x0, y1), x0), y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(max(min(x0, y1), x0), y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(max(min(x0, y1), x0), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(max(min(x0, y1), x0), y0), min(max(x0, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), min(max(x1, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), min(max(x0, y1), min(y0, y1)) } -> Unknown-associativity
+{ max(max(min(x0, y1), x0), y0), min(max(x1, y1), min(y0, y1)) } -> Unknown-associativity
+{ (min(max(x0, y1), x0) + y0), (x0 + y0) } -> Unknown-associativity
+{ (min(max(x0, y1), x0) + y0), (x1 + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (x1 - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (x0 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (min(max(x0, y1), x0) + y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y1), x0) + y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y1), x0) + y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (min(max(x0, y1), x0) + y0), (min(max(x0, y0), x0) + y0) } -> Unknown-associativity
+{ (min(max(x0, y1), x0) + y0), (max(min(x0, y1), x0) + y0) } -> Unknown-associativity
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y0), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y1), x1) + y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x0, y0), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x0, y1), x0) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y1), x0) + y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y1), x0) + y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y1), x0) + y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y1), x0) + y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y1), x0) + y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x0, y1), x0) + y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y0), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (max(min(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y0), (min(max(x1, y1), x1) - y0) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0)*y0), (x0*y0) } -> UNKNOWN associative
+{ (min(max(x0, y1), x0)*y0), (x1*y0) } -> UNKNOWN associative with right-identity: { 1, 1224736768 }
+{ (min(max(x0, y1), x0)*y0), (x0*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (x1 + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y1), x0)*y0), min(x1, y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y1), x0)*y0), max(x1, y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y1), x0)*y0), ((x0*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), max(min(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), min(max(x1, y0), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), max(min(x1, y1), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), min(max(x1, y1), x1) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), ((x0*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), ((x1*y0) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), ((x0*y1)*(x0*x0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (((x0*y1)*x0)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (((x0*x0)*y1)*x0) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (((x0*y0)*x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y1), x0)*y0), (max(min(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y1), x0)*y0), (min(max(x0, y0), x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y1), x0)*y0), (max(min(x0, y1), x0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y1), x0)*y0), (max(min(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 4227072 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x1, y0), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, -251559936 }
+{ (min(max(x0, y1), x0)*y0), (max(min(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x1, y1), x1)*y0) } -> UNKNOWN associative with right-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (((x0*x0)*y0)*y0) } -> UNKNOWN associative
+{ (min(max(x0, y1), x0)*y0), ((x0*x0)*(y0*y0)) } -> UNKNOWN associative
+{ (min(max(x0, y1), x0)*y0), ((x1*y0) + (y1 + y0)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ (min(max(x0, y1), x0)*y0), ((x0*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), ((x1*y0) + (y1 - y0)) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y1), x0)*y0), (((x0*x0)*x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), ((x0*x0)*(x0*y1)) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (max(min(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x0, y0), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (max(min(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x0, y1), x0)*y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (max(min(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y1), x0)*y0), min(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y1), x0)*y0), max(max(min(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x1, y0), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y1), x0)*y0), min(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y1), x0)*y0), max(min(max(x1, y0), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y1), x0)*y0), (max(min(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y1), x0)*y0), max(max(min(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x1, y1), x1) + y1) } -> UNKNOWN associative with left-identity: { 1, 0 }
+{ (min(max(x0, y1), x0)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ (min(max(x0, y1), x0)*y0), min(min(max(x1, y1), x1), y1) } -> UNKNOWN associative with left-identity: { 1, 2147483647 }
+{ (min(max(x0, y1), x0)*y0), ((x1*y0) + (y0 + y1)) } -> UNKNOWN associative with left-identity: { 1, -1 }
+{ min(min(max(x0, y1), x0), y0), min(x0, y0) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), min(x1, y0) } -> Right-associativity with identity: { 2147483647, 1425532662 }
+{ min(min(max(x0, y1), x0), y0), min(x0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), (x1 + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), (x1*y1) } -> Left-associativity with identity: { 2147483647, 1 }
+{ min(min(max(x0, y1), x0), y0), min(x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y1), x0), y0), max(x1, y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y1), x0), y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 1475733178 }
+{ min(min(max(x0, y1), x0), y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { 2147483647, 1475733178 }
+{ min(min(max(x0, y1), x0), y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 1475733178 }
+{ min(min(max(x0, y1), x0), y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { 2147483647, 2113922687 }
+{ min(min(max(x0, y1), x0), y0), max(min(x1, y0), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y1), x0), y0), min(min(max(x0, y0), x0), y0) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), min(max(min(x0, y1), x0), y0) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), min(min(max(x1, y0), x1), y0) } -> Right-associativity with identity: { 2147483647, 1425532662 }
+{ min(min(max(x0, y1), x0), y0), min(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 1944638740 }
+{ min(min(max(x0, y1), x0), y0), min(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { 2147483647, 2004735926 }
+{ min(min(max(x0, y1), x0), y0), (min(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), max(min(x0, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), max(min(x1, y0), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), max(min(x0, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), max(min(x1, y1), max(y1, y0)) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), min(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), min(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), min(min(max(x0, y1), x0), y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y1), x0), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y1), x0), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y1), x0), y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y1), x0), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y1), x0), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y1), x0), y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y1), x0), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ min(min(max(x0, y1), x0), y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ min(min(max(x0, y1), x0), y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+{ min(min(max(x0, y1), x0), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y1), x0), y0), max(min(x0, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), max(min(x1, y0), max(y0, y1)) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), max(min(x0, y1), max(y0, y1)) } -> Unknown-associativity
+{ min(min(max(x0, y1), x0), y0), max(min(x1, y1), max(y0, y1)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), max(x0, y0) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), max(x1, y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), max(x0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), (x1 + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), (x1*y1) } -> Left-associativity with identity: { -2147483648, 1 }
+{ max(min(max(x0, y1), x0), y0), min(x1, y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(max(x0, y1), x0), y0), max(x1, y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(min(max(x0, y1), x0), y0), max(min(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 442207778 }
+{ max(min(max(x0, y1), x0), y0), min(max(x1, y0), x1) } -> Right-associativity with identity: { -2147483648, 442207778 }
+{ max(min(max(x0, y1), x0), y0), max(min(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 442207778 }
+{ max(min(max(x0, y1), x0), y0), min(max(x1, y1), x1) } -> Right-associativity with identity: { -2147483648, 442207778 }
+{ max(min(max(x0, y1), x0), y0), min(max(x1, y0), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(max(x0, y1), x0), y0), max(max(min(x0, y0), x0), y0) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), max(max(min(x0, y1), x0), y0) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), max(max(min(x1, y0), x1), y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), max(max(min(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, -2145386496 }
+{ max(min(max(x0, y1), x0), y0), max(min(max(x1, y1), x1), y0) } -> Right-associativity with identity: { -2147483648, -1854881406 }
+{ max(min(max(x0, y1), x0), y0), (max(x0, y0) + (y1 - y0)) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), min(max(x0, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), min(max(x1, y0), min(y1, y0)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), min(max(x0, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), min(max(x1, y1), min(y1, y0)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), max(max(min(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), max(min(max(x0, y0), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), max(max(min(x0, y1), x0), y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(min(max(x0, y1), x0), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(max(x0, y1), x0), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(min(max(x0, y1), x0), y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(min(max(x0, y1), x0), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(max(x0, y1), x0), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(min(max(x0, y1), x0), y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(min(max(x0, y1), x0), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ max(min(max(x0, y1), x0), y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ max(min(max(x0, y1), x0), y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -2147483648, 1 }
+{ max(min(max(x0, y1), x0), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ max(min(max(x0, y1), x0), y0), min(max(x0, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), min(max(x1, y0), min(y0, y1)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), min(max(x0, y1), min(y0, y1)) } -> Unknown-associativity
+{ max(min(max(x0, y1), x0), y0), min(max(x1, y1), min(y0, y1)) } -> Unknown-associativity
+{ (((x1*x1)*x1)*y0), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ (((x1*x1)*x1)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*x1)*x1)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*x1)*x1)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (((x1*x1)*x1)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*(x1*y0)), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ ((x1*x1)*(x1*y0)), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*(x1*y0)), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*(x1*y0)), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*x1)*(x1*y0)), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y0), x1) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y0), x1) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y0), x1) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y0), x1) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y0), x1) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y0), x1)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y0), x1)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y0), x1)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y0), x1)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y0), x1)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ max(max(min(x1, y0), x1), y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x1, y0), x1), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x1, y0), x1), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x1, y0), x1), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x1, y0), x1) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y0), x1) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y0), x1) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y0), x1) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y0), x1) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y0), x1)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y0), x1)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y0), x1)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y0), x1)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y0), x1)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ min(min(max(x1, y0), x1), y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(min(max(x1, y0), x1), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(min(max(x1, y0), x1), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(min(max(x1, y0), x1), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(min(x1, y1), x1) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y1), x1) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y1), x1) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y1), x1) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y1), x1) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (max(min(x1, y1), x1)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y1), x1)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y1), x1)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y1), x1)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (max(min(x1, y1), x1)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ min(max(min(x1, y1), x1), y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(max(min(x1, y1), x1), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(max(min(x1, y1), x1), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(max(min(x1, y1), x1), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ max(max(min(x1, y1), x1), y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x1, y1), x1), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x1, y1), x1), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x1, y1), x1), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (min(max(x1, y1), x1) + y0), (x1 + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y1), x1) + y0), (max(min(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y1), x1) + y0), (min(max(x1, y0), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y1), x1) + y0), (max(min(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y1), x1) + y0), (min(max(x1, y1), x1) + y1) } -> Left-associativity with identity: { 0, 0 }
+{ (min(max(x1, y1), x1)*y0), (x1*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y1), x1)*y0), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y1), x1)*y0), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y1), x1)*y0), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(max(x1, y1), x1)*y0), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ min(min(max(x1, y1), x1), y0), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(min(max(x1, y1), x1), y0), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(min(max(x1, y1), x1), y0), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ min(min(max(x1, y1), x1), y0), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ max(min(max(x1, y1), x1), y0), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(min(max(x1, y1), x1), y0), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(min(max(x1, y1), x1), y0), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ max(min(max(x1, y1), x1), y0), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ ((x0*y1) + (y1 + y0)), (x1*y1) } -> Left-associativity with identity: { -1, 1 }
+{ ((x0*y1) + (y1 + y0)), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ ((x0*y1) + (y1 + y0)), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ ((x0*y1) + (y1 + y0)), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ ((x0*y1) + (y1 + y0)), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ min(max(x0, y0), min(y1, y0)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x0, y0), min(y1, y0)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y0), min(y1, y0)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y0), min(y1, y0)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y1, y0)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y1, y0)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y1, y0)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y1, y0)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y1, y0)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y1, y0)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y1, y0)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y1, y0)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y1, y0)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y1, y0)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y1, y0)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y1, y0)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y1, y0)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y1, y0)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y1, y0)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y1, y0)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y1, y0)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y1, y0)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y1, y0)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y1, y0)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y1, y0)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y1, y0)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y1, y0)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y1, y0)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y1, y0)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y1, y0)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y1, y0)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y1, y0)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ (max(min(x0, y0), x0) + y1), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y1), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y1), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y1), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0) + y1), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y0), x0)*y1), (x1*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (max(min(x0, y0), x0)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (max(min(x0, y0), x0)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (max(min(x0, y0), x0)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { -2059137006, 1 }
+{ (max(min(x0, y0), x0)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 5505024, 1 }
+{ min(max(min(x0, y0), x0), y1), min(x1, y1) } -> Right-associativity with identity: { 1425532662, 2147483647 }
+{ min(max(min(x0, y0), x0), y1), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 1087673864, 2147483647 }
+{ min(max(min(x0, y0), x0), y1), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { -402653184, 2147483647 }
+{ min(max(min(x0, y0), x0), y1), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 1425532662, 2147483647 }
+{ max(max(min(x0, y0), x0), y1), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x0, y0), x0), y1), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { -2145386496, -2147483648 }
+{ max(max(min(x0, y0), x0), y1), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { -1854881390, -2147483648 }
+{ max(max(min(x0, y0), x0), y1), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y0), x0) + y1), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y1), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y1), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y1), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0) + y1), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y0), x0)*y1), (x1*y1) } -> UNKNOWN associative with right-identity: { -507494400, 1 }
+{ (min(max(x0, y0), x0)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (min(max(x0, y0), x0)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (min(max(x0, y0), x0)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 71335936, 1 }
+{ (min(max(x0, y0), x0)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 408158208, 1 }
+{ min(min(max(x0, y0), x0), y1), min(x1, y1) } -> Right-associativity with identity: { 1425532662, 2147483647 }
+{ min(min(max(x0, y0), x0), y1), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { -1040175040, 2147483647 }
+{ min(min(max(x0, y0), x0), y1), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ min(min(max(x0, y0), x0), y1), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 1425532662, 2147483647 }
+{ max(min(max(x0, y0), x0), y1), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(min(max(x0, y0), x0), y1), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { -2145386496, -2147483648 }
+{ max(min(max(x0, y0), x0), y1), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { -1854881390, -2147483648 }
+{ max(min(max(x0, y0), x0), y1), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ (max(min(x0, y1), x0) + y1), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y1), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y1), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y1), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0) + y1), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (max(min(x0, y1), x0)*y1), (x1*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (max(min(x0, y1), x0)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 1, 1 }
+{ (max(min(x0, y1), x0)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 71303169, 1 }
+{ (max(min(x0, y1), x0)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (max(min(x0, y1), x0)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ max(max(min(x0, y1), x0), y1), max(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ max(max(min(x0, y1), x0), y1), max(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ max(max(min(x0, y1), x0), y1), max(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 1783238182, -2147483648 }
+{ max(max(min(x0, y1), x0), y1), max(max(min(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ (min(max(x0, y1), x0) + y1), (x1 + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y1), (max(min(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y1), (min(max(x1, y0), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y1), (max(min(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0) + y1), (min(max(x1, y1), x1) + y1) } -> Right-associativity with identity: { 0, 0 }
+{ (min(max(x0, y1), x0)*y1), (x1*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (min(max(x0, y1), x0)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 1, 1 }
+{ (min(max(x0, y1), x0)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with right-identity: { 1073741824, 1 }
+{ (min(max(x0, y1), x0)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ (min(max(x0, y1), x0)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with right-identity: { 0, 1 }
+{ min(min(max(x0, y1), x0), y1), min(x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ min(min(max(x0, y1), x0), y1), min(max(min(x1, y0), x1), y1) } -> Right-associativity with identity: { -406847600, 2147483647 }
+{ min(min(max(x0, y1), x0), y1), min(min(max(x1, y0), x1), y1) } -> Right-associativity with identity: { 2147483647, 2147483647 }
+{ min(min(max(x0, y1), x0), y1), min(min(max(x1, y1), x1), y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ (max(min(x1, y0), x1) + y1), (x1 + y1) } -> Unknown-associativity
+{ (max(min(x1, y0), x1) + y1), (min(max(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (max(min(x1, y0), x1) + y1), (max(min(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (max(min(x1, y0), x1) + y1), (min(max(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (max(min(x1, y0), x1)*y1), (x1*y1) } -> UNKNOWN associative
+{ (max(min(x1, y0), x1)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (max(min(x1, y0), x1)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ (max(min(x1, y0), x1)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ min(max(min(x1, y0), x1), y1), min(x1, y1) } -> Unknown-associativity
+{ min(max(min(x1, y0), x1), y1), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(min(x1, y0), x1), y1), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(max(min(x1, y0), x1), y1), max(x1, y1) } -> Unknown-associativity
+{ max(max(min(x1, y0), x1), y1), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(max(min(x1, y0), x1), y1), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ (min(max(x1, y0), x1) + y1), (x1 + y1) } -> Unknown-associativity
+{ (min(max(x1, y0), x1) + y1), (max(min(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (min(max(x1, y0), x1) + y1), (max(min(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (min(max(x1, y0), x1) + y1), (min(max(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (min(max(x1, y0), x1)*y1), (x1*y1) } -> UNKNOWN associative
+{ (min(max(x1, y0), x1)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (min(max(x1, y0), x1)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ (min(max(x1, y0), x1)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ min(min(max(x1, y0), x1), y1), min(x1, y1) } -> Unknown-associativity
+{ min(min(max(x1, y0), x1), y1), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(min(max(x1, y0), x1), y1), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(max(x1, y0), x1), y1), max(x1, y1) } -> Unknown-associativity
+{ max(min(max(x1, y0), x1), y1), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(max(x1, y0), x1), y1), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ (((x1*y1)*x1)*y1), (x1*y1) } -> Unknown-associativity
+{ (((x1*y1)*x1)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (((x1*y1)*x1)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (((x1*y1)*x1)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ (((x1*y1)*x1)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ (max(min(x1, y1), x1) + y1), (x1 + y1) } -> Unknown-associativity
+{ (max(min(x1, y1), x1) + y1), (max(min(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (max(min(x1, y1), x1) + y1), (min(max(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (max(min(x1, y1), x1) + y1), (min(max(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (max(min(x1, y1), x1)*y1), (x1*y1) } -> UNKNOWN associative
+{ (max(min(x1, y1), x1)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (max(min(x1, y1), x1)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (max(min(x1, y1), x1)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ max(max(min(x1, y1), x1), y1), max(x1, y1) } -> Unknown-associativity
+{ max(max(min(x1, y1), x1), y1), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(max(min(x1, y1), x1), y1), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ (min(max(x1, y1), x1) + y1), (x1 + y1) } -> Unknown-associativity
+{ (min(max(x1, y1), x1) + y1), (max(min(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (min(max(x1, y1), x1) + y1), (min(max(x1, y0), x1) + y1) } -> Unknown-associativity
+{ (min(max(x1, y1), x1) + y1), (max(min(x1, y1), x1) + y1) } -> Unknown-associativity
+{ (min(max(x1, y1), x1)*y1), (x1*y1) } -> UNKNOWN associative
+{ (min(max(x1, y1), x1)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (min(max(x1, y1), x1)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (min(max(x1, y1), x1)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ min(min(max(x1, y1), x1), y1), min(x1, y1) } -> Unknown-associativity
+{ min(min(max(x1, y1), x1), y1), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(min(max(x1, y1), x1), y1), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ ((x0*y1) + (y0 + y1)), (x1*y1) } -> Left-associativity with identity: { -1, 1 }
+{ ((x0*y1) + (y0 + y1)), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ ((x0*y1) + (y0 + y1)), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ ((x0*y1) + (y0 + y1)), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ ((x0*y1) + (y0 + y1)), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { -1, 1 }
+{ ((x0*y1) + (y0 - y1)), (x1*y1) } -> Left-associativity with identity: { 1, 1 }
+{ ((x0*y1) + (y0 - y1)), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ ((x0*y1) + (y0 - y1)), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ ((x0*y1) + (y0 - y1)), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ ((x0*y1) + (y0 - y1)), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 1, 1 }
+{ ((x1*y1) + (y0 - y1)), (x1*y1) } -> Left-associativity with identity: { 0, 1 }
+{ ((x1*y1) + (y0 - y1)), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y1) + (y0 - y1)), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y1) + (y0 - y1)), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ ((x1*y1) + (y0 - y1)), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative with left-identity: { 0, 1 }
+{ (min(x1, y1) + (y0 - y1)), min(x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(x1, y1) + (y0 - y1)), min(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(x1, y1) + (y0 - y1)), min(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (min(x1, y1) + (y0 - y1)), min(min(max(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ (max(x1, y1) + (y0 - y1)), max(x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(x1, y1) + (y0 - y1)), max(max(min(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(x1, y1) + (y0 - y1)), max(min(max(x1, y0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ (max(x1, y1) + (y0 - y1)), max(max(min(x1, y1), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ min(max(x0, y0), min(y0, y1)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x0, y0), min(y0, y1)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y0), min(y0, y1)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y0), min(y0, y1)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y0, y1)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y0, y1)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y0, y1)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y0), min(y0, y1)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y0, y1)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y0, y1)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y0, y1)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x0, y1), min(y0, y1)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y0, y1)), max(x1, y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y0, y1)), max(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y0, y1)), max(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ min(max(x1, y1), min(y0, y1)), max(max(min(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y0, y1)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y0, y1)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y0, y1)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y0), max(y0, y1)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y0, y1)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y0, y1)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y0, y1)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y0), max(y0, y1)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y0, y1)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y0, y1)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y0, y1)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x0, y1), max(y0, y1)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y0, y1)), min(x1, y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y0, y1)), min(max(min(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y0, y1)), min(min(max(x1, y0), x1), y1) } -> Unknown-associativity
+{ max(min(x1, y1), max(y0, y1)), min(min(max(x1, y1), x1), y1) } -> Unknown-associativity
+{ (((x1*x1)*y1)*y1), (x1*y1) } -> Unknown-associativity
+{ (((x1*x1)*y1)*y1), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (((x1*x1)*y1)*y1), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ (((x1*x1)*y1)*y1), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ (((x1*x1)*y1)*y1), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ ((x1*x1)*(y1*y1)), (x1*y1) } -> Unknown-associativity
+{ ((x1*x1)*(y1*y1)), (max(min(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ ((x1*x1)*(y1*y1)), (min(max(x1, y0), x1)*y1) } -> UNKNOWN associative
+{ ((x1*x1)*(y1*y1)), (max(min(x1, y1), x1)*y1) } -> UNKNOWN associative
+{ ((x1*x1)*(y1*y1)), (min(max(x1, y1), x1)*y1) } -> UNKNOWN associative
+
+******************************************************************
