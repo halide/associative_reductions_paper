@@ -1,0 +1,84 @@
+./old_select_tuple
+
+******************************************************************
+Leaves: 1, valid: 0
+Total: 5, fails: 5, repeat at: x0
+
+******************************************************************
+Leaves: 2, valid: 0
+{ Add::make(x0, y0), Select::make(LT::make(y1, x1), x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ Add::make(x0, y0), Select::make(LT::make(y1, x1), y1, x1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ Add::make(x0, y0), Select::make(LT::make(k0, x1), x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ Add::make(x0, y0), Select::make(LT::make(x1, y1), x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ Add::make(x0, y0), Select::make(LT::make(x1, y1), y1, x1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ Add::make(x0, y0), Select::make(LT::make(x1, k0), x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ Add::make(x0, y0), Select::make(LT::make(y1, k0), y1, x1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ Add::make(x0, y0), Select::make(LT::make(k0, y1), y1, x1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ Min::make(x0, y0), Select::make(LT::make(y0, x0), y0, x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(y0, x0), y1, x1) } -> Right-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(y0, x0), k0, x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(y1, x0), y1, x0) } -> Left-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(x0, y0), x0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(x0, y0), x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(x0, y0), k0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(x1, y0), x1, y0) } -> Right-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(y0, x1), y0, x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(y0, x1), k0, x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(y1, x1), x1, y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ Min::make(x0, y0), Select::make(LT::make(y1, x1), y1, x1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(k0, x1), x1, y1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ Min::make(x0, y0), Select::make(LT::make(x0, y1), x0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(x0, y1), k0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(x1, y1), x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(x1, y1), y1, x1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+{ Min::make(x0, y0), Select::make(LT::make(x0, k0), x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(x0, k0), k0, y1) } -> Left-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(x1, k0), x1, y1) } -> Left-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(y0, k0), y1, x1) } -> Right-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(y0, k0), k0, x1) } -> Right-associativity with identity: { 2147483647, 0 }
+{ Min::make(x0, y0), Select::make(LT::make(y1, k0), y1, x1) } -> Right-associativity with identity: { 2147483647, 2147483647 }
+{ Min::make(x0, y0), Select::make(LT::make(k0, y1), y1, x1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+{ Max::make(x0, y0), Select::make(LT::make(y0, x0), x0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(y0, x0), x1, y1) } -> Left-associativity with identity: { -2147483648, -1 }
+{ Max::make(x0, y0), Select::make(LT::make(y0, x0), k0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(y1, x0), x0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(y1, x0), k0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(k0, x0), x1, y1) } -> Left-associativity with identity: { -2147483648, -2147483647 }
+{ Max::make(x0, y0), Select::make(LT::make(k0, x0), k0, y1) } -> Left-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(x0, y0), y0, x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(x0, y0), y1, x1) } -> Right-associativity with identity: { -2147483648, -1 }
+{ Max::make(x0, y0), Select::make(LT::make(x0, y0), k0, x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(x1, y0), y0, x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(x1, y0), k0, x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(y0, x1), x1, y0) } -> Right-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(y1, x1), x1, y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ Max::make(x0, y0), Select::make(LT::make(y1, x1), y1, x1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ Max::make(x0, y0), Select::make(LT::make(k0, x1), x1, y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ Max::make(x0, y0), Select::make(LT::make(x0, y1), y1, x0) } -> Left-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(x1, y1), x1, y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ Max::make(x0, y0), Select::make(LT::make(x1, y1), y1, x1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+{ Max::make(x0, y0), Select::make(LT::make(k0, y0), y1, x1) } -> Right-associativity with identity: { -2147483648, -2147483647 }
+{ Max::make(x0, y0), Select::make(LT::make(k0, y0), k0, x1) } -> Right-associativity with identity: { -2147483648, 0 }
+{ Max::make(x0, y0), Select::make(LT::make(x1, k0), x1, y1) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+{ Max::make(x0, y0), Select::make(LT::make(y1, k0), y1, x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+{ Max::make(x0, y0), Select::make(LT::make(k0, y1), y1, x1) } -> Right-associativity with identity: { -2147483648, -2147483648 }
+{ Min::make(x1, y0), Select::make(LT::make(y1, x1), y1, x1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ Min::make(x1, y0), Select::make(LT::make(x1, y1), x1, y1) } -> Left-associativity with identity: { 0, 2147483647 }
+{ Max::make(x1, y0), Select::make(LT::make(y1, x1), x1, y1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ Max::make(x1, y0), Select::make(LT::make(x1, y1), y1, x1) } -> Left-associativity with identity: { 0, -2147483648 }
+{ Mul::make(x0, y0), Select::make(LT::make(y1, x1), x1, y1) } -> Left-associativity with identity: { 1, -2147483648 }
+{ Mul::make(x0, y0), Select::make(LT::make(y1, x1), y1, x1) } -> Left-associativity with identity: { 1, 2147483647 }
+{ Mul::make(x0, y0), Select::make(LT::make(k0, x1), x1, y1) } -> Left-associativity with identity: { 1, -2147483648 }
+{ Mul::make(x0, y0), Select::make(LT::make(x1, y1), x1, y1) } -> Left-associativity with identity: { 1, 2147483647 }
+{ Mul::make(x0, y0), Select::make(LT::make(x1, y1), y1, x1) } -> Left-associativity with identity: { 1, -2147483648 }
+{ Mul::make(x0, y0), Select::make(LT::make(x1, k0), x1, y1) } -> Left-associativity with identity: { 1, 2147483647 }
+{ Mul::make(x0, y0), Select::make(LT::make(y1, k0), y1, x1) } -> Right-associativity with identity: { 1, 2147483647 }
+{ Mul::make(x0, y0), Select::make(LT::make(k0, y1), y1, x1) } -> Right-associativity with identity: { 1, -2147483648 }
+{ Min::make(x0, y1), Select::make(LT::make(y1, x1), y1, x1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ Min::make(x0, y1), Select::make(LT::make(x1, y1), x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+{ Max::make(x0, y1), Select::make(LT::make(y1, x1), x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+{ Max::make(x0, y1), Select::make(LT::make(x1, y1), y1, x1) } -> Right-associativity with identity: { 0, -2147483648 }
+Total: 100, fails: 17, repeat at: Add::make(x0, x1)
+
+******************************************************************
+Leaves: 3, valid: 72

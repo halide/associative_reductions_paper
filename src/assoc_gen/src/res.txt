@@ -1,0 +1,46 @@
+Leaves: 2, i: 5, Add::make(x0, y0) -> Left-associativity with identity: { 0 }
+Leaves: 2, i: 7, Mul::make(x0, y0) -> Left-associativity with identity: { 1 }
+Leaves: 2, i: 8, Min::make(x0, y0) -> Left-associativity with identity: { 2147483647 }
+Leaves: 2, i: 9, Max::make(x0, y0) -> Left-associativity with identity: { -2147483648 }
+Leaves: 4, i: 944, Max::make(Max::make(Min::make(x0, y0), x0), y0) -> Left-associativity with identity: { -2147483648 }
+Leaves: 4, i: 983, Min::make(Min::make(Max::make(x0, y0), x0), y0) -> Left-associativity with identity: { 2147483647 }
+Leaves: 5, i: 10163, Min::make(Sub::make(x0, Min::make(Sub::make(x0, y0), y0)), y0) -> Left-associativity with identity: { 0 }
+Leaves: 5, i: 10464, Max::make(Sub::make(x0, Max::make(Sub::make(x0, y0), y0)), y0) -> Left-associativity with identity: { 0 }
+Leaves: 5, i: 13344, Max::make(Max::make(Min::make(Sub::make(x0, y0), y0), x0), y0) -> Left-associativity with identity: { -2147483648 }
+Leaves: 5, i: 13433, Min::make(Min::make(Max::make(Sub::make(x0, y0), y0), x0), y0) -> Left-associativity with identity: { 2147483647 }
+Leaves: 5, i: 14389, Max::make(Min::make(Mul::make(x0, y0), y0), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 5, i: 14398, Min::make(Max::make(Mul::make(x0, y0), y0), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 5, i: 15389, Max::make(Min::make(Mul::make(x0, y0), x0), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 5, i: 15398, Min::make(Max::make(Mul::make(x0, y0), x0), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 5, i: 23844, Max::make(Max::make(Min::make(Mul::make(x0, y0), y0), x0), y0) -> UNKNOWN associative with left-identity: { -2147483648 }
+Leaves: 5, i: 23933, Min::make(Min::make(Max::make(Mul::make(x0, y0), y0), x0), y0) -> UNKNOWN associative with left-identity: { 2147483647 }
+Leaves: 5, i: 25844, Max::make(Max::make(Min::make(Sub::make(y0, x0), x0), y0), x0) -> Left-associativity with identity: { -2147483648 }
+Leaves: 5, i: 25933, Min::make(Min::make(Max::make(Sub::make(y0, x0), x0), y0), x0) -> Left-associativity with identity: { 2147483647 }
+Leaves: 5, i: 47513, Min::make(Sub::make(y0, Min::make(Sub::make(y0, x0), x0)), x0) -> Right-associativity with identity: { 0 }
+Leaves: 5, i: 47814, Max::make(Sub::make(y0, Max::make(Sub::make(y0, x0), x0)), x0) -> Right-associativity with identity: { 0 }
+Leaves: 5, i: 53844, Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0) -> UNKNOWN associative with left-identity: { -2147483648 }
+Leaves: 5, i: 53933, Min::make(Min::make(Max::make(Mul::make(x0, y0), x0), y0), x0) -> UNKNOWN associative with left-identity: { 2147483647 }
+Leaves: 5, i: 58834, Max::make(Min::make(Min::make(Mul::make(x0, x0), x0), y0), x0) -> UNKNOWN associative with right-identity: { 0 }
+Leaves: 5, i: 58943, Min::make(Max::make(Max::make(Mul::make(x0, x0), x0), y0), x0) -> UNKNOWN associative with right-identity: { 0 }
+Leaves: 6, i: 79471, Sub::make(y0, Max::make(Min::make(Sub::make(y0, x0), x0), Sub::make(y0, x0))) -> Right-associativity with identity: { 0 }
+Leaves: 6, i: 79921, Sub::make(y0, Min::make(Max::make(Sub::make(y0, x0), x0), Sub::make(y0, x0))) -> Right-associativity with identity: { 0 }
+Leaves: 6, i: 153879, Max::make(Min::make(Add::make(x0, y0), Mul::make(y0, y0)), Add::make(x0, y0)) -> Left-associativity with identity: { 0 }
+Leaves: 6, i: 153893, Min::make(Max::make(Add::make(x0, y0), Mul::make(y0, y0)), Add::make(x0, y0)) -> Left-associativity with identity: { 0 }
+Leaves: 6, i: 161379, Max::make(Min::make(Add::make(x0, y0), Mul::make(x0, y0)), Add::make(x0, y0)) -> Left-associativity with identity: { 0 }
+Leaves: 6, i: 161393, Min::make(Max::make(Add::make(x0, y0), Mul::make(x0, y0)), Add::make(x0, y0)) -> Left-associativity with identity: { 0 }
+Leaves: 6, i: 176379, Max::make(Min::make(Add::make(x0, y0), Mul::make(x0, x0)), Add::make(x0, y0)) -> Left-associativity with identity: { 0 }
+Leaves: 6, i: 176393, Min::make(Max::make(Add::make(x0, y0), Mul::make(x0, x0)), Add::make(x0, y0)) -> Left-associativity with identity: { 0 }
+Leaves: 6, i: 214179, Max::make(Min::make(Mul::make(x0, y0), Sub::make(y0, x0)), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 6, i: 214193, Min::make(Max::make(Mul::make(x0, y0), Sub::make(y0, x0)), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 6, i: 226179, Max::make(Min::make(Mul::make(x0, y0), Add::make(x0, y0)), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 6, i: 226193, Min::make(Max::make(Mul::make(x0, y0), Add::make(x0, y0)), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 6, i: 229179, Max::make(Min::make(Mul::make(x0, y0), Sub::make(x0, y0)), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 6, i: 229193, Min::make(Max::make(Mul::make(x0, y0), Sub::make(x0, y0)), Mul::make(x0, y0)) -> UNKNOWN associative with left-identity: { 1 }
+Leaves: 7, i: 294274, Max::make(Min::make(Mul::make(Sub::make(y0, x0), y0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
+Leaves: 7, i: 298774, Max::make(Min::make(Mul::make(Add::make(x0, y0), y0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
+Leaves: 7, i: 299899, Max::make(Min::make(Mul::make(Sub::make(x0, y0), y0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
+Leaves: 7, i: 301699, Max::make(Min::make(Add::make(Min::make(x0, y0), y0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
+Leaves: 7, i: 302149, Max::make(Min::make(Mul::make(Min::make(x0, y0), y0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
+Leaves: 7, i: 302824, Max::make(Min::make(Add::make(Max::make(x0, y0), y0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
+Leaves: 7, i: 303274, Max::make(Min::make(Mul::make(Max::make(x0, y0), y0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
+Leaves: 7, i: 305524, Max::make(Min::make(Mul::make(Sub::make(y0, x0), x0), Min::make(Mul::make(y0, y0), y0)), y0) -> UNKNOWN associative with left-identity: { 0 }
