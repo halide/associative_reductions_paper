@@ -1,15 +1,6 @@
-
-/*++
-Copyright (c) 2015 Microsoft Corporation
-
---*/
-
-#include "z3++.h"
 #include "Halide.h"
-#include "Z3OpsHelper.h"
-#include "HalideToZ3.h"
-#include "AssociativityProver.h"
 #include "Error.h"
+#include "Utilities.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -23,7 +14,6 @@ using std::pair;
 using std::string;
 using std::vector;
 using Halide::Internal::Variable;
-using Halide::Internal::unique_name;
 
 Halide::Type kType = Halide::Int(32);
 vector<string> kXNames = {"x0"};
@@ -33,105 +23,7 @@ vector<Halide::Expr> kXVars = {Variable::make(kType, "x0")};
 vector<Halide::Expr> kYVars = {Variable::make(kType, "y0")};
 vector<Halide::Expr> kConstants = {Variable::make(kType, "k0")};
 
-namespace {
-
-// Return true if the Expr uses any of the Variables in 'vars'
-class UseVars : public Halide::Internal::IRVisitor {
-    using Halide::Internal::IRVisitor::visit;
-
-    vector<string> vars;
-
-    void visit(const Variable *op) {
-        if (std::find(vars.begin(), vars.end(), op->name) != vars.end()) {
-            result = true;
-        }
-    }
-
-public:
-    bool result;
-    UseVars(const vector<string> &v) : vars(v), result(false) {}
-};
-
-bool uses_vars(Halide::Expr e, const vector<string> &vars) {
-    e = simplify(e);
-    UseVars uv(vars);
-    e.accept(&uv);
-    return uv.result;
-}
-
-bool is_boring(Halide::Expr e, Halide::Expr &simplified) {
-    Halide::Expr before = e;
-    simplified = e;
-    simplified = simplify(simplified);
-    if (!Halide::Internal::equal(before, simplified)) {
-        return true;
-    }
-
-    vector<string> vars(kXNames);
-    vars.insert(vars.end(), kYNames.begin(), kYNames.end());
-    vars.insert(vars.end(), kConstantNames.begin(), kConstantNames.end());
-    for (int i = vars.size() - 1; i >= 0; --i) {
-        const string &v = vars[i];
-        // Call simplify after solve_expression since sometimes it will reorder
-        // the variables which allows cancellation by the simplifier.
-        Halide::Expr temp = simplify(solve_expression(simplified, v).result);
-        // Call solve_expression again to canonicalize the expr
-        temp = solve_expression(temp, v).result;
-        if (temp.defined()) {
-            simplified = temp;
-
-        }
-    }
-    simplified = simplify(simplified);
-    if (!Halide::Internal::equal(before, simplified)) {
-        return true;
-    }
-    return false;
-}
-
-void print_tuple(const Halide::Tuple &tuple) {
-    std::cout << "{ ";
-    for (size_t i = 0; i < tuple.size(); ++i) {
-        std::cout << tuple[i];
-        if (i != tuple.size() - 1) {
-            std::cout << ", ";
-        }
-    }
-    std::cout << " }";
-}
-
-// Replace all signed/unsigned integers with symbolic variables.
-class ReplaceConstants : public Halide::Internal::IRMutator {
-    // Count the number of integer constants we have replaced so far.
-    unsigned count = 0;
-
-    using Halide::Internal::IRMutator::visit;
-
-    Halide::Expr get_expr(const Halide::Type &t) {
-        string name = unique_name("k" + std::to_string(count));
-        Halide::Expr var = Variable::make(t, name);
-        if (kConstants.size() <= count) {
-            kConstantNames.push_back(name);
-            kConstants.push_back(var);
-        }
-        count++;
-        return var;
-    }
-
-    void visit(const Halide::Internal::IntImm *op) {
-        expr = get_expr(op->type);
-    }
-
-    void visit(const Halide::Internal::UIntImm *op) {
-        expr = get_expr(op->type);
-    }
-};
-
-} // anonymous namespace
-
-typedef int Value;
-
-typedef enum {
+enum Node : long {
     X0 = 0,
     Y0,
     K0,
@@ -145,42 +37,14 @@ typedef enum {
     GT,
     EQ,
     NE,
-    //LastNode,
-} Node;
-
-typedef enum {
-    Int = 0
-} Type;
-
-struct DecisionSource {
-    uint64_t val;
-
-    DecisionSource() : val(0){}
-
-    // Choose between n alternatives
-    int get(int n) {
-        assert(n > 0);
-        int result = val % n;
-        val /= n;
-        return result;
-    }
 };
 
-struct Expr {
-    // The expression in prefix order
+class SingleExpr : public Expr {
+public:
     bool is_cond;
-    vector<Node> nodes;
-    int size;
-    bool fail;
-    bool uses_x;
-    bool uses_y;
 
-    Expr(bool is_cond) : is_cond(is_cond), nodes(64), size(0), fail(false), uses_x(false), uses_y(false) {}
-    Expr() : is_cond(false), nodes(64), size(0), fail(false), uses_x(false), uses_y(false) {}
-
-    bool operator==(const Expr& rhs) const {
-        return rhs.nodes == nodes;
-    }
+    SingleExpr(bool is_cond) : Expr(1), is_cond(is_cond) {}
+    SingleExpr() : Expr(1), is_cond(false) {}
 
     Value evaluate_term(Value x, Value y, Value k, int &cursor) {
         Value v1, v2;
@@ -240,6 +104,7 @@ struct Expr {
             if (size > 1 && nodes[size-1] == X0 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
+                 nodes[size-2] == Mul ||
                  nodes[size-2] == LT ||
                  nodes[size-2] == GT ||
                  nodes[size-2] == EQ ||
@@ -248,7 +113,7 @@ struct Expr {
                  nodes[size-2] == Sub)) {
                 // avoid min(x, x)
                 if (dec.get(2)) {
-                    uses_y = true;
+                    uses_y[0] = true;
                     nodes[size++] = Y0;
                 } else {
                     nodes[size++] = K0;
@@ -257,6 +122,7 @@ struct Expr {
             } else if (size > 1 && nodes[size-1] == Y0 &&
                        (nodes[size-2] == Min ||
                         nodes[size-2] == Max ||
+                        nodes[size-2] == Mul ||
                         nodes[size-2] == LT ||
                         nodes[size-2] == GT ||
                         nodes[size-2] == EQ ||
@@ -265,42 +131,31 @@ struct Expr {
                         nodes[size-2] == Sub)) {
                 // avoid min(y, y)
                 if (dec.get(2)) {
-                    uses_x = true;
+                    uses_x[0] = true;
                     nodes[size++] = X0;
                 } else {
                     nodes[size++] = K0;
                 }
             } else if (size > 1 && nodes[size-1] == K0) {
                 if (dec.get(2)) {
-                    uses_x = true;
+                    uses_x[0] = true;
                     nodes[size++] = X0;
                 } else {
-                    uses_y = true;
+                    uses_y[0] = true;
                     nodes[size++] = Y0;
                 }
             } else {
                 int code = dec.get(3);
                 if (code == 0) {
-                    uses_x = true;
+                    uses_x[0] = true;
                     nodes[size++] = X0;
                 } else if (code == 1) {
-                    uses_y = true;
+                    uses_y[0] = true;
                     nodes[size++] = Y0;
                 } else {
                     nodes[size++] = K0;
                 }
             }
-
-            /*int code = dec.get(3);
-            if (code == 0) {
-                uses_x = true;
-                nodes[size++] = X0;
-            } else if (code == 1) {
-                uses_y = true;
-                nodes[size++] = Y0;
-            } else {
-                nodes[size++] = K0;
-            }*/
         } else {
             // TODO make a list of reasonable options
             int d;
@@ -323,7 +178,6 @@ struct Expr {
                 {
                     int leaves_on_right = dec.get(leaves/2) + 1;
                     int leaves_on_left = leaves - leaves_on_right;
-                    //std::cout << leaves << " -> " << leaves_on_left << ", " << leaves_on_right << "\n";
                     create(dec, leaves_on_left);
                     create(dec, leaves_on_right);
                 }
@@ -332,7 +186,6 @@ struct Expr {
                 {
                     int leaves_on_right = dec.get(leaves - 1) + 1;
                     int leaves_on_left = leaves - leaves_on_right;
-                    //std::cout << leaves << " -> " << leaves_on_left << ", " << leaves_on_right << "\n";
                     create(dec, leaves_on_left);
                     create(dec, leaves_on_right);
                 }
@@ -586,34 +439,25 @@ struct Expr {
         fail = false;
         return get_expr_term(cursor);
     }
-
-    pair<IsAssociative, AssociativeIds> is_associative() {
-        Halide::Expr eq = get_expr();
-        return prove_associativity(eq, kXVars, kYVars, kConstants);
-    }
 };
 
-Value random_value() {
-    return (((rand() << 16) ^ (rand() << 8) ^ rand()) & 0x0ffffff) - 0x07fffff;
-}
-
 int main(int argc, char **argv) {
-    vector<Expr> leave_start_expr_cond;
+    vector<SingleExpr> leave_start_expr_cond;
     leave_start_expr_cond.reserve(32);
 
-    const int MAX_LEAVES_COND = 4;
-    const int MAX_LEAVES = 4;
-    const int START_LEAVES_COND = 1;
-    const int START_LEAVES = 1;
+    const uint64_t MAX_LEAVES_COND = 6;
+    const uint64_t MAX_LEAVES = 6;
+    const uint64_t START_LEAVES_COND = 1;
+    const uint64_t START_LEAVES = 1;
 
     uint64_t fails = 0, valid = 0;
-    int leaves_cond = START_LEAVES_COND, leaves_true = START_LEAVES, leaves_false = START_LEAVES;
+    uint64_t leaves_cond = START_LEAVES_COND, leaves_true = START_LEAVES, leaves_false = START_LEAVES;
     std::cout << "\n******************************************************************\n";
     std::cout << "Leaves: " << leaves_cond << ", valid: " << valid << "\n";
 
-    Expr e_cond(true), e_true, e_false;
+    SingleExpr e_cond(true), e_true, e_false;
     for (uint64_t i = 0;; i++) {
-        e_cond = Expr(true);
+        e_cond = SingleExpr(true);
         DecisionSource dec_cond;
         dec_cond.val = i;
         e_cond.create(dec_cond, leaves_cond);
@@ -622,18 +466,20 @@ int main(int argc, char **argv) {
         if (leave_start_expr_cond.size() < leaves_cond) {
             leave_start_expr_cond.push_back(e_cond);
         } else {
-            Expr prev = leave_start_expr_cond[leaves_cond - 1];
+            SingleExpr prev = leave_start_expr_cond[leaves_cond - 1];
             repeat = (prev == e_cond);
         }
         if (repeat) {
             std::cout << "Total: " << i << ", fails: " << fails << ", repeat at: " << e_cond.get_expr() << "\n";
+            std::cout << "Valid: " << valid << "\n";
+            std::cout << "**************************************************************************\n";
             leaves_cond++;
             i = 0;
             fails = 0;
             std::cout << "\n******************************************************************\n";
-            std::cout << "Leaves: " << leaves_cond << ", valid: " << valid << "\n";
+            std::cout << "Leaves: " << leaves_cond << "\n";
             dec_cond.val = i;
-            e_cond = Expr(true);
+            e_cond = SingleExpr(true);
             e_cond.create(dec_cond, leaves_cond);
             assert(leave_start_expr_cond.size() < leaves_cond);
             leave_start_expr_cond.push_back(e_cond);
@@ -642,17 +488,16 @@ int main(int argc, char **argv) {
             return 0;
         }
 
-        //e_cond.print();
-        //std::cout << "e_cond: " << e_cond.get_expr() << "\n";
         if (!e_cond.get_expr().defined() || !e_cond.get_expr().type().is_bool()) {
             continue;
         }
 
+        //e_cond.print();
         //std::cout << "e_cond: " << e_cond.get_expr() << "\n";
-        vector<Expr> leave_start_expr_true;
+        vector<SingleExpr> leave_start_expr_true;
         leave_start_expr_true.reserve(32);
         for (uint64_t j = 0;; j++) {
-            e_true = Expr();
+            e_true = SingleExpr();
             DecisionSource dec_true;
             dec_true.val = j;
             e_true.create(dec_true, leaves_true);
@@ -661,7 +506,7 @@ int main(int argc, char **argv) {
             if (leave_start_expr_true.size() < leaves_true) {
                 leave_start_expr_true.push_back(e_true);
             } else {
-                Expr prev = leave_start_expr_true[leaves_true - 1];
+                SingleExpr prev = leave_start_expr_true[leaves_true - 1];
                 repeat = (prev == e_true);
             }
             if (repeat) {
@@ -672,7 +517,7 @@ int main(int argc, char **argv) {
                 DEBUG_PRINT2 << "\n\t******************************************************************\n";
                 DEBUG_PRINT2 << "\tLeaves: " << leaves_true << "\n";
                 dec_true.val = j;
-                e_true = Expr();
+                e_true = SingleExpr();
                 e_true.create(dec_true, leaves_true);
                 assert(leave_start_expr_true.size() < leaves_true);
                 leave_start_expr_true.push_back(e_true);
@@ -683,10 +528,10 @@ int main(int argc, char **argv) {
             }
 
             //std::cout << "\te_true: " << e_true.get_expr() << "\n";
-            vector<Expr> leave_start_expr_false;
+            vector<SingleExpr> leave_start_expr_false;
             leave_start_expr_false.reserve(32);
             for (uint64_t k = 0;; k++) {
-                e_false = Expr();
+                e_false = SingleExpr();
                 DecisionSource dec_false;
                 dec_false.val = k;
                 e_false.create(dec_false, leaves_false);
@@ -695,7 +540,7 @@ int main(int argc, char **argv) {
                 if (leave_start_expr_false.size() < leaves_false) {
                     leave_start_expr_false.push_back(e_false);
                 } else {
-                    Expr prev = leave_start_expr_false[leaves_false - 1];
+                    SingleExpr prev = leave_start_expr_false[leaves_false - 1];
                     repeat = (prev == e_false);
                 }
                 if (repeat) {
@@ -707,7 +552,7 @@ int main(int argc, char **argv) {
                     DEBUG_PRINT2 << "\t\tLeaves: " << leaves_false << "\n";
                     std::cout.flush();
                     dec_false.val = k;
-                    e_false = Expr();
+                    e_false = SingleExpr();
                     e_false.create(dec_false, leaves_false);
                     assert(leave_start_expr_false.size() < leaves_false);
                     leave_start_expr_false.push_back(e_false);
@@ -721,8 +566,8 @@ int main(int argc, char **argv) {
                 Halide::Expr expr_true = e_true.get_expr();
                 Halide::Expr expr_false = e_false.get_expr();
 
-                bool uses_x = e_cond.uses_x || e_true.uses_x || e_false.uses_x;
-                bool uses_y = e_cond.uses_y || e_true.uses_y || e_false.uses_y;
+                bool uses_x = e_cond.uses_x[0] || e_true.uses_x[0] || e_false.uses_x[0];
+                bool uses_y = e_cond.uses_y[0] || e_true.uses_y[0] || e_false.uses_y[0];
 
                 Halide::Expr expr = Halide::select(expr_cond, expr_true, expr_false);
 
@@ -738,7 +583,7 @@ int main(int argc, char **argv) {
                 uses_x = uses_vars(expr, kXNames);
 
                 Halide::Expr simplified;
-                bool boring = is_boring(expr, simplified);
+                bool boring = is_expr_boring(expr, simplified, kXNames, kYNames, kConstantNames);
                 if (boring || !uses_y || !uses_x) {
                     DEBUG_PRINT2 << "...Skip " << i << ": " << expr << " -> " << simplified << "\t; boring? "
                                  << boring << "; uses_x: " << uses_x << "; uses_y: " << uses_y << "\n";
@@ -769,49 +614,15 @@ int main(int argc, char **argv) {
                     }
                 }
 
-                if (associative && uses_x && uses_y && !boring) {
-                    pair<IsAssociative, AssociativeIds> result = prove_associativity(expr, kXVars, kYVars, kConstants);
-                    if (result.first == IsAssociative::YES) {
-                        if (result.second.associativity == AssociativeIds::LEFT) {
-                            std::cout << "i: " << i << ", j: " << j << ", k: " << k << ", " << expr << " -> ";
-                            std::cout << "Left-associativity";
-                            valid++;
-                        } else if (result.second.associativity == AssociativeIds::RIGHT) {
-                            std::cout << "i: " << i << ", j: " << j << ", k: " << k << ", " << expr << " -> ";
-                            std::cout << "Right-associativity";
-                            valid++;
-                        } else {
-                            fails++;
-                            //std::cout << "Unknown-associativity\n";
-                            continue;
-                        }
-                        std::cout << " with identity: ";
-                        print_tuple(Halide::Tuple(result.second.identities));
-                        std::cout << "\n";
-                    } else if (result.first == IsAssociative::UNKNOWN) {
-                        if (result.second.associativity == AssociativeIds::LEFT) {
-                            std::cout << "i: " << i << ", j: " << j << ", k: " << k << ", " << expr << " -> ";
-                            std::cout << "UNKNOWN associative with left-identity: ";
-                            valid++;
-                        } else if (result.second.associativity == AssociativeIds::RIGHT) {
-                            std::cout << "i: " << i << ", j: " << j << ", k: " << k << ", " << expr << " -> ";
-                            std::cout << "UNKNOWN associative with right-identity: ";
-                            valid++;
-                        } else {
-                            fails++;
-                            //std::cout << "UNKNOWN associative\n";
-                            continue;
-                        }
-                        print_tuple(Halide::Tuple(result.second.identities));
-                        std::cout << "\n";
-                    } else {
-                        fails++;
-                        //std::cout << "NOT associative\n";
+                if (associative && uses_x && uses_y) {
+                    vector<Halide::Expr> halide_exprs = {expr};
+                    if (z3_check_associativity(halide_exprs, kXVars, kYVars, kConstants, {leaves_cond}, {i})) {
+                        valid++;
                     }
                 } else {
                     fails++;
-                    DEBUG_PRINT2 << "...Skip " << i << ": " << expr << "\t; boring? " << boring << "; uses_x: "
-                                 << uses_x << "; uses_y: " << uses_y << "; associative: " << associative << "\n";
+                    DEBUG_PRINT2 << "...Skip " << i << ": " << expr << "\t; uses_x: " << uses_x
+                                 << "; uses_y: " << uses_y << "; associative: " << associative << "\n";
                 }
             }
         }

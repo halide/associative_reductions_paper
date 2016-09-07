@@ -112,31 +112,6 @@ std::ostream &operator<<(std::ostream &stream, const Halide::Tuple &tuple) {
     return stream;
 }
 
-// Replace all signed/unsigned integers with symbolic variables.
-class ReplaceConstants : public Halide::Internal::IRMutator {
-    // Count the number of integer constants we have replaced so far.
-    unsigned count = 0;
-
-    using Halide::Internal::IRMutator::visit;
-
-    Halide::Expr get_expr(const Halide::Type &t) {
-        string name = unique_name("k" + std::to_string(count));
-        Halide::Expr var = Variable::make(t, name);
-        if (kConstants.size() <= count) {
-            kConstantNames.push_back(name);
-            kConstants.push_back(var);
-        }
-        count++;
-        return var;
-    }
-
-    void visit(const Halide::Internal::IntImm *op) {
-        expr = get_expr(op->type);
-    }
-
-    void visit(const Halide::Internal::UIntImm *op) {
-        expr = get_expr(op->type);
-    }
 };
 
 } // anonymous namespace
@@ -357,21 +332,6 @@ struct Expr {
                     nodes[size++] = K0;
                 }
             }
-
-            /*int d = dec.get(4);
-            if (d == 0) {
-                uses_x = true;
-                nodes[size++] = X0;
-            } else if (d == 1) {
-                uses_x = true;
-                nodes[size++] = X1;
-            } else if (d == 2) {
-                uses_y = true;
-                nodes[size++] = Y0;
-            } else {
-                uses_y = true;
-                nodes[size++] = Y1;
-            }*/
         } else {
             // TODO make a list of reasonable options
             int d;
@@ -390,7 +350,6 @@ struct Expr {
                 {
                     int leaves_on_right = dec.get(leaves/2) + 1;
                     int leaves_on_left = leaves - leaves_on_right;
-                    //std::cout << leaves << " -> " << leaves_on_left << ", " << leaves_on_right << "\n";
                     create(dec, leaves_on_left);
                     create(dec, leaves_on_right);
                 }
@@ -399,7 +358,6 @@ struct Expr {
                 {
                     int leaves_on_right = dec.get(leaves - 1) + 1;
                     int leaves_on_left = leaves - leaves_on_right;
-                    //std::cout << leaves << " -> " << leaves_on_left << ", " << leaves_on_right << "\n";
                     create(dec, leaves_on_left);
                     create(dec, leaves_on_right);
                 }
@@ -598,46 +556,6 @@ Value random_value() {
     return (((rand() << 16) ^ (rand() << 8) ^ rand()) & 0x0ffffff) - 0x07fffff;
 }
 
-Expr generate_expr(int index, uint64_t &i, uint64_t &leaves, uint64_t &fails, vector<Expr> &leave_start_expr) {
-    string shift = "";
-    for (int i = 0; i < index; ++i) {
-        shift += "\t";
-    }
-
-    Expr e;
-    DecisionSource dec;
-    dec.val = i;
-    e.create(dec, leaves);
-
-    //std::cout << "Leaves: " << leaves << ", i: " << i << ", expr: " << e.get_expr() << ", dec.val: " << dec.val << "\n";
-
-    bool repeat = false;
-    if (leave_start_expr.size() < leaves) {
-        leave_start_expr.push_back(e);
-    } else {
-        Expr prev = leave_start_expr[leaves - 1];
-        repeat = (prev == e);
-    }
-    if (repeat) {
-        std::cout << shift << "Total: " << i << ", fails: " << fails << ", repeat at: " << e.get_expr() << ", val: " << dec.val << "\n";
-        /*leaves++;
-        i = 0;
-        fails = 0;
-        if (index == 0) {
-            std::cout << shift << "\n******************************************************************\n";
-            std::cout << shift << "Leaves (" << index << "): " << leaves << "\n";
-        }
-        std::cout.flush();
-        dec.val = i;
-        e = Expr();
-        e.create(dec, leaves);
-        assert(leave_start_expr.size() < leaves);
-        leave_start_expr.push_back(e);*/
-    }
-    i++;
-    return e;
-}
-
 bool should_skip_expression(int index, Halide::Expr expr, uint64_t &fails) {
     string shift = "";
     for (int i = 0; i < index; ++i) {
@@ -769,15 +687,15 @@ bool z3_check_associativity(vector<Halide::Expr> &temp, uint64_t &valid) {
 }
 
 int main(int argc, char **argv) {
-    const int MAX_LEAVES_COND = 3;
-    const int MAX_LEAVES = 2;
-    const int MAX_LEAVES_0 = 3;
-    const int START_LEAVES_COND = 1;
-    const int START_LEAVES = 1;
-    const int START_LEAVES_0 = 1;
+    const uint64_t MAX_LEAVES_COND = 4;
+    const uint64_t MAX_LEAVES = 3;
+    const uint64_t MAX_LEAVES_0 = 4;
+    const uint64_t START_LEAVES_COND = 1;
+    const uint64_t START_LEAVES = 1;
+    const uint64_t START_LEAVES_0 = 1;
 
     uint64_t fails = 0, valid = 0;
-    int leaves = START_LEAVES_0, leaves_cond = START_LEAVES_COND, leaves_true = START_LEAVES, leaves_false = START_LEAVES;
+    uint64_t leaves = START_LEAVES_0, leaves_cond = START_LEAVES_COND, leaves_true = START_LEAVES, leaves_false = START_LEAVES;
     std::cout << "\n******************************************************************\n";
     std::cout << "Leaves: " << leaves_cond << ", valid: " << valid << "\n";
 
@@ -945,9 +863,9 @@ int main(int argc, char **argv) {
                     }
 
                     //std::cout << "\tElement 1: " << expr << "\n";
-                    vector<Halide::Expr> eqs = {e0_expr, expr};
+                    vector<Halide::Expr> eqs = {expr, e0_expr}; // Flip
                     //std::cout << "Expression: " << Halide::Tuple(eqs) << "\n";
-                    if (!fast_check_associativity(e0, e_cond, e_true, e_false, 1)) {
+                    if (!fast_check_associativity(e0, e_cond, e_true, e_false, 0)) {
                         z3_check_associativity(eqs, valid);
                     }
                 }

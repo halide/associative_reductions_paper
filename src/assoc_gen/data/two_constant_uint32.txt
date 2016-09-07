@@ -1,0 +1,27 @@
+******************************************************************
+Running two-element tuple generator of type: uint32
+Morton min: 0, Morton max: 2
+
+Leaves0: 2, i0: 25, Leaves1: 2, i1: 16, { Add::make(x0, y0), Sub::make(y1, x0) } -> Left-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 2, i1: 30, { Add::make(x0, y0), Add::make(x1, y0) } -> Right-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 2, i1: 31, { Add::make(x0, y0), Sub::make(x1, y0) } -> Right-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 2, i1: 50, { Add::make(x0, y0), Add::make(x0, y1) } -> Left-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 3, i1: 2385, { Add::make(x0, y0), Add::make(Mul::make(x0, k0), y1) } -> Left-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 3, i1: 5136, { Add::make(x0, y0), Sub::make(y1, Mul::make(x0, k0)) } -> Left-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 3, i1: 5616, { Add::make(x0, y0), Sub::make(x1, Mul::make(y0, k0)) } -> Right-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 4, i1: 43548, { Add::make(x0, y0), Min::make(Max::make(x0, y1), Min::make(y1, x1)) } -> Left-associativity with identity: { (uint32)0, (uint32)4294967295 }
+Leaves0: 2, i0: 25, Leaves1: 4, i1: 44539, { Add::make(x0, y0), Max::make(Min::make(x0, y1), Max::make(y1, x1)) } -> Left-associativity with identity: { (uint32)0, (uint32)0 }
+Leaves0: 2, i0: 25, Leaves1: 4, i1: 50525, { Add::make(x0, y0), Add::make(Mul::make(x0, y0), Add::make(y1, x1)) } -> Left-associativity with identity: { (uint32)0, (uint32)0 }
+
+
+
+******************************************************************
+Running two-element tuple generator of type: uint32
+Morton min: 34, Morton max: 36
+
+Morton: 34, leaves: [5, 7], i: [2480000, 2634999]
+Leaves0: 5, i0: 2481934, Leaves1: 5, i1: 2603844, { Max::make(Min::make(Max::make(Min::make(y0, y1), k0), x1), y0), Max::make(Max::make(Min::make(Mul::make(x1, y1), x1), y1), x1) } -> UNKNOWN associative with left-identity: { (uint32)0, (uint32)0 }
+
+
+******************************************************************
+

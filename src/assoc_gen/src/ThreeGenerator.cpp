@@ -24,25 +24,25 @@ typedef AssociativeTuple<TupleExpr> AssocTuple;
 const uint64_t START_LEAVES = 2;
 const uint64_t MAX_LEAVES = 7;
 const uint64_t LEAVES_TILE = 3;
-const uint64_t ITER_TILE = 62000;
+const uint64_t ITER_TILE = 60000;
 
 Halide::Type kType = Halide::Int(32);
-vector<string> kXNames = {"x0", "x1", "x2", "x3"};
-vector<string> kYNames = {"y0", "y1", "y2", "y3"};
-vector<string> kConstantNames;
+vector<string> kXNames = {"x0", "x1", "x2"};
+vector<string> kYNames = {"y0", "y1", "y2"};
+vector<string> kConstantNames = {"k0"};
 vector<Halide::Expr> kXVars = {
     Variable::make(kType, "x0"),
     Variable::make(kType, "x1"),
     Variable::make(kType, "x2"),
-    Variable::make(kType, "x3"),
 };
 vector<Halide::Expr> kYVars = {
     Variable::make(kType, "y0"),
     Variable::make(kType, "y1"),
     Variable::make(kType, "y2"),
-    Variable::make(kType, "y3"),
 };
-vector<Halide::Expr> kConstants;
+vector<Halide::Expr> kConstants = {
+    Variable::make(kType, "k0"),
+};
 
 enum Node : long {
     X0 = 0,
@@ -51,20 +51,18 @@ enum Node : long {
     Y1,
     X2,
     Y2,
-    X3,
-    Y3,
     K0,
     Add,
     Mul,
     LastNode,
-    Sub,
     Min,
     Max,
+    Sub,
 };
 
 class TupleExpr : public Expr {
 public:
-    TupleExpr() : Expr(4) {}
+    TupleExpr() : Expr(3) {}
 
     Value evaluate_term(const vector<Value> &xvalues, const vector<Value> &yvalues, Value k, int &cursor) const {
         Value v1, v2;
@@ -75,16 +73,12 @@ public:
             return xvalues[1];
         case X2:
             return xvalues[2];
-        case X3:
-            return xvalues[3];
         case Y0:
             return yvalues[0];
         case Y1:
             return yvalues[1];
         case Y2:
             return yvalues[2];
-        case Y3:
-            return yvalues[3];
         case K0:
             return k;
         case Add:
@@ -128,21 +122,17 @@ public:
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
                 // avoid min(x, x)
-                int d = dec.get(4);
+                int d = dec.get(3);
                 if (d == 0) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
                 } else if (d == 1) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 2) {
+                } else {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
                 }
-
             } else if (size > 1 && nodes[size-1] == X1 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
@@ -150,19 +140,16 @@ public:
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
                 // avoid min(x, x)
-                int d = dec.get(4);
+                int d = dec.get(3);
                 if (d == 0) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
                 } else if (d == 1) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 2) {
+                } else {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
                 }
             } else if (size > 1 && nodes[size-1] == X2 &&
                 (nodes[size-2] == Min ||
@@ -171,43 +158,17 @@ public:
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
                 // avoid min(x, x)
-                int d = dec.get(4);
+                int d = dec.get(3);
                 if (d == 0) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
                 } else if (d == 1) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 2) {
+                } else {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
                 }
-
-            } else if (size > 1 && nodes[size-1] == X3 &&
-                (nodes[size-2] == Min ||
-                 nodes[size-2] == Max ||
-                 nodes[size-2] == Mul ||
-                 nodes[size-2] == Sub ||
-                 nodes[size-2] == Add)) {
-                // avoid min(x, x)
-                int d = dec.get(4);
-                if (d == 0) {
-                    uses_y[0] = true;
-                    nodes[size++] = Y0;
-                } else if (d == 1) {
-                    uses_y[1] = true;
-                    nodes[size++] = Y1;
-                } else if (d == 2) {
-                    uses_y[2] = true;
-                    nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
-                }
-
             } else if (size > 1 && nodes[size-1] == Y0 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
@@ -215,19 +176,16 @@ public:
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
                 // avoid min(y, y)
-                int d = dec.get(4);
+                int d = dec.get(3);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
                 } else if (d == 1) {
                     uses_x[1] = true;
                     nodes[size++] = X1;
-                } else if (d == 2) {
+                } else {
                     uses_x[2] = true;
                     nodes[size++] = X2;
-                } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
                 }
             } else if (size > 1 && nodes[size-1] == Y1 &&
                 (nodes[size-2] == Min ||
@@ -236,19 +194,16 @@ public:
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
                 // avoid min(y, y)
-                int d = dec.get(4);
+                int d = dec.get(3);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
                 } else if (d == 1) {
                     uses_x[1] = true;
                     nodes[size++] = X1;
-                } else if (d == 2) {
+                } else {
                     uses_x[2] = true;
                     nodes[size++] = X2;
-                } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
                 }
             } else if (size > 1 && nodes[size-1] == Y2 &&
                 (nodes[size-2] == Min ||
@@ -257,22 +212,19 @@ public:
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
                 // avoid min(y, y)
-                int d = dec.get(4);
+                int d = dec.get(3);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
                 } else if (d == 1) {
                     uses_x[1] = true;
                     nodes[size++] = X1;
-                } else if (d == 2) {
+                } else {
                     uses_x[2] = true;
                     nodes[size++] = X2;
-                } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
                 }
             } else {
-                int d = dec.get(8);
+                int d = dec.get(6);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
@@ -283,30 +235,182 @@ public:
                     uses_x[2] = true;
                     nodes[size++] = X2;
                 } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 4) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
-                } else if (d == 5) {
+                } else if (d == 4) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 6) {
+                } else {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
                 }
             }*/
 
+            /*if (size > 1 && nodes[size-1] == X0 &&
+                (nodes[size-2] == Min ||
+                 nodes[size-2] == Max ||
+                 nodes[size-2] == Sub ||
+                 nodes[size-2] == Add)) {
+                // avoid min(x, x)
+                int d = dec.get(5);
+                if (d == 0) {
+                    uses_x[1] = true;
+                    nodes[size++] = X1;
+                } else if (d == 1) {
+                    uses_x[2] = true;
+                    nodes[size++] = X2;
+                } else if (d == 2) {
+                    uses_y[0] = true;
+                    nodes[size++] = Y0;
+                } else if (d == 3) {
+                    uses_y[1] = true;
+                    nodes[size++] = Y1;
+                } else {
+                    uses_y[2] = true;
+                    nodes[size++] = Y2;
+                }
+            } else if (size > 1 && nodes[size-1] == X1 &&
+                (nodes[size-2] == Min ||
+                 nodes[size-2] == Max ||
+                 nodes[size-2] == Sub ||
+                 nodes[size-2] == Add)) {
+                int d = dec.get(5);
+                if (d == 0) {
+                    uses_x[0] = true;
+                    nodes[size++] = X0;
+                } else if (d == 1) {
+                    uses_x[2] = true;
+                    nodes[size++] = X2;
+                } else if (d == 2) {
+                    uses_y[0] = true;
+                    nodes[size++] = Y0;
+                } else if (d == 3) {
+                    uses_y[1] = true;
+                    nodes[size++] = Y1;
+                } else {
+                    uses_y[2] = true;
+                    nodes[size++] = Y2;
+                }
+            } else if (size > 1 && nodes[size-1] == X2 &&
+                (nodes[size-2] == Min ||
+                 nodes[size-2] == Max ||
+                 nodes[size-2] == Sub ||
+                 nodes[size-2] == Add)) {
+                int d = dec.get(5);
+                if (d == 0) {
+                    uses_x[0] = true;
+                    nodes[size++] = X0;
+                } else if (d == 1) {
+                    uses_x[1] = true;
+                    nodes[size++] = X1;
+                } else if (d == 2) {
+                    uses_y[0] = true;
+                    nodes[size++] = Y0;
+                } else if (d == 3) {
+                    uses_y[1] = true;
+                    nodes[size++] = Y1;
+                } else {
+                    uses_y[2] = true;
+                    nodes[size++] = Y2;
+                }
+            } else if (size > 1 && nodes[size-1] == Y0 &&
+                (nodes[size-2] == Min ||
+                 nodes[size-2] == Max ||
+                 nodes[size-2] == Sub ||
+                 nodes[size-2] == Add)) {
+                int d = dec.get(5);
+                if (d == 0) {
+                    uses_x[0] = true;
+                    nodes[size++] = X0;
+                } else if (d == 1) {
+                    uses_x[1] = true;
+                    nodes[size++] = X1;
+                } else if (d == 2) {
+                    uses_x[2] = true;
+                    nodes[size++] = X2;
+                } else if (d == 3) {
+                    uses_y[1] = true;
+                    nodes[size++] = Y1;
+                } else {
+                    uses_y[2] = true;
+                    nodes[size++] = Y2;
+                }
+            } else if (size > 1 && nodes[size-1] == Y1 &&
+                (nodes[size-2] == Min ||
+                 nodes[size-2] == Max ||
+                 nodes[size-2] == Sub ||
+                 nodes[size-2] == Add)) {
+                int d = dec.get(5);
+                if (d == 0) {
+                    uses_x[0] = true;
+                    nodes[size++] = X0;
+                } else if (d == 1) {
+                    uses_x[1] = true;
+                    nodes[size++] = X1;
+                } else if (d == 2) {
+                    uses_x[2] = true;
+                    nodes[size++] = X2;
+                } else if (d == 3) {
+                    uses_y[0] = true;
+                    nodes[size++] = Y0;
+                } else {
+                    uses_y[2] = true;
+                    nodes[size++] = Y2;
+                }
+            } else if (size > 1 && nodes[size-1] == Y2 &&
+                (nodes[size-2] == Min ||
+                 nodes[size-2] == Max ||
+                 nodes[size-2] == Sub ||
+                 nodes[size-2] == Add)) {
+                int d = dec.get(5);
+                if (d == 0) {
+                    uses_x[0] = true;
+                    nodes[size++] = X0;
+                } else if (d == 1) {
+                    uses_x[1] = true;
+                    nodes[size++] = X1;
+                } else if (d == 2) {
+                    uses_x[2] = true;
+                    nodes[size++] = X2;
+                } else if (d == 3) {
+                    uses_y[0] = true;
+                    nodes[size++] = Y0;
+                } else {
+                    uses_y[1] = true;
+                    nodes[size++] = Y1;
+                }
+            } else {
+                int d = dec.get(6);
+                if (d == 0) {
+                    uses_x[0] = true;
+                    nodes[size++] = X0;
+                } else if (d == 1) {
+                    uses_x[1] = true;
+                    nodes[size++] = X1;
+                } else if (d == 2) {
+                    uses_x[2] = true;
+                    nodes[size++] = X2;
+                } else if (d == 3) {
+                    uses_y[0] = true;
+                    nodes[size++] = Y0;
+                } else if (d == 4) {
+                    uses_y[1] = true;
+                    nodes[size++] = Y1;
+                } else {
+                    uses_y[2] = true;
+                    nodes[size++] = Y2;
+                }
+            }*/
+
+
+            // With constants
             if (size > 1 && nodes[size-1] == X0 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
                 // avoid min(x, x)
-                int d = dec.get(7);
+                int d = dec.get(6);
                 if (d == 0) {
                     uses_x[1] = true;
                     nodes[size++] = X1;
@@ -314,28 +418,23 @@ public:
                     uses_x[2] = true;
                     nodes[size++] = X2;
                 } else if (d == 2) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 3) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
-                } else if (d == 4) {
+                } else if (d == 3) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 5) {
+                } else if (d == 4) {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
                 } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
+                    nodes[size++] = K0;
                 }
-
             } else if (size > 1 && nodes[size-1] == X1 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
-                int d = dec.get(7);
+                int d = dec.get(6);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
@@ -343,27 +442,23 @@ public:
                     uses_x[2] = true;
                     nodes[size++] = X2;
                 } else if (d == 2) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 3) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
-                } else if (d == 4) {
+                } else if (d == 3) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 5) {
+                } else if (d == 4) {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
                 } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
+                    nodes[size++] = K0;
                 }
             } else if (size > 1 && nodes[size-1] == X2 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
-                int d = dec.get(7);
+                int d = dec.get(6);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
@@ -371,59 +466,23 @@ public:
                     uses_x[1] = true;
                     nodes[size++] = X1;
                 } else if (d == 2) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 3) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
-                } else if (d == 4) {
+                } else if (d == 3) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 5) {
+                } else if (d == 4) {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
                 } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
+                    nodes[size++] = K0;
                 }
-
-            } else if (size > 1 && nodes[size-1] == X3 &&
-                (nodes[size-2] == Min ||
-                 nodes[size-2] == Max ||
-                 nodes[size-2] == Sub ||
-                 nodes[size-2] == Add)) {
-                // avoid min(x, x)
-                int d = dec.get(7);
-                if (d == 0) {
-                    uses_x[0] = true;
-                    nodes[size++] = X0;
-                } else if (d == 1) {
-                    uses_x[1] = true;
-                    nodes[size++] = X1;
-                } else if (d == 2) {
-                    uses_x[2] = true;
-                    nodes[size++] = X2;
-                } else if (d == 3) {
-                    uses_y[0] = true;
-                    nodes[size++] = Y0;
-                } else if (d == 4) {
-                    uses_y[1] = true;
-                    nodes[size++] = Y1;
-                } else if (d == 5) {
-                    uses_y[2] = true;
-                    nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
-                }
-
             } else if (size > 1 && nodes[size-1] == Y0 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
-                // avoid min(y, y)
-                int d = dec.get(7);
+                int d = dec.get(5);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
@@ -434,25 +493,18 @@ public:
                     uses_x[2] = true;
                     nodes[size++] = X2;
                 } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 4) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 5) {
+                } else {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
                 }
             } else if (size > 1 && nodes[size-1] == Y1 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
-                // avoid min(y, y)
-                int d = dec.get(7);
+                int d = dec.get(5);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
@@ -463,25 +515,18 @@ public:
                     uses_x[2] = true;
                     nodes[size++] = X2;
                 } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 4) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
-                } else if (d == 5) {
+                } else {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
                 }
             } else if (size > 1 && nodes[size-1] == Y2 &&
                 (nodes[size-2] == Min ||
                  nodes[size-2] == Max ||
                  nodes[size-2] == Sub ||
                  nodes[size-2] == Add)) {
-                // avoid min(y, y)
-                int d = dec.get(7);
+                int d = dec.get(5);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
@@ -492,49 +537,26 @@ public:
                     uses_x[2] = true;
                     nodes[size++] = X2;
                 } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 4) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
-                } else if (d == 5) {
+                } else {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
                 }
-            } else if (size > 1 && nodes[size-1] == Y3 &&
-                (nodes[size-2] == Min ||
-                 nodes[size-2] == Max ||
-                 nodes[size-2] == Sub ||
-                 nodes[size-2] == Add)) {
-                // avoid min(y, y)
-                int d = dec.get(7);
+            } else if (size > 1 && nodes[size-1] == K0) {
+                int d = dec.get(3);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
                 } else if (d == 1) {
                     uses_x[1] = true;
                     nodes[size++] = X1;
-                } else if (d == 2) {
+                } else {
                     uses_x[2] = true;
                     nodes[size++] = X2;
-                } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 4) {
-                    uses_y[0] = true;
-                    nodes[size++] = Y0;
-                } else if (d == 5) {
-                    uses_y[1] = true;
-                    nodes[size++] = Y1;
-                } else {
-                    uses_y[2] = true;
-                    nodes[size++] = Y2;
                 }
             } else {
-                int d = dec.get(8);
+                int d = dec.get(7);
                 if (d == 0) {
                     uses_x[0] = true;
                     nodes[size++] = X0;
@@ -545,20 +567,16 @@ public:
                     uses_x[2] = true;
                     nodes[size++] = X2;
                 } else if (d == 3) {
-                    uses_x[3] = true;
-                    nodes[size++] = X3;
-                } else if (d == 4) {
                     uses_y[0] = true;
                     nodes[size++] = Y0;
-                } else if (d == 5) {
+                } else if (d == 4) {
                     uses_y[1] = true;
                     nodes[size++] = Y1;
-                } else if (d == 6) {
+                } else if (d == 5) {
                     uses_y[2] = true;
                     nodes[size++] = Y2;
                 } else {
-                    uses_y[3] = true;
-                    nodes[size++] = Y3;
+                    nodes[size++] = K0;
                 }
             }
         } else {
@@ -602,9 +620,6 @@ public:
         case X2:
             std::cout << "X2";
             break;
-        case X3:
-            std::cout << "X3";
-            break;
         case Y0:
             std::cout << "Y0";
             break;
@@ -613,9 +628,6 @@ public:
             break;
         case Y2:
             std::cout << "Y2";
-            break;
-        case Y3:
-            std::cout << "Y3";
             break;
         case K0:
             std::cout << "K0";
@@ -678,9 +690,6 @@ public:
         case X2:
             result = kXVars[2];
             break;
-        case X3:
-            result = kXVars[3];
-            break;
         case Y0:
             result = kYVars[0];
             break;
@@ -689,9 +698,6 @@ public:
             break;
         case Y2:
             result = kYVars[2];
-            break;
-        case Y3:
-            result = kYVars[3];
             break;
         case K0:
             result = kConstants[0];
@@ -844,8 +850,21 @@ Point morton_to_coordinate(uint32_t morton) {
     return {leaves, i};
 }
 
+template <typename T>
+std::ostream &operator<<(std::ostream &out, const vector<T> &v) {
+    out << '[';
+    for (size_t i = 0; i < v.size(); ++i) {
+        out << v[i];
+        if (i < v.size() - 1) {
+            out << ", ";
+        }
+    }
+    out << "]";
+    return out;
+}
+
 int main(int argc, char **argv) {
-    vector<set<TupleExpr>> seen(4);
+    vector<set<TupleExpr>> seen(3);
     uint32_t MORTON_MIN = 0;
     uint32_t MORTON_MAX = 0;
 
@@ -855,6 +874,7 @@ int main(int argc, char **argv) {
     if (argc > 2) {
         MORTON_MAX = atoi(argv[2]);
     }
+    std::cout << "Running three-element tuple generator of type: " << kType << "\n";
     std::cout << "Morton min: " << MORTON_MIN << ", Morton max: " << MORTON_MAX << "\n\n";
 
     vector<IntervalSet> invalid(9);
@@ -866,9 +886,8 @@ int main(int argc, char **argv) {
         Point point = morton_to_coordinate(morton);
         //uint64_t leaves_start = std::max(point.leaves, START_LEAVES);
         //uint64_t leaves_end =  std::min(point.leaves + LEAVES_TILE - 1, MAX_LEAVES);
-        uint64_t leaves_start = 4, leaves_end = 4;
-        //uint64_t i_start = point.i;
-        uint64_t i_start = 50000;
+        uint64_t leaves_start = 3, leaves_end = 3;
+        uint64_t i_start = point.i;
         uint64_t i_end = point.i + ITER_TILE - 1;
 
         std::cout << "Morton: " << morton << ", leaves: [" << leaves_start
@@ -876,11 +895,12 @@ int main(int argc, char **argv) {
                   << i_end << "]" << "\n";
 
         int valid = 0, decomposable = 0;
-        Halide::Expr expr0, expr1, expr2, expr3;
         for (uint64_t leaves0 = leaves_start; leaves0 <= leaves_end; ++leaves0) {
             IntervalSet i0_range;
             i0_range.insert(IntervalVal::closed(i_start, i_end));
             i0_range -= invalid[leaves0];
+
+            Halide::Expr expr0, expr1, expr2;
             for (auto it0 = i0_range.begin(); it0 != i0_range.end(); it0++) {
                 for (uint64_t i0 = it0->lower(); i0 <= it0->upper(); ++i0) {
                     if (boost::icl::contains(invalid[leaves0], i0)) {
@@ -897,21 +917,12 @@ int main(int argc, char **argv) {
                         continue;
                     }
 
-                    //Halide::Expr expr = (kXVars[0] * kYVars[0]) + (kXVars[1] * kYVars[2]);
-                    //Halide::Expr expr = (kXVars[0] * kYVars[1]) + (kXVars[1] * kYVars[3]);
-                    //Halide::Expr expr = (kXVars[2] * kYVars[0]) + (kXVars[3] * kYVars[2]);
-                    /*Halide::Expr expr = (kXVars[2] * kYVars[1]) + (kXVars[3] * kYVars[3]);
-                    if (equal(expr0, expr)) {
-                        std::cout << "***FOUND EXPR after i0: " << i0 << "; expr: " << expr0 << "\n";
-                        return 0;
-                    }*/
-
                     //std::cout << "Leaves0: " << leaves0 << ", i0: " << i0 << ", expr: " << expr0 << ", valid: " << valid << "\n";
 
                     for (uint64_t leaves1 = leaves_start; leaves1 <= leaves_end; ++leaves1) {
                         IntervalSet i1_range;
                         i1_range.insert(IntervalVal::closed(i_start, i_end));
-                        //i1_range.insert(IntervalVal::closed(59206, 59206));
+                        //i1_range.insert(IntervalVal::closed(37382, 37382));
                         i1_range -= invalid[leaves1];
                         for (auto it1 = i1_range.begin(); it1 != i1_range.end(); it1++) {
                             for (uint64_t i1 = it1->lower(); i1 <= it1->upper(); ++i1) {
@@ -926,7 +937,7 @@ int main(int argc, char **argv) {
                                     DEBUG_PRINT2 << "......Skip leaves1 equal: " << leaves1 << ", i1: " << i1 << "\n";
                                     continue;
                                 }
-                                skip_e1 = skip_e1 || should_skip_expression(1, expr0, e1.fail, e1.uses_x, e1.uses_y, kXNames, kYNames, kConstantNames);
+                                skip_e1 = skip_e1 || should_skip_expression(1, expr1, e1.fail, e1.uses_x, e1.uses_y, kXNames, kYNames, kConstantNames);
                                 if (skip_e1) {
                                     DEBUG_PRINT2 << "......Skip leaves1: " << leaves1 << ", i1: " << i1 << "\n";
                                     invalid[leaves1].insert(i1);
@@ -960,59 +971,50 @@ int main(int argc, char **argv) {
                                             }
                                             //std::cout << "Leaves2: " << leaves2 << ", i2: " << i2 << ", expr: " << expr2 << "\n";
 
-                                            for (uint64_t leaves3 = leaves_start; leaves3 <= leaves_end; ++leaves3) {
-                                                IntervalSet i3_range;
-                                                i3_range.insert(IntervalVal::closed(i_start, i_end));
-                                                //i3_range.insert(IntervalVal::closed(61270, 61270));
-                                                i3_range -= invalid[leaves3];
-                                                for (auto it3 = i3_range.begin(); it3 != i3_range.end(); it3++) {
-                                                    for (uint64_t i3 = it3->lower(); i3 <= it3->upper(); ++i3) {
-                                                        if (boost::icl::contains(invalid[leaves3], i3)) {
-                                                            DEBUG_PRINT2 << "......Skip leaves3: " << leaves3 << ", i3: " << i3 << "\n";
-                                                            continue;
-                                                        }
-                                                        TupleExpr e3;
-                                                        bool skip_e3 = generate_expr(3, leaves3, i3, seen[3], e3);
-                                                        expr3 = e3.get_expr();
-                                                        if (Halide::Internal::equal(expr0, expr3) ||
-                                                            Halide::Internal::equal(expr1, expr3) ||
-                                                            Halide::Internal::equal(expr2, expr3)) {
-                                                            DEBUG_PRINT2 << "......Skip leaves3 equal: " << leaves3 << ", i3: " << i3 << "\n";
-                                                            continue;
-                                                        }
-                                                        skip_e3 = skip_e3 || should_skip_expression(3, expr3, e3.fail, e3.uses_x, e3.uses_y, kXNames, kYNames, kConstantNames);
-                                                        if (skip_e3) {
-                                                            invalid[leaves3].insert(i3);
-                                                            continue;
-                                                        }
-                                                        //std::cout << "Leaves3: " << leaves3 << ", i3: " << i3 << ", expr: " << expr3 << "\n";
+                                            vector<Halide::Expr> halide_exprs = {expr0, expr1, expr2};
 
-                                                        // Check asssociativity
-                                                        vector<TupleExpr> eqs = {e0, e1, e2, e3};
-                                                        if (!fast_check_associativity(eqs, associative_sets[leaves0])) {
-                                                            vector<Halide::Expr> halide_exprs = {expr0, expr1, expr2, expr3};
-                                                            vector<vector<bool>> eqs_uses_x = {e0.uses_x, e1.uses_x, e2.uses_x, e3.uses_x};
-                                                            vector<vector<bool>> eqs_uses_y = {e0.uses_y, e1.uses_y, e2.uses_y, e3.uses_y};
-                                                            //if (is_decomposable(eqs_uses_x, eqs_uses_y)) {
-                                                            //    DEBUG_PRINT2 << "......Skip decomposable exprs: " << Halide::Tuple(halide_exprs) << "\n";
-                                                            //    continue;
-                                                            //}
-                                                            if (z3_check_associativity(halide_exprs, kXVars, kYVars, kConstants,
-                                                                                       {leaves0, leaves1, leaves2, leaves3},
-                                                                                       {i0, i1, i2, i3})) {
-                                                                associative_sets[leaves0].insert(AssocTuple(e0, e1, e2, e3));
-                                                                valid++;
-                                                                if (is_decomposable(eqs_uses_x, eqs_uses_y)) {
-                                                                    std::cout << "......Skip decomposable exprs: " << Halide::Tuple(halide_exprs) << "\n\n";
-                                                                    decomposable++;
-                                                                    continue;
-                                                                }
-                                                            }
-                                                        }
+                                            /*Halide::Expr expr0 = (kXVars[0] + kYVars[0]);
+                                            Halide::Expr expr1 = (kXVars[1] + kYVars[0]);
+                                            Halide::Expr expr2 = (kXVars[2] * kYVars[2]);
+                                            if (equal(expr0, halide_exprs[0]) && equal(expr1, halide_exprs[1]) && equal(expr2, halide_exprs[2])) {
+                                                std::cout << "***FOUND EXPR after i0: " << i0 << "; expr: " << Halide::Tuple(halide_exprs) << "\n";
+                                                std::cout << "e0.uses_x: " << e0.uses_x << "\n";
+                                                std::cout << "e1.uses_x: " << e1.uses_x << "\n";
+                                                std::cout << "e2.uses_x: " << e2.uses_x << "\n";
+                                                std::cout << "e0.uses_y: " << e0.uses_y << "\n";
+                                                std::cout << "e1.uses_y: " << e1.uses_y << "\n";
+                                                std::cout << "e2.uses_y: " << e2.uses_y << "\n";
+                                                vector<vector<bool>> eqs_uses_x = {e0.uses_x, e1.uses_x, e2.uses_x};
+                                                vector<vector<bool>> eqs_uses_y = {e0.uses_y, e1.uses_y, e2.uses_y};
+                                                std::cout << "decomposable? " << is_decomposable(eqs_uses_x, eqs_uses_y) << "\n";
+                                                return 0;
+                                            }*/
+
+                                            // Check asssociativity
+                                            vector<TupleExpr> eqs = {e0, e1, e2};
+                                            if (!fast_check_associativity(eqs, associative_sets[leaves0])) {
+                                                std::cout << "Leaves0: " << leaves0 << ", i0: " << i0 << ", leaves1: " << leaves1
+                                                          << ", i1: " << i1 << ", leaves2: " << leaves2 << ", i2: " << i2 << ", expr:"
+                                                          << Halide::Tuple(halide_exprs) << "\n";
+
+                                                vector<vector<bool>> eqs_uses_x = {e0.uses_x, e1.uses_x, e2.uses_x};
+                                                vector<vector<bool>> eqs_uses_y = {e0.uses_y, e1.uses_y, e2.uses_y};
+                                                /*if (is_decomposable(eqs_uses_x, eqs_uses_y)) {
+                                                    DEBUG_PRINT2 << "......Skip decomposable exprs: " << Halide::Tuple(halide_exprs) << "\n";
+                                                    continue;
+                                                }*/
+                                                if (z3_check_associativity(halide_exprs, kXVars, kYVars, kConstants,
+                                                                           {leaves0, leaves1, leaves2},
+                                                                           {i0, i1, i2})) {
+                                                    associative_sets[leaves0].insert(AssocTuple(e0, e1, e2));
+                                                    valid++;
+                                                    if (is_decomposable(eqs_uses_x, eqs_uses_y)) {
+                                                        std::cout << "......Skip decomposable exprs: " << Halide::Tuple(halide_exprs) << "\n";
+                                                        decomposable++;
+                                                        continue;
                                                     }
                                                 }
                                             }
-                                            seen[3] = set<TupleExpr>();
                                         }
                                     }
                                 }
