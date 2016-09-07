@@ -1,6 +1,29 @@
-Programmers define the \emph{algorithm} in Halide through a Halide \emph{function}, which consists of sequence of stages; these stages are the unit on which scheduling occurs. By default, each stage represents a perfectly-nested loop nest in which a single value of the \emph{function} is computed and stored in the innermost loop per iteration. Stages after the first are called \emph{update} stages, and are allowed to recursively refer to the function. Some of the loops are data parallel and are constrained to be race-condition free by syntactic restrictions. These data-parallel loops iterate over variables called \code{Var}s. The bounds of these loops are inferred by Halide using interval arithmetic.  Other loops may have user-specified bounds and a user-specified nesting order, and fewer syntactic restrictions on their use. These are known as \code{RVar}s (for reduction \code{Vars}), which together define a reduction domain or \code{RDom}. \code{RVar}s are used to express reductions, scattering, scans, etc. Each of these loop types, defined by \code{Var}s and \code{RVar}s, can be manipulated in various ways through Halide scheduling primitives: they can be tiled, unrolled, mutually interchanged, etc., provided that the nesting order of \code{RVar}s is respected. 
+Programmers define an \emph{algorithm} in Halide using a graph of Halide \emph{function}s, which each consist of a sequence of stages. These stages are the unit on which scheduling occurs. Each stage represents a perfectly-nested loop in which a single value of the \emph{function} is computed and stored in the innermost loop per iteration. Stages after the first are called \emph{update} stages, and are allowed to recursively refer to the function. Some of the loops are data parallel and are constrained to be race-condition free by syntactic restrictions. These data-parallel loops iterate over variables called \code{Var}s. The bounds of these loops are inferred by Halide using interval arithmetic. Other loops may have user-specified bounds and a user-specified nesting order, and fewer syntactic restrictions on their use. These are known as \code{RVar}s (for reduction variables), which together define a reduction domain or \code{RDom}. \code{RVar}s are used to express reductions, scattering, scans, etc. Each of these loop types, defined by \code{Var}s and \code{RVar}s, can be manipulated in various ways using Halide's scheduling primitives: they can be tiled, unrolled, mutually interchanged, etc., provided that the nesting order of \code{RVar}s is respected. 
 
-While \code{Var}s are safe to parallelize or vectorize by construction -- \code{Var}s represents the naturally data-parallel axes of an \emph{algorithm} -- \code{RVar}s can be parallelized or vectorized if and only if Halide can prove that no race condition exists. This makes parallelizing or vectorizing stages that use only \code{RVar}s difficult. For example, consider the two-dimensional convolutional blur kernel shown in Listing~\ref{lst:blur_loopness}, which is easily parallelizable across \code{Var} $x$ and $y$. The histogram of an image (see Listing~\ref{lst:histogram_loopness}), on the other hand, is harder to parallelize since its update stage only involves \code{RVar}s. In order to parallelize a reduction like histogram, one needs to be able to factorize it into slices that have no dependencies on each other.
+While \code{Var}s are safe to parallelize or vectorize by construction -- \code{Var}s represents the naturally data-parallel axes of an \emph{algorithm} -- \code{RVar}s can be parallelized or vectorized if and only if Halide can prove that no race condition exists. This makes parallelizing or vectorizing stages that use only \code{RVar}s difficult. For example, consider the two-dimensional convolution shown in Listing~\ref{lst:blur_loopness}, which is easily parallelizable across \code{Var} $x$ and $y$. Computing the histogram of an image (see Listing~\ref{lst:histogram_loopness}), is harder to parallelize since its update stage only involves \code{RVar}s.
+
+\begin{lstlisting}[caption={Psuedocode for convolution. This algorithm reduces over \code{rx} and \code{ry} and is data-parallel over \code{x} and \code{y}. In the Halide source, \code{rx} and \code{ry} would be \code{RVar}s in a two-dimensional \code{RDom}. \code{x} and \code{y} would be \code{Var}s.}, label={lst:blur_loopness}]
+// First stage
+for y:
+ for x:
+   blur(x, y) = 0
+// Second "update" stage
+for y:
+ for x:
+  for ry:
+   for rx:
+    blur(x, y) += kernel(rx, ry) * input(x - rx, y - ry);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Computing the histogram of an image is hard to parallelize in Halide, since its update stage would be expressed with serial \code{RVar}s.}, label={lst:histogram_loopness}]
+// First stage
+for x:
+ hist(x) = 0
+// Update stage
+for ry:
+ for rx:
+  hist(input(rx, ry)) += 1
+\end{lstlisting}
 
 Although much prior work has explored automatic generation of parallel associative reductions from a serial reduction, most work assumes an explicit associative binary reduction operator is given, which is not applicable to Halide. Since Halide does not support reduction using a binary operator as a first-class primitive, reductions in Halide are implemented through usage of non-data-parallel \code{RVar}s. For Halide to support parallel reductions, it needs to be able to deduce an equivalent binary associative reduction operator and its identity from a serial reduction expressed as an imperative Halide \emph{update}. 
 
@@ -12,36 +35,3 @@ Recent work has applied program synthesis, which automatically discovers executa
 Superoptimization~\cite{Granlund:1992:EBU:143095.143146, Massalin:1987:SLS:36206.36194} searches for the shortest or most optimized way to compute a branch-free sequence of instructions, by exhaustively searching over a space of possible programs. These rewrites can then be turned into peephole optimizations in compilers. More recent work has used stochastic search~\cite{Phothilimthana:2016:SUS:2872362.2872387, Schkufza:2013:SS:2490301.2451150} and program synthesis~\cite{Lopes:2015:PCP:2737924.2737965} to find replacements for larger sequences of instructions.
 In this work, we find equivalent replacements for a Halide reduction through a combination of enumeration and synthesis; in addition, though our domain is more restricted, we search for larger replacements than most superoptimizers.
 
-\begin{lstlisting}[caption={Convolution blur kernel is easily parallelizable across \code{Var} $x$ adn $y$.}, label={lst:blur_loopness}]
-// First stage
-for (int y = 0; y < input.height(); ++y) {
-  for (int x = 0; x < input.width(); ++x) {
-    blur[x][y] = 0;
-  }
-}
-// Update stage
-parallel for (int y = 0; y < input.height(); ++y) {
-  parallel for (int x = 0; x < input.width(); ++x) {
-    for (int ry = 0; ry < kernel.height(); ++ry) {
-      for (int rx = 0; rx < kernel.width(); ++rx) {
-        blur[x][y] += 
-          kernel[rx][ry]*input[x+rx-1][y+ry-1];
-      }
-    }
-  }
-} 
-\end{lstlisting}
-
-\begin{lstlisting}[caption={Histogram of an image is hard to parallelize since its update stage does not involve \code{Var}s.}, label={lst:histogram_loopness}]
-// Serial version
-// First stage
-for (int x = 0; x < 256; ++x) {
-  hist[x] = 0;
-}
-// Update stage
-for (ry = 0; ry < input.height(); ++ry) {
-  for (rx = 0; rx < input.width(); ++rx) {
-    hist[clamp(int(input[rx][ry]), 0, 255)] += 1;
-  }
-}
-\end{lstlisting}
