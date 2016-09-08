@@ -86,6 +86,27 @@ Leaves0: 2, i0: 34, Leaves1: 2, i1: 59, { Max::make(x1, y0), Max::make(x1, y1) }
 Leaves0: 2, i0: 34, Leaves1: 4, i1: 44539, { Max::make(x1, y0), Max::make(Min::make(x0, y1), Max::make(y1, x1)) } -> Left-associativity with identity: { -2147483648, -2147483648 }
 Leaves0: 2, i0: 34, Leaves1: 4, i1: 59039, { Max::make(x1, y0), Max::make(Min::make(x0, x1), Max::make(x1, y1)) } -> Left-associativity with identity: { -2147483648, -2147483648 }
 Leaves0: 2, i0: 36, Leaves1: 2, i1: 55, { Sub::make(y0, x1), Add::make(x1, y1) } -> Left-associativity with identity: { 0, 0 }
+Leaves0: 2, i0: 50, Leaves1: 2, i1: 55, { Add::make(x0, y1), Add::make(x1, y1) } -> Right-associativity with identity: { 0, 0 }
+Leaves0: 2, i0: 51, Leaves1: 2, i1: 55, { Sub::make(x0, y1), Add::make(x1, y1) } -> Right-associativity with identity: { 0, 0 }
+Leaves0: 2, i0: 52, Leaves1: 2, i1: 57, { Mul::make(x0, y0), Mul::make(x1, y0) } -> Right-associativity with identity: { 1, 0 }
+Leaves0: 2, i0: 52, Leaves1: 2, i1: 77, { Mul::make(x0, y0), Mul::make(x0, y1) } -> Left-associativity with identity: { 1, 0 }
+Leaves0: 2, i0: 52, Leaves1: 3, i1: 1010, { Mul::make(x0, y0), Add::make(Mul::make(x0, y1), x1) } -> Left-associativity with identity: { 1, 0 }
+Leaves0: 2, i0: 52, Leaves1: 3, i1: 2160, { Mul::make(x0, y0), Add::make(Mul::make(x1, y0), y1) } -> Left-associativity with identity: { 1, 0 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 43548, { Mul::make(x0, y0), Min::make(Max::make(x0, y1), Min::make(y1, x1)) } -> Left-associativity with identity: { 1, 2147483647 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 44539, { Mul::make(x0, y0), Max::make(Min::make(x0, y1), Max::make(y1, x1)) } -> Left-associativity with identity: { 1, -2147483648 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 58048, { Mul::make(x0, y0), Min::make(Max::make(x0, x1), Min::make(x1, y1)) } -> Left-associativity with identity: { 1, 2147483647 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 59039, { Mul::make(x0, y0), Max::make(Min::make(x0, x1), Max::make(x1, y1)) } -> Left-associativity with identity: { 1, -2147483648 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 72025, { Mul::make(x0, y0), Add::make(Mul::make(x0, y1), Mul::make(x1, y0)) } -> Left-associativity with identity: { 1, 0 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 75575, { Mul::make(x0, y0), Add::make(Mul::make(x1, y0), Add::make(y0, y1)) } -> Left-associativity with identity: { 1, -1 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 78906, { Mul::make(x0, y0), Sub::make(Add::make(y0, y1), Mul::make(x0, y0)) } -> Left-associativity with identity: { 1, 0 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 83025, { Mul::make(x0, y0), Add::make(Mul::make(x0, y0), Sub::make(y1, y0)) } -> Left-associativity with identity: { 1, 0 }
+Leaves0: 2, i0: 52, Leaves1: 4, i1: 83075, { Mul::make(x0, y0), Add::make(Mul::make(x1, y0), Sub::make(y1, y0)) } -> Left-associativity with identity: { 1, 1 }
+Leaves0: 2, i0: 53, Leaves1: 2, i1: 58, { Min::make(x0, y1), Min::make(x1, y1) } -> Right-associativity with identity: { 0, 2147483647 }
+Leaves0: 2, i0: 53, Leaves1: 4, i1: 43548, { Min::make(x0, y1), Min::make(Max::make(x0, y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 0, 2147483647 }
+Leaves0: 2, i0: 53, Leaves1: 4, i1: 58048, { Min::make(x0, y1), Min::make(Max::make(x0, x1), Min::make(x1, y1)) } -> Right-associativity with identity: { 0, 2147483647 }
+Leaves0: 2, i0: 54, Leaves1: 2, i1: 59, { Max::make(x0, y1), Max::make(x1, y1) } -> Right-associativity with identity: { 0, -2147483648 }
+Leaves0: 2, i0: 54, Leaves1: 4, i1: 44539, { Max::make(x0, y1), Max::make(Min::make(x0, y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 0, -2147483648 }
+Leaves0: 2, i0: 54, Leaves1: 4, i1: 59039, { Max::make(x0, y1), Max::make(Min::make(x0, x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 0, -2147483648 }
 
 
 
@@ -100,6 +121,9 @@ Leaves0: 5, i0: 339843, Leaves1: 5, i1: 389843, { Min::make(Max::make(Min::make(
 Leaves0: 5, i0: 339843, Leaves1: 5, i1: 414843, { Min::make(Max::make(Min::make(Max::make(x0, k0), y0), x1), x0), Min::make(Max::make(Min::make(Max::make(x0, y0), y1), x1), x0) } -> Left-associativity with identity: { 2147483647, -2147483648 }
 Leaves0: 5, i0: 376934, Leaves1: 5, i1: 389434, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), x1), x0), Max::make(Min::make(Max::make(Min::make(x0, k0), y1), x1), x0) } -> Left-associativity with identity: { -2147483648, 2147483647 }
 Leaves0: 5, i0: 376934, Leaves1: 5, i1: 414434, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), x1), x0), Max::make(Min::make(Max::make(Min::make(x0, y0), y1), x1), x0) } -> Left-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 377343, Leaves1: 5, i1: 389843, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), x1), x0), Min::make(Max::make(Min::make(Max::make(x0, k0), y1), x1), x0) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 377343, Leaves1: 5, i1: 414843, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), x1), x0), Min::make(Max::make(Min::make(Max::make(x0, y0), y1), x1), x0) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+
 
 
 ******************************************************************
@@ -112,6 +136,16 @@ Valid: 0
 
 Morton: 10, leaves: [5, 7], i: [620000, 774999]
 Leaves0: 5, i0: 651344, Leaves1: 5, i1: 633985, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Add::make(Min::make(Max::make(x0, k0), y0), Sub::make(x1, y0)) } -> UNKNOWN associative with right-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 651344, Leaves1: 5, i1: 662954, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Max::make(Add::make(Max::make(x0, y0), Sub::make(y1, y0)), x0) } -> UNKNOWN associative with left-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 651344, Leaves1: 5, i1: 688789, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Max::make(Min::make(Add::make(x0, k0), x1), Max::make(x1, y0)) } -> UNKNOWN associative with right-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 651344, Leaves1: 5, i1: 688839, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Max::make(Min::make(Sub::make(x0, k0), x1), Max::make(x1, y0)) } -> UNKNOWN associative with right-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 651344, Leaves1: 5, i1: 688989, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Max::make(Min::make(Max::make(x0, k0), x1), Max::make(x1, y0)) } -> UNKNOWN associative with right-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 651344, Leaves1: 5, i1: 698948, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Min::make(Max::make(Min::make(x0, k0), y1), Max::make(x1, y0)) } -> UNKNOWN associative with left-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 651344, Leaves1: 5, i1: 735345, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Add::make(Max::make(Sub::make(x1, x0), y0), Max::make(x0, y0)) } -> UNKNOWN associative with right-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 651344, Leaves1: 5, i1: 758344, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Max::make(Max::make(Min::make(Sub::make(y1, x0), x0), y1), x0) } -> UNKNOWN associative with left-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 651344, Leaves1: 6, i1: 644721, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Sub::make(y1, Mul::make(Add::make(Min::make(x0, x1), x1), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 651344, Leaves1: 7, i1: 624416, { Max::make(Max::make(Min::make(Mul::make(x0, y0), x0), y0), x0), Sub::make(y1, Mul::make(Mul::make(Mul::make(x0, x1), Add::make(x0, x1)), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { -2147483648, 1862666518 }
+
 
 
 ******************************************************************
@@ -129,6 +163,9 @@ Valid: 0
 Morton: 14, leaves: [5, 7], i: [930000, 1084999]
 Leaves0: 5, i0: 938834, Leaves1: 5, i1: 1080098, { Max::make(Min::make(Min::make(Mul::make(x0, x0), x0), y1), x0), Min::make(Max::make(Sub::make(x0, x1), x1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 0, 2147483647 }
 Leaves0: 5, i0: 938943, Leaves1: 5, i1: 1080098, { Min::make(Max::make(Max::make(Mul::make(x0, x0), x0), y1), x0), Min::make(Max::make(Sub::make(x0, x1), x1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 0, 2147483647 }
+Leaves0: 5, i0: 945893, Leaves1: 5, i1: 1080098, { Min::make(Max::make(Min::make(x1, y1), Max::make(y1, k0)), x0), Min::make(Max::make(Sub::make(x0, x1), x1), Min::make(y1, x1)) } -> Right-associativity with identity: { 0, 2147483647 }
+Leaves0: 5, i0: 946393, Leaves1: 5, i1: 1080098, { Min::make(Max::make(Min::make(y0, y1), Max::make(y1, k0)), x0), Min::make(Max::make(Sub::make(x0, x1), x1), Min::make(y1, x1)) } -> Right-associativity with identity: { 268435455, 2147483647 }
+
 
 
 ******************************************************************
@@ -178,64 +215,48 @@ Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1168948, { Min::make(Max::make(Min::mak
 Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1188789, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Add::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
 Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1188839, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
 Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1188989, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Max::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1090598, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(y0, x0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1091098, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(k0, x0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1091298, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Add::make(x0, y0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1091348, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1091448, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Min::make(x0, y0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1092598, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y1), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1098898, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Mul::make(x0, k0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1105089, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, x1), x1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1115589, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(y0, x0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1116089, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(k0, x0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1116289, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Add::make(x0, y0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1116339, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1116489, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Max::make(x0, y0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1117589, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y1), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1123889, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Mul::make(x0, k0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1168798, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Add::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1168848, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, k0), x1), Min::make(x1, y1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1188789, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Add::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1188839, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1126934, Leaves1: 5, i1: 1188989, { Max::make(Min::make(Max::make(Min::make(x0, y1), y0), k0), x0), Max::make(Min::make(Max::make(x0, k0), x1), Max::make(x1, y1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1090598, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(y0, x0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1091098, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(k0, x0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1091298, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Add::make(x0, y0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1091348, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1091448, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Min::make(x0, y0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1092598, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y1), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1098898, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Mul::make(x0, k0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1105089, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, x1), x1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1115589, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(y0, x0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1116089, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(k0, x0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1116289, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Add::make(x0, y0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1116339, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1116489, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Max::make(x0, y0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1117589, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y1), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1123889, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Mul::make(x0, k0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1168798, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Add::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1168848, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1168948, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Min::make(Max::make(Min::make(x0, k0), x1), Min::make(x1, y1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1188789, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Add::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1188839, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1127343, Leaves1: 5, i1: 1188989, { Min::make(Max::make(Min::make(Max::make(x0, y1), y0), k0), x0), Max::make(Min::make(Max::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
 
-
-******************************************************************
-Running two-element tuple generator of type: int32
-Morton min: 18, Morton max: 20
-
-Morton: 18, leaves: [5, 7], i: [1240000, 1394999]
-Leaves0: 5, i0: 1264489, Leaves1: 5, i1: 1269489, { Max::make(Min::make(Max::make(y0, k0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(y0, k0), x1), Min::make(y0, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1264739, Leaves1: 5, i1: 1269739, { Max::make(Min::make(Max::make(y1, k0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(y1, k0), x1), Min::make(y0, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-
-
-******************************************************************
-Running two-element tuple generator of type: int32
-Morton min: 15, Morton max: 17
-
-Morton: 15, leaves: [5, 7], i: [1085000, 1239999]
-Leaves0: 5, i0: 1093948, Leaves1: 5, i1: 1194198, { Min::make(Max::make(Min::make(x0, k0), y0), Max::make(x0, y1)), Min::make(Max::make(Min::make(x1, k0), y0), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1090598, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(y0, x0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1091098, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(k0, x0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1091298, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Add::make(x0, y0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1091348, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1091448, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Min::make(x0, y0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1092598, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y1), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1105089, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, x1), x1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1115589, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(y0, x0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1116089, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(k0, x0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1116289, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Add::make(x0, y0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1116339, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1116489, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Max::make(x0, y0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1117589, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y1), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1123889, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Mul::make(x0, k0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1168798, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Add::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1168848, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1168948, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Min::make(Max::make(Min::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1188789, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Add::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1188839, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1101934, Leaves1: 5, i1: 1188989, { Max::make(Min::make(Max::make(Min::make(x0, x1), y0), k0), x0), Max::make(Min::make(Max::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { -2147483648, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1090598, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(y0, x0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1091098, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(k0, x0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1091298, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Add::make(x0, y0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1091348, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1091448, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Min::make(x0, y0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1092598, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, y1), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1098898, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Mul::make(x0, k0), y1), Min::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1105089, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, x1), x1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1115589, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(y0, x0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1116089, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(k0, x0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1116289, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Add::make(x0, y0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1116339, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1116489, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Max::make(x0, y0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1117589, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, y1), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1123889, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Mul::make(x0, k0), y1), Max::make(y1, x1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1168798, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Add::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1168848, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Sub::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1168948, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Min::make(Max::make(Min::make(x0, k0), x1), Min::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, 2147483647 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1188789, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Add::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1188839, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Sub::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
-Leaves0: 5, i0: 1102343, Leaves1: 5, i1: 1188989, { Min::make(Max::make(Min::make(Max::make(x0, x1), y0), k0), x0), Max::make(Min::make(Max::make(x0, k0), x1), Max::make(x1, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
 
 
 
@@ -246,9 +267,60 @@ Morton min: 18, Morton max: 20
 Morton: 18, leaves: [5, 7], i: [1240000, 1394999]
 Leaves0: 5, i0: 1264489, Leaves1: 5, i1: 1269489, { Max::make(Min::make(Max::make(y0, k0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(y0, k0), x1), Min::make(y0, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
 Leaves0: 5, i0: 1264739, Leaves1: 5, i1: 1269739, { Max::make(Min::make(Max::make(y1, k0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(y1, k0), x1), Min::make(y0, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1351398, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Mul::make(x0, x1), x1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 0, 2147483647 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1358898, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Mul::make(x0, y0), y0), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1362648, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Mul::make(x0, x0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 0, 2147483647 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1365148, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Mul::make(x0, y0), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 0, 2147483647 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1366398, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Mul::make(x0, y1), y1), Min::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 2147483647, 2147483647 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1376734, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Mul::make(Min::make(x0, y1), y0), x0), x1) } -> UNKNOWN associative with right-identity: { 1025, -2147483648 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1381684, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Sub::make(y1, x0), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1382184, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Sub::make(k0, x0), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1382639, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Mul::make(x0, x1), x1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 0, -2147483648 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1382684, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Sub::make(x0, y0), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1382739, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Max::make(x0, y1), x1), Add::make(x1, y1)) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1382984, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Max::make(x0, y0), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1385084, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Add::make(x0, y1), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1385089, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Sub::make(x0, x1), y0), Add::make(x1, y1)) } -> UNKNOWN associative with right-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1385184, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Sub::make(x0, y1), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1385484, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Max::make(x0, y1), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1385848, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Sub::make(y1, x0), y0), Add::make(x1, y1)) } -> UNKNOWN associative with right-identity: { 2147483647, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1386348, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Sub::make(x0, y0), y0), Add::make(x1, y1)) } -> UNKNOWN associative with right-identity: { 2147483647, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1387584, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Add::make(x0, k0), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1387639, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Mul::make(x0, x0), y0), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1387684, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Sub::make(x0, k0), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1387984, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Max::make(x0, k0), Min::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1390225, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Add::make(Mul::make(Max::make(x0, x1), y1), Add::make(x1, y1)) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1391389, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Mul::make(x0, y1), y0), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1391693, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Sub::make(y1, x0), Max::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1392193, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Sub::make(k0, x0), Max::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1392693, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Sub::make(x0, y0), Max::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1392893, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Min::make(Max::make(Min::make(x0, y0), Max::make(y0, x1)), x1) } -> UNKNOWN associative with right-identity: { 0, 0 }
+Leaves0: 5, i0: 1276334, Leaves1: 5, i1: 1393889, { Max::make(Min::make(Min::make(Mul::make(x0, y0), x0), k0), x0), Max::make(Min::make(Mul::make(x0, x0), y1), Max::make(y1, x1)) } -> UNKNOWN associative with right-identity: { 0, -2147483648 }
+
 
 
 ******************************************************************
+Running two-element tuple generator of type: int32
+Morton min: 21, Morton max: 23
+
+Morton: 21, leaves: [2, 4], i: [1705000, 1859999]
+Valid: 0
+**************************************************************************
+
+Morton: 22, leaves: [5, 7], i: [1550000, 1704999]
+Leaves0: 5, i0: 1576739, Leaves1: 5, i1: 1577989, { Max::make(Min::make(Max::make(x1, y0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(x1, y1), x0), Min::make(y0, y1)) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1576739, Leaves1: 5, i1: 1581489, { Max::make(Min::make(Max::make(x1, y0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(x0, y0), x1), Min::make(y0, y1)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1576739, Leaves1: 5, i1: 1591934, { Max::make(Min::make(Max::make(x1, y0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(Min::make(x1, k0), y1), y0), x1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1576739, Leaves1: 5, i1: 1592984, { Max::make(Min::make(Max::make(x1, y0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(x0, y0), Max::make(x1, y1)), x1) } -> Left-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1576739, Leaves1: 5, i1: 1632984, { Max::make(Min::make(Max::make(x1, y0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(x0, y0), Min::make(y0, y1)), x1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1576739, Leaves1: 5, i1: 1685484, { Max::make(Min::make(Max::make(x1, y0), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(x0, y1), Min::make(y1, y0)), x1) } -> UNKNOWN associative with right-identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1577989, Leaves1: 5, i1: 1582739, { Max::make(Min::make(Max::make(x1, y1), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(x0, y1), x1), Min::make(y0, y1)) } -> UNKNOWN associative with right-identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1578239, Leaves1: 5, i1: 1583239, { Max::make(Min::make(Max::make(y0, y1), x0), Min::make(y0, y1)), Max::make(Min::make(Max::make(y0, y1), x1), Min::make(y0, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1578239, Leaves1: 5, i1: 1608198, { Max::make(Min::make(Max::make(y0, y1), x0), Min::make(y0, y1)), Min::make(Max::make(Min::make(y0, y1), x1), Max::make(y0, y1)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+
+
+
+**************************************************************************
 Running two-element tuple generator of type: int32
 Morton min: 24, Morton max: 26
 
@@ -269,6 +341,14 @@ Leaves0: 5, i0: 1864489, Leaves1: 5, i1: 1951934, { Max::make(Min::make(Max::mak
 Leaves0: 5, i0: 1864489, Leaves1: 5, i1: 1966934, { Max::make(Min::make(Max::make(y0, k0), x0), Min::make(y1, k0)), Max::make(Min::make(Max::make(Min::make(x1, y0), k0), y1), x1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
 Leaves0: 5, i0: 1864489, Leaves1: 5, i1: 1987984, { Max::make(Min::make(Max::make(y0, k0), x0), Min::make(y1, k0)), Max::make(Min::make(Max::make(x0, k0), Min::make(k0, y1)), x1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
 Leaves0: 5, i0: 1864489, Leaves1: 5, i1: 1988984, { Max::make(Min::make(Max::make(y0, k0), x0), Min::make(y1, k0)), Max::make(Min::make(Max::make(y0, k0), Min::make(k0, y1)), x1) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 1884448, Leaves1: 5, i1: 1889448, { Min::make(Max::make(Min::make(y0, k0), x0), Max::make(y1, k0)), Min::make(Max::make(Min::make(y0, k0), x1), Max::make(y1, k0)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1884448, Leaves1: 5, i1: 1945393, { Min::make(Max::make(Min::make(y0, k0), x0), Max::make(y1, k0)), Min::make(Max::make(Min::make(x0, y1), Max::make(y1, k0)), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1884448, Leaves1: 5, i1: 1946393, { Min::make(Max::make(Min::make(y0, k0), x0), Max::make(y1, k0)), Min::make(Max::make(Min::make(y0, y1), Max::make(y1, k0)), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1884448, Leaves1: 5, i1: 1952343, { Min::make(Max::make(Min::make(y0, k0), x0), Max::make(y1, k0)), Min::make(Max::make(Min::make(Max::make(x0, x1), k0), y1), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1884448, Leaves1: 5, i1: 1967343, { Min::make(Max::make(Min::make(y0, k0), x0), Max::make(y1, k0)), Min::make(Max::make(Min::make(Max::make(x1, y0), k0), y1), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1884448, Leaves1: 5, i1: 1997893, { Min::make(Max::make(Min::make(y0, k0), x0), Max::make(y1, k0)), Min::make(Max::make(Min::make(x0, k0), Max::make(k0, y1)), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 1884448, Leaves1: 5, i1: 1998893, { Min::make(Max::make(Min::make(y0, k0), x0), Max::make(y1, k0)), Min::make(Max::make(Min::make(y0, k0), Max::make(k0, y1)), x1) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+
 
 
 ******************************************************************
@@ -277,6 +357,68 @@ Morton min: 30, Morton max: 32
 
 Morton: 30, leaves: [5, 7], i: [2170000, 2324999]
 Leaves0: 5, i0: 2194434, Leaves1: 5, i1: 2216739, { Max::make(Min::make(Max::make(Min::make(y0, k0), y1), x0), y0), Max::make(Min::make(Max::make(x1, y0), y1), Min::make(y0, k0)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
+Leaves0: 5, i0: 2194434, Leaves1: 7, i1: 2289416, { Max::make(Min::make(Max::make(Min::make(y0, k0), y1), x0), y0), Sub::make(y1, Mul::make(Mul::make(Sub::make(x0, x1), Sub::make(x0, x1)), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { -2147483648, 1116160 }
+Leaves0: 5, i0: 2194843, Leaves1: 5, i1: 2241698, { Min::make(Max::make(Min::make(Max::make(y0, k0), y1), x0), y0), Min::make(Max::make(Min::make(x1, y0), y1), Max::make(y0, k0)) } -> Right-associativity with identity: { 2147483647, -2147483648 }
+Leaves0: 5, i0: 2194843, Leaves1: 7, i1: 2253416, { Min::make(Max::make(Min::make(Max::make(y0, k0), y1), x0), y0), Sub::make(y1, Mul::make(Sub::make(x1, Min::make(Mul::make(x0, x0), x0)), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { 2147483647, -3211263 }
+Leaves0: 5, i0: 2194843, Leaves1: 7, i1: 2289416, { Min::make(Max::make(Min::make(Max::make(y0, k0), y1), x0), y0), Sub::make(y1, Mul::make(Mul::make(Sub::make(x0, x1), Sub::make(x0, x1)), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { 2147483647, 1 }
+Leaves0: 5, i0: 2203239, Leaves1: 5, i1: 2208239, { Max::make(Min::make(Max::make(y0, y1), x0), Min::make(y0, k0)), Max::make(Min::make(Max::make(y0, y1), x1), Min::make(y0, k0)) } -> Right-associativity with identity: { -2147483648, 2147483647 }
 
 
 ******************************************************************
+Running two-element tuple generator of type: int32
+Morton min: 33, Morton max: 35
+
+Morton: 33, leaves: [2, 4], i: [2635000, 2789999]
+Valid: 0
+**************************************************************************
+
+Morton: 34, leaves: [5, 7], i: [2480000, 2634999]
+Leaves0: 5, i0: 2481934, Leaves1: 5, i1: 2603844, { Max::make(Min::make(Max::make(Min::make(y0, y1), k0), x1), y0), Max::make(Max::make(Min::make(Mul::make(x1, y1), x1), y1), x1) } -> UNKNOWN associative with left-identity: { 0, -2147483648 }
+Leaves0: 5, i0: 2482343, Leaves1: 5, i1: 2603933, { Min::make(Max::make(Min::make(Max::make(y0, y1), k0), x1), y0), Min::make(Min::make(Max::make(Mul::make(x1, y1), x1), y1), x1) } -> UNKNOWN associative with left-identity: { 0, 2147483647 }
+Leaves0: 5, i0: 2487984, Leaves1: 5, i1: 2603844, { Max::make(Min::make(Max::make(x0, k0), Min::make(k0, x1)), y0), Max::make(Max::make(Min::make(Mul::make(x1, y1), x1), y1), x1) } -> UNKNOWN associative with left-identity: { 1, -2147483648 }
+Leaves0: 5, i0: 2487984, Leaves1: 7, i1: 2488597, { Max::make(Min::make(Max::make(x0, k0), Min::make(k0, x1)), y0), Mul::make(Sub::make(Add::make(Max::make(x1, y1), x1), Min::make(x0, x1)), Add::make(x0, x1)) } -> UNKNOWN associative with left-identity: { -2147483647, -2147483648 }
+Leaves0: 5, i0: 2487984, Leaves1: 7, i1: 2625866, { Max::make(Min::make(Max::make(x0, k0), Min::make(k0, x1)), y0), Sub::make(y1, Add::make(Mul::make(Sub::make(x1, Mul::make(x0, x0)), Add::make(x0, x1)), x0)) } -> UNKNOWN associative with left-identity: { 0, -2147483648 }
+Leaves0: 5, i0: 2497893, Leaves1: 5, i1: 2603933, { Min::make(Max::make(Min::make(x0, k0), Max::make(k0, x1)), y0), Min::make(Min::make(Max::make(Mul::make(x1, y1), x1), y1), x1) } -> UNKNOWN associative with left-identity: { 0, 2147483647 }
+Leaves0: 5, i0: 2497893, Leaves1: 7, i1: 2626166, { Min::make(Max::make(Min::make(x0, k0), Max::make(k0, x1)), y0), Sub::make(y1, Mul::make(Mul::make(Sub::make(x1, Mul::make(x0, x0)), Add::make(x0, x1)), x0)) } -> UNKNOWN associative with left-identity: { 0, 2147483647 }
+
+
+
+
+******************************************************************
+Running two-element tuple generator of type: int32
+Morton min: 45, Morton max: 47
+
+Morton: 45, leaves: [2, 4], i: [3565000, 3719999]
+Valid: 0
+**************************************************************************
+
+Morton: 46, leaves: [5, 7], i: [3410000, 3564999]
+Leaves0: 5, i0: 3415284, Leaves1: 5, i1: 3476934, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Max::make(Min::make(Max::make(Min::make(x0, y1), k0), x1), y1) } -> Left-associativity with identity: { -2147483648, -2147483648 }
+Leaves0: 5, i0: 3415284, Leaves1: 5, i1: 3477343, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Min::make(Max::make(Min::make(Max::make(x0, y1), k0), x1), y1) } -> Left-associativity with identity: { 450541312, 2147483647 }
+Leaves0: 5, i0: 3415284, Leaves1: 5, i1: 3481934, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Max::make(Min::make(Max::make(Min::make(y0, y1), k0), x1), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+Leaves0: 5, i0: 3415284, Leaves1: 5, i1: 3482343, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Min::make(Max::make(Min::make(Max::make(y0, y1), k0), x1), y1) } -> Left-associativity with identity: { -1073960767, 2147483647 }
+Leaves0: 5, i0: 3415284, Leaves1: 5, i1: 3487984, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Max::make(Min::make(Max::make(x0, k0), Min::make(k0, x1)), y1) } -> Left-associativity with identity: { 0, -2147483648 }
+Leaves0: 5, i0: 3415284, Leaves1: 5, i1: 3497893, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Min::make(Max::make(Min::make(x0, k0), Max::make(k0, x1)), y1) } -> Left-associativity with identity: { 584292084, 2147483647 }
+Leaves0: 5, i0: 3415284, Leaves1: 7, i1: 3436916, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Sub::make(y1, Mul::make(Mul::make(Mul::make(x0, x1), Sub::make(x0, x1)), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { 0, 0 }
+Leaves0: 5, i0: 3415284, Leaves1: 7, i1: 3502641, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Sub::make(Max::make(x0, y1), Mul::make(Sub::make(x1, Mul::make(x0, x0)), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { -2147483648, 0 }
+Leaves0: 5, i0: 3415284, Leaves1: 7, i1: 3502761, { Max::make(Min::make(Mul::make(x0, x1), Min::make(k0, y0)), y0), Sub::make(Min::make(x1, y1), Mul::make(Sub::make(x1, Mul::make(x0, x0)), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { -2147483647, 2147483647 }
+Leaves0: 5, i0: 3420284, Leaves1: 5, i1: 3476934, { Max::make(Min::make(Mul::make(x0, y1), Min::make(k0, y0)), y0), Max::make(Min::make(Max::make(Min::make(x0, y1), k0), x1), y1) } -> UNKNOWN associative with left-identity: { 0, -2147483648 }
+Leaves0: 5, i0: 3420284, Leaves1: 5, i1: 3477343, { Max::make(Min::make(Mul::make(x0, y1), Min::make(k0, y0)), y0), Min::make(Max::make(Min::make(Max::make(x0, y1), k0), x1), y1) } -> UNKNOWN associative with left-identity: { 1048576, 2147483647 }
+Leaves0: 5, i0: 3420284, Leaves1: 5, i1: 3487984, { Max::make(Min::make(Mul::make(x0, y1), Min::make(k0, y0)), y0), Max::make(Min::make(Max::make(x0, k0), Min::make(k0, x1)), y1) } -> UNKNOWN associative with left-identity: { 0, -2147483648 }
+
+
+******************************************************************
+Running two-element tuple generator of type: int32
+Morton min: 54, Morton max: 56
+
+Morton: 54, leaves: [5, 7], i: [4030000, 4184999]
+Leaves0: 5, i0: 4066611, Leaves1: 5, i1: 4067111, { Sub::make(Add::make(x1, y0), Min::make(Sub::make(x1, x0), k0)), Sub::make(Add::make(x1, y1), Min::make(Sub::make(x1, x0), k0)) } -> Left-associativity with identity: { 0, -2147483648 }
+Leaves0: 5, i0: 4066611, Leaves1: 6, i1: 4079721, { Sub::make(Add::make(x1, y0), Min::make(Sub::make(x1, x0), k0)), Sub::make(y1, Mul::make(Min::make(Mul::make(x0, x1), x0), Sub::make(x0, x1))) } -> UNKNOWN associative with left-identity: { 0, -2147483648 }
+Leaves0: 5, i0: 4066611, Leaves1: 6, i1: 4080971, { Sub::make(Add::make(x1, y0), Min::make(Sub::make(x1, x0), k0)), Sub::make(y1, Mul::make(Max::make(Mul::make(x0, x1), x0), Sub::make(x0, x1))) } -> UNKNOWN associative with left-identity: { 0, -2147483648 }
+Leaves0: 5, i0: 4066611, Leaves1: 7, i1: 4162791, { Sub::make(Add::make(x1, y0), Min::make(Sub::make(x1, x0), k0)), Sub::make(Max::make(x1, y1), Mul::make(Min::make(Mul::make(x0, x1), x0), Add::make(x0, x1))) } -> UNKNOWN associative with left-identity: { 0, -2147483648 }
+Leaves0: 5, i0: 4068611, Leaves1: 5, i1: 4069111, { Sub::make(Add::make(x1, y0), Max::make(Sub::make(x1, x0), k0)), Sub::make(Add::make(x1, y1), Max::make(Sub::make(x1, x0), k0)) } -> Left-associativity with identity: { 0, 2147483647 }
+
+
+******************************************************************
+
+

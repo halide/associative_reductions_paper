@@ -13,12 +13,12 @@ We use a hybrid of the two approaches, amplified with a strategy for decomposing
 \subsection{Generating Elementary Operators}
 \label{subsec:generation}
 
-We begin with an enumeration of all one- and two-dimensional tuples of expression trees in two inputs $x$ and $y$. $x$ and $y$ are themselves tuples. The operators used to form the inner nodes of the trees are Halide's IR nodes (\code{*}, \code{+}, \code{-}, \code{min}, \code{max}, \code{select}, \code{<}, etc). We can reject some classes of uninteresting expressions by excluding them from the enumeration altogether. We only generate trees which use both $x$ and $y$. For every commutative operator in the tree, we only generate subtrees where there are at least as many leaves on the left as the right (TODO: how do we account for this during matching? and why this restriction?). We generate trees using a single generic constant $k$, rather than generating trees containing all possible constants as leaves. We do not generate trees that would be trivially simplified (For example, we do not generate subexpressions like $max(x_0, x_0)$).
+We begin with an enumeration of all one- and two-dimensional tuples of expression trees in two inputs $x$ and $y$. $x$ and $y$ are themselves tuples. The operators used to form the inner nodes of the trees are Halide's IR nodes (\code{*}, \code{+}, \code{-}, \code{min}, \code{max}, \code{select}, \code{<}, etc). We can reject some classes of uninteresting expressions by excluding them from the enumeration altogether. We only generate trees which use both $x$ and $y$. For every commutative operator in the tree, we only generate subtrees where there are at least as many leaves on the left as the right to make the enumeration more tractable. We account for this during matching by canonicalizing the expressions (both the pattern and the input expressions) using the Halide simplifier and solver. Halide solver attempts to move all instances of a variable in an expression tree as far to the left and as far up the tree as possible. We canonicalize the expression to the following form as possible: $x_i$ is always to the left of $x_{i+1}$ and any $y_j$, $y_j$ is always to the left of $y_{j+1}$, and constants are always on the right. We generate trees using a single generic constant $k$, rather than generating trees containing all possible constants as leaves. We do not generate trees that would be trivially simplified (For example, we do not generate subexpressions like $max(x_0, x_0)$).
 
 We then subject the expressions to a battery of tests so that only elementary associative operators remain. The tests are arranged in increasing order of expense, so that we can cheaply reject most expressions.
 
 \begin{enumerate}
-\item We first apply both the Halide simplifier and solver to the expression, which simplifies and canonicalizes it in certain ways (e.g. in a tree of commutative operations, $x_i$ is always to the left of $x_{i+1}$ if possible, and constants are always on the right). All inputs to the matching process will have gone through the same process, so if the expression was mutated by the simplifier or solver, then we will never expect see it as an input and so it can be discarded.
+\item We first apply both the Halide simplifier and solver to the expression, which simplifies and canonicalizes it in certain ways (e.g. in a tree of commutative operations, $x_i$ is always to the left of $x_{i+1}$ and any $y_j$, $y_j$ is always to the left of $y_{j+1}$  if possible, and constants are always on the right). All inputs to the matching process will have gone through the same process, so if the expression was mutated by the simplifier or solver, then we will never expect see it as an input and so it can be discarded.
 \item For an operator $f$, we construct the expressions $f(f(x, y), z)$ and $f(x, f(y, z))$, and substitute in 100 randomly-selected values for $x, y, z$. If the two expressions don't evaluate to the same thing, the expression is not associative and can be rejected.
 \item We then reject operators which can be decomposed using the decomposition procedure in Subsection~\ref{subsec:decomposition}.
 \item Finally, to \emph{prove} that the expression is associative, we ask Z3~\cite{DeMoura:2008:ZES:1792734.1792766} to verify that $\forall x, y, z, k \;f(f(x, y), z) = f(x, f(y, z))$. If this proof succeeds, we ask Z3 to solve $\forall x, k \;f(id, x) = x$ to synthesize the identity $id$.
@@ -30,7 +30,7 @@ In the table of expressions that this produces, $x$ represents the partial resul
 
 This would match against the pattern $x + y$, where $x$ matches \code{f(in(r) \% 2)}, and $y$ matches \code{pow(in(r), 2)}.
 
-We terminate our enumeration at trees with 8 leaves. We generate separate tables for each of Halide's scalar types, as some operations are associative in one type by not another. This takes TODO hours and generates TODO elementary operators to match against. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}.
+We terminate our enumeration at trees with 8 leaves. We generate separate tables for each of Halide's scalar types, as some operations are associative in one type by not another. This takes 24 hours and generates around 10,000 elementary operators to match against. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}.
 
 \begin{lstlisting}[caption={The first 10 elementary associative operators for 32-bit signed integers}, label={lst:top10}]
 x + y
@@ -52,7 +52,7 @@ As we only consider one- and two-dimensional expressions, there are meaningful p
 
 To talk about how we decompose reductions into elementary operators, we must first discuss how one might \emph{compose} elementary reductions. The simplest way to compose two reductions into a higher-dimensional reduction is to compute them both of them at the same time independently. This means that reductions that are a concatenation of smaller independent associative reductions are also associative. For example:
 
-\code{f() = \{f()[0] + in(r), f()[1] * in(r)\}}
+\code{f() = \{f()[0] + in0(r), f()[1] * in(r)\}}
 
 is associative, because it is a composition of the following two associative reductions:
 
@@ -77,7 +77,7 @@ f() = {min(f()[0], in(r.x, r.y)),
        select(f()[2] < in(r.x, r.y), f()[3], r.y)}
 \end{lstlisting}
 
-There are no dependencies between the first two components and the last two. This is now a simple concatenation of two single-variable argmin operations. Single-variable argmin uses two tuple components, and is present in our table of primitive oeprators, so we regonize two-dimensional argmin as associative via its decomposition into two one-dimensional argmin reductions.
+There are no dependencies between the first two components and the last two. This is now a simple concatenation of two single-variable argmin operations. Single-variable argmin uses two tuple components, and is present in our table of primitive operators, so we recognize two-dimensional argmin as associative via its decomposition into two one-dimensional argmin reductions.
 
 In general we consider the directed graph of dependencies between tuple elements. There is a vertex per tuple element, and an edge from vertex $i$ to vertex $j$ whenever the definition of tuple element $i$ refers to tuple element $j$. If we repeatedly duplicate vertices (tuple elements) to break dependencies, in the limit, the graph has one connected component per original tuple element, and that component is the subgraph containing the vertices reachable from that tuple component. If each such subgraph is an associative reduction, then the original reduction is associative. See Figure~\ref{fig:subgraphs} for several examples.
 
