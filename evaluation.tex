@@ -1,8 +1,5 @@
-Performance results using rfactor (overall speedup): 
-2D histogram, 4D argmin, complex multiplication, saturating addition, dot product (vectorize inner or parallelize outer), matrix multiply vs. the serial versions, convolution with large kernels (vectorizing the inner reduction?). \\
-
-\begin{table*}[h!]
-\caption{Benchmark results: serial vs. parallel \code{rfactor}}
+\begin{table*}[t]
+\caption{Benchmark results: serial reductions vs. parallel reductions using \code{rfactor}}
 \label{tab:table}
 \centering
 %\setlength\tabcolsep{3.5pt} % default value: 6pt
@@ -10,26 +7,42 @@ Performance results using rfactor (overall speedup):
 \begin{tabular}{p{5cm}ddd}
 \toprule
 \multicolumn{1}{C{5cm}}{Benchmark} & \multicolumn{1}{C{2cm}}{Serial (ms)} & \multicolumn{1}{C{2cm}}{\code{rfactor} (ms)} & \multicolumn{1}{C{2cm}}{Speed-up}\\
-\midrule 
-2D histogram 							&  &  & \\
-4D argmin 								&  &  & \\
-Complex multiplication 			&  &  & \\
-Saturating addition	 				&  &  & \\
-Dot-product 							&  &  & \\
-Square matrix multiplication 	&  &  & \\
-(size??)x(size??) convolution  &  &  & \\
-\bottomrule 
+\midrule
+Maximum                 &  5.54 & 1.22 &  4.5 \\
+2D histogram            &  8.80 & 1.71 &  5.1 \\
+4D argmin               & 28.52 & 1.07 & 26.6 \\
+Complex multiplication	& 28.53 & 2.47 & 11.5 \\
+Dot product 	        &  2.34 & 0.52 &  4.5 \\
+Kitchen sink            & 30.13 & 1.91 & 15.7 \\
+\bottomrule
 \end{tabular}
 \end{center}
 \label{default}
 \end{table*}
 
-Synthetic functions (also to show limitations): approximating 128-bit add with 2 64-bit integers -> z3 cannot prove that it is associative, although the max/min forms are provable with z3. \\
+In this section we discuss the speed-ups one can expect by using \code{rfactor} to vectorize and parallelize serial reductions. These numbers are unsurprising -- they are equivalent to the speed-ups one can attain by manually factoring Halide reductions. We benchmark the feature using a suite of reductions of varying complexity. Some operations, like large matrix multiplication or convolution, reduce along some axes and are data parallel along others. \code{rfactor} provides little benefit in these cases, as they are already straight-forward to vectorize and parallelize. We do not include such cases. Our benchmarks are:
 
-Limitations: we need an identity, symmetric intermediate and merge functions: they should be of the same form, constrained by the look-up table (we can only match to whatever are in the table -> whatever z3 can prove to be associative) + whatever we thought to generate. Some associative ops (e.g. 4x4 matrix multiply) are just expensive to generate. Technically it's doable, provided we limit the ops to addition and multiplication and restricting the variables involved in the expr to be unique (no repeats) during lookup table generation. Other ops may not be covered in our search (e.g. one that exploits a special property unique to some large constant). \\
+\begin{itemize}
+\item Maximum: The maximum integer in a list.
+\item Dot product: The dot product of two vectors.
+\item 4D argmin: The coordinates of the minimum value in a four-dimensional volume.
+\item 2D histogram: A histogram of values present in an 8-bit image.
+\item Complex multiplication: The product of a list of complex numbers.
+\item Kitchen sink: An 8-tuple-element reduction that simultaneously computes the sum, product, minimum, maximum, argmin, argmax, sum-of-squares, and a count of the number of even values in a list of integers. This tests exists to demonstrate we can decompose multi-valued reductions into primitive ones.
+\end{itemize}
 
-Real-world stuff: same code that can be simplified (reducing number of lines of code, etc) when using rfactor \\
+All benchmarks run on an inputs of size $2^{24}$, which is a typical number of pixels for an input image to a Halide program. We run the benchmarks on 8 cores of a Xeon E5-2690. In each case we use the same Halide \emph{algorithm} code, and compare the performance attainable with \code{rfactor} to the performance attainable without it. Table~\ref{tab:table} shows the results.
 
-Performance of generation/search/synthesis. <TODO: Not sure what this is about? time taken when doing the matching? how many associative operations can be generated within some hours? > \\
+Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram, maximum, and dot-product fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The dot-product and the maximum benchmarks do vectorize cleanly, but underneath Halide LLVM auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. 4D argmin, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
 
-Case study of importance of "code reduction"? <TODO: Not sure what this is about? SK: I think the idea is that without the approach in this paper, you have to write more code (= more bugs) but also that you have to write arch-specific code (if you want to do parallel reduction on one arch and not the other) > \\ 
+%Discussion
+
+%Synthetic functions (also to show limitations): approximating 128-bit add with 2 64-bit integers -> z3 cannot prove that it is associative, although the max/min forms are provable with z3. \\
+
+%Limitations: we need an identity, symmetric intermediate and merge functions: they should be of the same form, constrained by the look-up table (we can only match to whatever are in the table -> whatever z3 can prove to be associative) + whatever we thought to generate. Some associative ops (e.g. 4x4 matrix multiply) are just expensive to generate. Technically it's doable, provided we limit the ops to addition and multiplication and restricting the variables involved in the expr to be unique (no repeats) during lookup table generation. Other ops may not be covered in our search (e.g. one that exploits a special property unique to some large constant). \\
+
+%Real-world stuff: same code that can be simplified (reducing number of lines of code, etc) when using rfactor \\
+
+%Performance of generation/search/synthesis. <TODO: Not sure what this is about? time taken when doing the matching? how many associative operations can be generated within some hours? > \\
+
+%Case study of importance of "code reduction"? <TODO: Not sure what this is about? SK: I think the idea is that without the approach in this paper, you have to write more code (= more bugs) but also that you have to write arch-specific code (if you want to do parallel reduction on one arch and not the other) > \\
