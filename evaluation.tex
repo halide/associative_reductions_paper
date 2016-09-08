@@ -14,10 +14,9 @@ Performance results using rfactor (overall speedup):
 2D histogram 							&  &  & \\
 4D argmin 								&  &  & \\
 Complex multiplication 			&  &  & \\
-Saturating addition	 				&  &  & \\
+1D max	 						           &  &  & \\
 Dot-product 							&  &  & \\
-Square matrix multiplication 	&  &  & \\
-(size??)x(size??) convolution  &  &  & \\
+Kitchen sink  							&  &  & \\
 \bottomrule 
 \end{tabular}
 \end{center}
@@ -31,5 +30,44 @@ Limitations: we need an identity, symmetric intermediate and merge functions: th
 Real-world stuff: same code that can be simplified (reducing number of lines of code, etc) when using rfactor \\
 
 Performance of generation/search/synthesis. <TODO: Not sure what this is about? time taken when doing the matching? how many associative operations can be generated within some hours? > \\
+
+\begin{table*}[h!]
+\caption{Pre-computed table size for single and two element tuple of type \code{int32} generated in 24 hours.}
+\label{tab:table}
+\centering
+%\setlength\tabcolsep{3.5pt} % default value: 6pt
+\begin{center}
+\begin{tabular}{p{10cm}d}
+\toprule
+\multicolumn{1}{C{10cm}}{Tuple Size} & \multicolumn{1}{C{3cm}}{Size}\\
+\midrule 
+Single-element (with constant, no selects, max of 8 leaves) & 7737 \\
+Single-element (with constant, select only, max of 3 leaves for conditional, 4 leaves for the true/false) & 3162 \\
+Two-element (with constant, no selects, max of 7 leaves) & 294 \\
+\bottomrule 
+\end{tabular}
+\end{center}
+\label{default}
+\end{table*}
+
+\begin{table*}[h!]
+\caption{Pre-computed table size for single and two element tuple of type \code{uint32} generated in 12 hours.}
+\label{tab:table}
+\centering
+%\setlength\tabcolsep{3.5pt} % default value: 6pt
+\begin{center}
+\begin{tabular}{p{10cm}d}
+\toprule
+\multicolumn{1}{C{10cm}}{Tuple Size} & \multicolumn{1}{C{3cm}}{Size}\\
+\midrule 
+Single-element (with constant, no selects, max of 8 leaves) & 2584 \\
+Two-element (with constant, no selects, max of 7 leaves) & 196 \\
+\bottomrule 
+\end{tabular}
+\end{center}
+\label{default}
+\end{table*}
+
+For the three and four-element tuple, so far we have only find 1 non-decomposable 4-element tuple (i.e. the 2x2 matrix multiply), the rests (3-element and 4-element) are decomposable into smaller dimensions. \\
 
 Case study of importance of "code reduction"? <TODO: Not sure what this is about? SK: I think the idea is that without the approach in this paper, you have to write more code (= more bugs) but also that you have to write arch-specific code (if you want to do parallel reduction on one arch and not the other) > \\ 

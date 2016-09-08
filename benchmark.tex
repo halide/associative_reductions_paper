@@ -1,81 +1,148 @@
-Benchmark Codes:
-2D histogram, 4D argmin, complex multiplication, saturating addition, dot product (vectorize inner or parallelize outer), matrix multiply vs. the serial versions, convolution with large kernels (vectorizing the inner reduction?). 
-
 \begin{lstlisting}[caption={Benchmark code for histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
-Func hist;
-Var x("x");
-hist(x) = 0;
-RDom r(0, input.width(), 0, input.height());
-hist(clamp(cast<int>(input(r.x, r.y)), 0, 255)) += 1;
+Func hist("hist");
+Var x, y;
+RDom r(0, W, 0, H);
 
-// Compute the histogram along x for each y in
-// parallel, then reduce the results
-Var u("u");
-Func intm = hist.update(0).rfactor(r.y, u);
-intm.compute_root();
-intm.update(0).parallel(u);
+hist(x) = 0;
+hist(in(r.x, r.y)) += 1;
+
+Var u;
+RVar ryo, ryi;
+hist
+  .update()
+  .split(r.y, ryo, ryi, 16)
+  .rfactor(ryo, u)
+  .compute_root()
+  .vectorize(x, 8)
+  .update().parallel(u);
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Benchmark code for argmin over 4D array}, label={lst:benchmark_argmin}]
+Func amin("amin");
 RDom r(0, size, 0, size, 0, size, 0, size);
-Func amin;
-amin() = Tuple(1, 2, 3, 4, 5);
+
+amin() = Tuple(255, 0, 0, 0, 0);
 amin() = Tuple(
-  min(amin()[0], in(r.x, r.y)),
-  select(amin()[0] < in(r.x, r.y), amin()[1], r.x),
-  select(amin()[0] < in(r.x, r.y), amin()[2], r.y),
-  select(amin()[0] < in(r.x, r.y), amin()[3], r.z),
-  select(amin()[0] < in(r.x, r.y), amin()[4], r.w)
+  min(amin()[0], input(r.x, r.y, r.z, r.w)),
+  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+         amin()[1], r.x),
+  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+         amin()[2], r.y),
+  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+         amin()[3], r.z),
+  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+         amin()[4], r.w)
 );
+Var u;
+Func intm1 = amin.update(0).rfactor(r.w, u);
+intm1.compute_root().update(0).parallel(u);
+Var v;
+RVar rxo, rxi;
+Func intm2 = intm1.update(0)
+                  .split(r.x, rxo, rxi, 16)
+                  .rfactor(rxi, v);
+intm2.compute_at(intm1, u).update(0).vectorize(v);                   
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Benchmark code for multiplication of complex number}, label={lst:benchmark_complex_multiply}]
-Func mult;
-mult() = Tuple(2, 3);
-RDom r(0, input0.width(), 0, input0.height());
+Func mult("mult");
+RDom r(0, size);
+
+mult() = Tuple(1, 0);
 mult() = Tuple(
   mult()[0]*input0(r.x) - mult()[1]*input1(r.x),
   mult()[0]*input1(r.x) + mult()[1]*input0(r.x)
 );
-// Split the computation into partial chunks
-RVar rxi("rxi"), rxo("rxo");
-mult.update(0).split(r.x, rxo, rxi, 128);
-// Compute the chunks in parallel, then reduce 
-// the results
-Var u("u");
-Func intm = mult.update(0).rfactor(rxo, u);
-RVar rxio("rxio"), rxii("rxii");
-intm.compute_root();
-intm.update(0).parallel(u);
+
+RVar rxi, rxo, rxii, rxio;
+mult.update(0).split(r.x, rxo, rxi, 2*8192);
+
+Var u, v;
+Func intm = mult.update().rfactor(rxo, u);
+intm.compute_root()
+    .vectorize(u, 8)
+    .update()
+    .parallel(u)
+    .split(rxi, rxio, rxii, 8)
+    .rfactor(rxii, v)
+    .compute_at(intm, u)
+    .vectorize(v)
+    .update()
+    .vectorize(v);
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Benchmark code for finding the maximum value over 1D array}, label={lst:benchmark_max}]
+Func maxf("maxf");
+RDom r(0, size);
+
+maxf() = 0;
+RVar rxo, rxi, rxio, rxii;
+maxf() = max(maxf(), A(r));
+maxf.update().split(r.x, rxo, rxi, 4*8192);
+
+Var u, v;
+Func intm = maxf.update().rfactor(rxo, u);
+intm.compute_root()
+    .update()
+    .parallel(u)
+    .split(rxi, rxio, rxii, 8)
+    .rfactor(rxii, v)
+    .compute_at(intm, u)
+    .vectorize(v)
+    .update()
+    .vectorize(v);
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Benchmark code for dot product}, label={lst:benchmark_dot_product}]
 Func dot("dot");
+RDom r(0, size);
+
 dot() = 0;
-RDom r(0, input.width());
-dot() += A(r.x)*B(r.x);
-// Split the computation into partial chunks
-RVar rxo("rxo"), rxi("rxi");
-dot.update(0).split(r.x, rxo, rxi, 128);
-// Compute the reduction of those chunks in parallel
-Var u("u");
-Func intm1 = dot.update(0).rfactor(rxo, u);
-RVar rxio("rxio"), rxii("rxii");
-intm1.compute_root();
-intm1.update(0).parallel(u);
-// Vectorize the reduction computation inside 
-// the chunk
-intm1.update(0).split(rxi, rxio, rxii, 8);
-Var v("v");
-Func intm2 = intm1.update(0).rfactor(rxii, v);
-intm2.compute_at(intm1, u);
-intm2.update(0).vectorize(v, 8);
+dot() += cast<int>(A(r.x))*B(r.x);
+RVar rxo, rxi, rxio, rxii;
+dot.update().split(r.x, rxo, rxi, 4*8192);
+
+Var u, v;
+Func intm = dot.update().rfactor(rxo, u);
+intm.compute_root()
+    .update()
+    .parallel(u)
+    .split(rxi, rxio, rxii, 8)
+    .rfactor(rxii, v)
+    .compute_at(intm, u)
+    .vectorize(v)
+    .update()
+    .vectorize(v);
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Benchmark code for square matrix multiplication.}, label={lst:benchmark_matrix}]
-Func matrix_mul;
-Var x("x"), y("y");
-matrix_mul(x, y) = 0;
-RDom k(0, matrix_size);
-matrix_mul(x, y) += A(k, y) * B(x, k);
+\begin{lstlisting}[caption={Benchmark code for kitchen sink.}, label={lst:benchmark_kitchen_sink}]
+Func sink("sink");
+RDom r(0, size);
+
+sink() = {0, 0, int(0x80000000), 0, int(0x7fffffff), 0, 0, 0};
+sink() = {
+  sink()[0] * A(r),  // Product
+  sink()[1] + A(r),  // Sum
+  max(sink()[2], A(r)),  // Max
+  select(sink()[2] > A(r), sink()[3], r), // Argmax
+  min(sink()[4], A(r)),  // Min
+  select(sink()[4] < A(r), sink()[5], r), // Argmin
+  sink()[6] + A(r)*A(r),  // Sum of squares
+  sink()[7] + select(A(r) % 2 == 0, 1, 0) // Number of even items
+};
+
+RVar rxo, rxi, rxio, rxii;
+sink.update().split(r.x, rxo, rxi, 8192);
+
+Var u, v;
+Func intm = sink.update().rfactor(rxo, u);
+intm.compute_root()
+    .update()
+    .parallel(u)
+    .split(rxi, rxio, rxii, 8)
+    .rfactor(rxii, v)
+    .compute_at(intm, u)
+    .vectorize(v)
+    .update()
+    .vectorize(v);
 \end{lstlisting}
