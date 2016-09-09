@@ -1,24 +1,24 @@
-\begin{table*}[t]
-\caption{Benchmark results: serial reductions vs. parallel reductions using \code{rfactor}}
+\begin{table}[t]
 \label{tab:table}
 \centering
 %\setlength\tabcolsep{3.5pt} % default value: 6pt
 \begin{center}
-\begin{tabular}{p{5cm}ddd}
+\begin{tabular}{p{1in}ddd}
 \toprule
-\multicolumn{1}{C{5cm}}{Benchmark} & \multicolumn{1}{C{2cm}}{Serial (ms)} & \multicolumn{1}{C{2cm}}{\code{rfactor} (ms)} & \multicolumn{1}{C{2cm}}{Speed-up}\\
-\midrule
+\multicolumn{1}{C{1.5cm}}{Benchmark} & \multicolumn{1}{C{1.5cm}}{Serial (ms)} & \multicolumn{1}{C{1.5cm}}{\code{rfactor} (ms)} & \multicolumn{1}{C{1.5cm}}{Speed-up}\\
+% Benchmark & Serial (ms) & \code{rfactor} (ms) & Speed-up \\
+\midrule \\
 Maximum                 &  5.54 & 1.22 &  4.5 \\
 2D histogram            &  8.80 & 1.71 &  5.1 \\
 4D argmin               & 28.52 & 1.07 & 26.6 \\
-Complex multiplication	& 28.53 & 2.47 & 11.5 \\
+Complex multiply	& 28.53 & 2.47 & 11.5 \\
 Dot product 	        &  2.34 & 0.52 &  4.5 \\
 Kitchen sink            & 30.13 & 1.91 & 15.7 \\
 \bottomrule
 \end{tabular}
 \end{center}
-\label{default}
-\end{table*}
+\caption{Benchmark results: serial reductions vs. parallel reductions using \code{rfactor}}
+\end{table}
 
 In this section we discuss the speed-ups one can expect by using \code{rfactor} to vectorize and parallelize serial reductions. These numbers are unsurprising -- they are equivalent to the speed-ups one can attain by manually factoring Halide reductions. We benchmark the feature using a suite of reductions of varying complexity. Some operations, like large matrix multiplication or convolution, reduce along some axes and are data parallel along others. \code{rfactor} provides little benefit in these cases, as they are already straight-forward to vectorize and parallelize. We do not include such cases. Our benchmarks are:
 
