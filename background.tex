@@ -12,7 +12,7 @@ for y:
  for x:
   for ry:
    for rx:
-    blur(x, y) += kernel(rx, ry) * input(x - rx, y - ry);
+    blur(x, y) += k(rx, ry) * in(x-rx, y-ry);
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Computing the histogram of an image is hard to parallelize in Halide, since its update stage would be expressed with serial \code{RVar}s.}, label={lst:histogram_loopness}]
