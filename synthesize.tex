@@ -30,7 +30,7 @@ In the table of expressions that this produces, $x$ represents the partial resul
 
 This would match against the pattern $x + y$, where $x$ matches \code{f(in(r) \% 2)}, and $y$ matches \code{pow(in(r), 2)}.
 
-We terminate our enumeration at trees with 8 leaves. We generate separate tables for each of Halide's scalar types, as some operations are associative in one type by not another. This takes 1.5 days and generates around 10,000 signed elementary operators to match against per type. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}.
+We terminate our enumeration at trees with 8 leaves. We generate separate tables for each of Halide's scalar types, as some operations are associative in one type by not another. This takes 1.5 days and generates around 10,000 signed elementary operators to match against per type. Many of the operators are equivalent to simpler operators, but are written a more complex way. As we wish to catch all ways in which a programmer might write a reduction, we include these in the table. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}.
 
 \begin{lstlisting}[caption={The first 10 elementary associative operators for 32-bit signed integers}, label={lst:top10}]
 x + y
@@ -47,16 +47,17 @@ min(max(k - x, y), x)
 
 %As the list grows, operators become more and more esoteric. An example 8-leaf operator from the list for unsigned integers is TODO
 
-As we only consider one- and two-dimensional expressions, there are meaningful primitive operators that we never discover. For example, we never generate quaternion multiplication. It is an elementary associative operator in 4 tuple elements, where every expression tree has 8 leaf nodes. We must add any important higher-dimensional primitive operators to our table manually. Another limitation is that for each associative reduction, we have a single pattern for the update definition we expect to see, and so if the Halide simplifier and solver fail to canonicalize an update definition into that form, we will not recognize it. For example, consider the reduction which counts how many points in the reduction domain satisfy some predicate $P$. It may be written with the addition outermost:
+As we only consider one- and two-dimensional expressions, there are meaningful primitive operators that we never discover. For example, we never generate quaternion multiplication. It is an elementary associative operator in 4 tuple elements, where every expression tree has 8 leaf nodes. We must add any important higher-dimensional primitive operators to our table manually.
 
-\code{f() = select(P(r), 1, 0) + f()}
+%Another limitation is that for each associative reduction, we have a single pattern for the update definition we expect to see, and so if the Halide simplifier and solver fail to canonicalize an update definition into that form, we will not recognize it. For example, consider the reduction which counts how many points in the reduction domain satisfy some predicate $P$. It may be written with the addition outermost:
 
-After canonicalization we recognize this as a sum reduction of the form \code{x = x + y}. One might also write it with the \code{select} outermost:
+%\code{f() = select(P(r), 1, 0) + f()}
 
-\code{f() = select(P(r), f() + 1, f())},
+%After canonicalization we recognize this as a sum reduction of the form \code{x = x + y}. One might also write it with the \code{select} outermost:
 
-We do not recognize this as a sum reduction.
+%\code{f() = select(P(r), f() + 1, f())},
 
+%We do not recognize this as a sum reduction.
 
 \begin{figure}[tb]
 \centering
