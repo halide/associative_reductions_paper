@@ -41,7 +41,8 @@ RVar rxo, rxi;
 Func intm2 = intm1.update()
                   .split(r.x, rxo, rxi, 16)
                   .rfactor(rxi, v);
-intm2.compute_at(intm1, u).update().vectorize(v);                   
+intm2.compute_at(intm1, u)
+     .update().vectorize(v);                   
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Benchmark code for complex product}, label={lst:benchmark_complex_multiply}]
@@ -50,8 +51,8 @@ RDom r(0, size);
 
 mult() = {1, 0};
 mult() = {
-  mult()[0]*input0(r.x) - mult()[1]*input1(r.x),
-  mult()[0]*input1(r.x) + mult()[1]*input0(r.x)
+ mult()[0]*input0(r.x) - mult()[1]*input1(r.x),
+ mult()[0]*input1(r.x) + mult()[1]*input0(r.x)
 };
 
 RVar rxi, rxo, rxii, rxio;
@@ -120,7 +121,8 @@ Func sink;
 RDom r(0, size);
 
 sink() = {
-  0, 0, int(0x80000000), 0, int(0x7fffffff), 0, 0, 0
+  0, 0, int(0x80000000), 0, 
+  int(0x7fffffff), 0, 0, 0
 };
 sink() = {
   sink()[0] * A(r),  // Product

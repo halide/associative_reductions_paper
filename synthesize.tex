@@ -63,18 +63,20 @@ is associative, because it is a composition of the following two associative red
 Secondly, if we have an associative operator in which two tuple components compute the same value, we can deduplicate it, reducing the dimensionality by one. The result is still associative. Therefore, we can prove a reduction is associative by duplicating one of the elements to break a dependency and then applying the rule above. Consider the case of two-dimensional argmin:
 
 \begin{lstlisting}[caption={Two-dimensional argmin. The three tuple components are the minimum value, and its $x$ and $y$ coordinates.}]
-f() = {min(f()[0], in(r.x, r.y)),
-       select(f()[0] < in(r.x, r.y), f()[1], r.x),
-       select(f()[0] < in(r.x, r.y), f()[2], r.y)}
+f() = {
+  min(f()[0], in(r.x, r.y)),
+  select(f()[0] < in(r.x, r.y), f()[1], r.x),
+  select(f()[0] < in(r.x, r.y), f()[2], r.y)}
 \end{lstlisting}
 
 All three tuple components depend on \code{f()[0]}, so we can't decompose this into independent reductions immediately. Let's duplicate the first tuple component to break the dependency:
 
 \begin{lstlisting}[caption={Two-dimensional argmin with the minimum value redundantly computed as \code{f()[0]} and \code{f()[2]}}]
-f() = {min(f()[0], in(r.x, r.y)),
-       select(f()[0] < in(r.x, r.y), f()[1], r.x),
-       min(f()[2], in(r.x, r.y)),
-       select(f()[2] < in(r.x, r.y), f()[3], r.y)}
+f() = {
+  min(f()[0], in(r.x, r.y)),
+  select(f()[0] < in(r.x, r.y), f()[1], r.x),
+  min(f()[2], in(r.x, r.y)),
+  select(f()[2] < in(r.x, r.y), f()[3], r.y)}
 \end{lstlisting}
 
 There are no dependencies between the first two components and the last two. This is now a simple concatenation of two single-variable argmin operations. Single-variable argmin uses two tuple components, and is present in our table of primitive operators, so we recognize two-dimensional argmin as associative via its decomposition into two one-dimensional argmin reductions.
