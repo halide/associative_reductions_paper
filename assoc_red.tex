@@ -28,7 +28,7 @@ Func intm;
 Var i, y;
 intm(i, y) = 0;
 RDom rx(0, input.width());
-intm(input(rx, y)) += 1;
+intm(input(rx, y), y) += 1;
 
 Func hist;
 hist(i) = 0;
