@@ -119,7 +119,9 @@ intm.compute_root()
 Func sink;
 RDom r(0, size);
 
-sink() = {0, 0, int(0x80000000), 0, int(0x7fffffff), 0, 0, 0};
+sink() = {
+  0, 0, int(0x80000000), 0, int(0x7fffffff), 0, 0, 0
+};
 sink() = {
   sink()[0] * A(r),  // Product
   sink()[1] + A(r),  // Sum
