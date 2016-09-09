@@ -1,4 +1,4 @@
-\lstset{basicstyle=\fontsize{8.5pt}{10pt}\ttfamily}
+\lstset{basicstyle=\fontsize{9pt}{10pt}\ttfamily}
 
 \begin{lstlisting}[caption={Histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
 Func hist;
@@ -43,7 +43,8 @@ Func intm2 =
   intm1.update()
        .split(r.x, rxo, rxi, 16)
        .rfactor(rxi, v);
-intm2.compute_at(intm1, u).update().vectorize(v);
+intm2.compute_at(intm1, u)
+     .update().vectorize(v);
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Complex product}, label={lst:benchmark_complex_multiply}]
