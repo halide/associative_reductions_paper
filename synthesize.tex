@@ -30,7 +30,7 @@ In the table of expressions that this produces, $x$ represents the partial resul
 
 This would match against the pattern $x + y$, where $x$ matches \code{f(in(r) \% 2)}, and $y$ matches \code{pow(in(r), 2)}.
 
-We terminate our enumeration at trees with 8 leaves. We generate separate tables for each of Halide's scalar types, as some operations are associative in one type by not another. This takes 1.5 days and generates around 10,000 signed elementary operators to match against per type. Many of the operators are equivalent to simpler operators, but are written a more complex way. As we wish to catch all ways in which a programmer might write a reduction, we include these in the table. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}.
+We terminate our enumeration at trees with 8 leaves. We generate separate tables for each of Halide's scalar types, as some operations are associative in one type by not another. This takes 1.5 days and generates around 10,000 signed elementary operators to match against per type. Many of the operators are simple operators written in a complex way. As we wish to catch all ways in which a programmer might write a reduction, we make no attempt to exclude these from the table. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}.
 
 \begin{lstlisting}[caption={The first 10 elementary associative operators for 32-bit signed integers}, label={lst:top10}]
 x + y
