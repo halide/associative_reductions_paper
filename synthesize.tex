@@ -55,6 +55,14 @@ After canonicalization we recognize this as a sum reduction of the form \code{x 
 
 We do not recognize this as a sum reduction.
 
+
+\begin{figure}[tb]
+\centering
+\includegraphics{subgraphs}
+\caption{Dependency graphs of various multi-valued Halide \emph{update} definitions. Their subgraph decompositions are shown in red. To find the associative operator equivalent to a complex Halide update definition, we first decompose it into subgraphs, then search for each subgraph in our precomputed table of elementary operators, then recompose the results into a single multi-valued associative operator.}
+\label{fig:subgraphs}
+\end{figure}
+
 \subsection{Subgraph Decomposition}
 \label{subsec:decomposition}
 
@@ -101,13 +109,6 @@ In general we consider the directed graph of dependencies between tuple elements
 % This is a shitty ``proof''
 %Let the subgraph $S_i$ be all vertices and edges reachable from $N_i$. We can make a copy of $S_i$ as its own connnected component set apart from the rest of $G$ by the following procedure: Initialize $S_i$ to contain only a duplicate of $N_i$, with no incoming edges. Then repeatedly consider all edges that leave $S_i$, and make duplicates of the vertices they point to, where edges from vertices within $S_i$ point to the duplicate, and edges from vertices not in $S_i$ point to the original. This procedure terminates when $S_i$ contains all vertices reachable from $N_i$. At that point, there are no edges between $S_i$ and the rest of $G$, so it is its own connected component. Once we construct each such $S_i$, we can discard $G$, as everything it computes is also computed by one of the disconnected subgraphs. Similarly, we can discard subgraphs which are completely contained by some other subgraph. Therefore, if every subgraph $S_i$ not contained within some other subgraph is an associative reduction, then $G$ is an associative reduction. For examples of these graphs and their subgraphs for several reductions see Figure \ref{fig:subgraph}.
 
-\begin{figure}
-\centering
-\includegraphics{subgraphs}
-\caption{Dependency graphs of various multi-valued Halide \emph{update} definitions. Their subgraph decompositions are shown in red. To find the associative operator equivalent to a complex Halide update definition, we first decompose it into subgraphs, then search for each subgraph in our precomputed table of elementary operators, then recompose the results into a single multi-valued associative operator.}
-\label{fig:subgraphs}
-\end{figure}
-
 % Merging results of decomposition
 After finding the associative operator equivalent to each subgraph separately, we need to combine the results into a set single associative operators equivalent to the entire update definition. If all the subgraphs are associative and have identities, we need to ensure that, for a single tuple component appears in multiple subgraphs, the binary associative operators deduced via each subgraph are all the same in that tuple component. If they are consistent, we have succeeded in finding an equivalent set of associative operators for the update definition.
 
@@ -122,9 +123,9 @@ f() = {f()[0] * in(r)[0]) + f()[1] * in(r)[2]),
 
 Decomposition based on ``$x$'' alone (i.e. \code{f()[i]}) results in 2 subgraphs: one containing the 1st and 2nd tuple components and one containing the 3rd and 4th tuple components. Including $y$ (i.e. \code{in(r)[i]}) tells us that the two subgraphs are indeed connected. If we fail to find a match for the initial subgraphs (the ones decomposed based on ``$x$'' only), we need to consider other possible grouping of those initial subgraphs. The total number of possible grouping is the Bell number of the initial number of subgraphs. However, we only need to consider grouping expressions which share a common subexpression, and we do not need to consider groups of size greater than the maximum tuple size in our precomputed table. If we do not find a matching associative operator under all possible groupings of the initial subgraphs, we terminate and return an error. 
 
-\begin{figure}
+\begin{figure}[tb]
 \centering
-\includegraphics[width=3.2in]{system}
+\includegraphics[width=3in]{system}
 \caption{To factor a reduction written as a Halide update definition, we must first synthesize the equivalent associative binary operator. We generate a large table of elementary associative operators offline by enumerating all non-trivial expression trees and filtering out the ones that are not associative operators. At compile-time, we then decompose the given update definition into simpler definitions and match each against the table. Combining the results gives us the equivalent associative binary operator, which we can use to generate the factored form of the reduction}
 \label{fig:system}
 \end{figure}
