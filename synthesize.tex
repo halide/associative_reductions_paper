@@ -93,13 +93,15 @@ In general we consider the directed graph of dependencies between tuple elements
 
 \begin{figure}
 \centering
-\includegraphics[width=3.2in]{subgraphs}
+\includegraphics{subgraphs}
 \caption{Dependency graphs of various multi-valued Halide \emph{update} definitions. Their subgraph decompositions are shown in red. To find the associative operator equivalent to a complex Halide update definition, we first decompose it into subgraphs, then search for each subgraph in our precomputed table of elementary operators, then recompose the results into a single multi-valued associative operator.}
 \label{fig:subgraphs}
 \end{figure}
 
 % Merging results of decomposition
-After finding the associative operator equivalent to each subgraph separately, we need to combine the results into a set single associative operators equivalent to the entire update definition. If all the subgraphs are associative and have identities, we need to ensure that, for a single tuple component appears in multiple subgraphs, the binary associative operators deduced via each subgraph are all the same in that tuple component. If they are consistent, we have succeeded in finding an equivalent set of associative operators for the update definition. In some cases, we may fail to find one because of incorrect partitioning of the subgraphs. To fully capture the dependencies among tuple components, we need to consider dependencies on ``$y$''s as well, which is not readily available from the Halide update definition. Take for example the 2x2 matrix multiplication:
+After finding the associative operator equivalent to each subgraph separately, we need to combine the results into a set single associative operators equivalent to the entire update definition. If all the subgraphs are associative and have identities, we need to ensure that, for a single tuple component appears in multiple subgraphs, the binary associative operators deduced via each subgraph are all the same in that tuple component. If they are consistent, we have succeeded in finding an equivalent set of associative operators for the update definition.
+
+In some cases, this procedure over-partitions the graph. We are searching for an associative operator in $x$ and $y$. Only the $x$ is apparent from the Halide update definition -- it is the term that also appears on the left-hand-side. If we decompose based on cross-dependencies within $x$ alone we will miss dependencies between tuple elements that exist only in $y$. Consider 2x2 matrix multiplication:
 
 \begin{lstlisting}[caption={2x2 matrix multiplication. The four tuple components are the components in a 2x2 matrix in row order.}]
 f() = {f()[0] * in(r)[0]) + f()[1] * in(r)[2]),
@@ -108,9 +110,7 @@ f() = {f()[0] * in(r)[0]) + f()[1] * in(r)[2]),
        f()[2] * in(r)[1]) + f()[3] * in(r)[3])}
 \end{lstlisting}
 
-Subgraph decomposition based on ``$x$'' only (i.e. \code{f()[i]})  results in 2 subgraphs: one which comprises of the 1st and 2nd tuple components and one which comprises of the 3rd and 4th tuple components. Whereas, including $y$ (i.e. \code{in(r)[i]}) tells us that the two subgraphs are indeed connected. If we fail to solve for the initial subgraphs (the ones decomposed based on ``$x$'' only), we need to consider other possible grouping of those initial subgraphs. The total number of possible grouping is the Bell number of $n$, where $n$ is the total number of the initial subgraphs. We could reject immediately the grouping of which one of the subgraphs has unique $y$-subexpressions larger than the size of the subgraph or has size larger than the largest tuple size in our precomputed table. 
-
-If we couldn't find a solution from all those possible groupings of the initial subgraphs, we terminate and return an error. In the cases where the reduction is indeed associative, but we have failed to prove that fact and have thus refused to apply \code{rfactor}, the programmer must manually factor the reduction.
+Decomposition based on ``$x$'' alone (i.e. \code{f()[i]}) results in 2 subgraphs: one which comprises the 1st and 2nd tuple components and one which comprises of the 3rd and 4th tuple components. Including $y$ (i.e. \code{in(r)[i]}) tells us that the two subgraphs are indeed connected. If we fail to find a match for the initial subgraphs (the ones decomposed based on ``$x$'' only), we need to consider other possible grouping of those initial subgraphs. The total number of possible grouping is the Bell number of the initial number of subgraphs. However, we only need to consider grouping expressions which share a common subexpression, and we do not need to consider groups of size greater than the maximum tuple size in our precomputed table. If we do not find a matching associative operator under all possible groupings of the initial subgraphs, we terminate and return an error. 
 
 \begin{figure}
 \centering
