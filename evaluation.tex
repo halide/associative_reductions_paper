@@ -1,5 +1,4 @@
 \begin{table}[t]
-\label{tab:table}
 \centering
 %\setlength\tabcolsep{3.5pt} % default value: 6pt
 \begin{center}
@@ -18,6 +17,7 @@ Kitchen sink            & 30.13 & 1.91 & 15.7 \\
 \end{tabular}
 \end{center}
 \caption{Benchmark results: serial reductions vs. parallel reductions using \code{rfactor}}
+\label{tab:table}
 \end{table}
 
 In this section we discuss the speed-ups one can expect by using \code{rfactor} to vectorize and parallelize serial reductions. These numbers are unsurprising -- they are equivalent to the speed-ups one can attain by manually factoring Halide reductions. We benchmark the feature using a suite of reductions of varying complexity. Some operations, like large matrix multiplication or convolution, reduce along some axes and are data parallel along others. \code{rfactor} provides little benefit in these cases, as they are already straight-forward to vectorize and parallelize. We do not include such cases. Our benchmarks are:
