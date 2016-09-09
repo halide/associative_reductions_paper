@@ -31,49 +31,49 @@ In this section we discuss the speed-ups one can expect by using \code{rfactor} 
 \item Kitchen sink: An 8-tuple-element reduction that simultaneously computes the sum, product, minimum, maximum, argmin, argmax, sum-of-squares, and a count of the number of even values in a list of integers. This tests exists to demonstrate we can decompose multi-valued reductions into primitive ones.
 \end{itemize}
 
-All benchmarks run on an inputs of size $2^{24}$, which is a typical number of pixels for an input image to a Halide program. We run the benchmarks on 8 cores of a Xeon E5-2690. In each case we use the same Halide \emph{algorithm} code, and compare the performance attainable with \code{rfactor} to the performance attainable without it. Table~\ref{tab:table} shows the results.
+All benchmarks run on an inputs of size $2^{24}$, which is a typical number of pixels for an input image to a Halide program. We run the benchmarks on 8 cores of a Xeon E5-2690. In each case we use the same Halide \emph{algorithm} code, and compare the performance attainable with \code{rfactor} to the performance attainable without it. Table~\ref{tab:table} shows the results. Without \code{rfactor}, each algorithm would require twice as much algorithm code to reach the same performance.
 
 Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram, maximum, and dot-product fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The dot-product and the maximum benchmarks do vectorize cleanly, but underneath Halide LLVM auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. 4D argmin, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
 
-We ran the binary associative operator generator for 1.5 days for both the single- and two- dimensional tuples of signed 32-bit integers and unsigned 32-bit integers. We found around 10,000 associative operators in total for signed 32-bit integer single-dimensional tuple and around 6,000 for unsigned 32-bit integer single-dimensional tuple. For the two-dimensional tuple, we found around 300 operators for both signed 32-bit integer and unsigned 32-bit integer (see Table \ref{tab:int32_ops} and \ref{tab:uint32_ops}). Note that there are quite a few associative operators for the two-dimensional tuple we rejected during generation as they are decomposable into two one-dimensional associative operator.
+%We ran the binary associative operator generator for 1.5 days for both the single- and two- dimensional tuples of signed 32-bit integers and unsigned 32-bit integers. We found around 10,000 associative operators in total for signed 32-bit integer single-dimensional tuple and around 6,000 for unsigned 32-bit integer single-dimensional tuple. For the two-dimensional tuple, we found around 300 operators for both signed 32-bit integer and unsigned 32-bit integer (see Table \ref{tab:int32_ops} and \ref{tab:uint32_ops}). Note that there are quite a few associative operators for the two-dimensional tuple we rejected during generation as they are decomposable into two one-dimensional associative operator.
 
-\begin{table*}[h!]
-\caption{Precomputed table size for single- and two- dimensional tuples of signed 32-bit integers generated in 1.5 days.}
-\label{tab:int32_ops}
-\centering
+%\begin{table*}[h!]
+%\caption{Precomputed table size for single- and two- dimensional tuples of signed 32-bit integers generated in 1.5 days.}
+%\label{tab:int32_ops}
+%\centering
 %\setlength\tabcolsep{3.5pt} % default value: 6pt
-\begin{center}
-\begin{tabular}{p{10cm}d}
-\toprule
-\multicolumn{1}{C{10cm}}{Tuple Size} & \multicolumn{1}{C{3cm}}{Size}\\
-\midrule
-Single-dimensional (with constant, no \code{select}, max of 8 leaves) & 7737 \\
-Single-dimensional (with constant, \code{select} only, max of 3 leaves for conditional, 4 leaves for the true/false) & 3162 \\
-Two-dimensional (with constant, no \code{select}, max of 7 leaves) & 327 \\
-\bottomrule
-\end{tabular}
-\end{center}
-\label{default}
-\end{table*}
+%\begin{center}
+%\begin{tabular}{p{10cm}d}
+%\toprule
+%\multicolumn{1}{C{10cm}}{Tuple Size} & \multicolumn{1}{C{3cm}}{Size}\\
+%\midrule
+%Single-dimensional (with constant, no \code{select}, max of 8 leaves) & 7737 \\
+%Single-dimensional (with constant, \code{select} only, max of 3 leaves for conditional, 4 leaves for the true/false) & 3162 \\
+%Two-dimensional (with constant, no \code{select}, max of 7 leaves) & 327 \\
+%\bottomrule
+%\end{tabular}
+%\end{center}
+%\label{default}
+%\end{table*}
 
-\begin{table*}[h!]
-\caption{Precomputed table size for single- and two- dimensional tuples of unsigned 32-bit integers generated in 1.5 days.}
-\label{tab:uint32_ops}
-\centering
+%\begin{table*}[h!]
+%\caption{Precomputed table size for single- and two- dimensional tuples of unsigned 32-bit integers generated in 1.5 days.}
+%\label{tab:uint32_ops}
+%\centering
 %\setlength\tabcolsep{3.5pt} % default value: 6pt
-\begin{center}
-\begin{tabular}{p{10cm}d}
-\toprule
-\multicolumn{1}{C{10cm}}{Tuple Size} & \multicolumn{1}{C{3cm}}{Size}\\
-\midrule
-Single-dimensional (with constant, no \code{select}, max of 8 leaves) & 5813 \\
-Single-dimensional (with constant, \code{select} only, max of 3 leaves for conditional, 4 leaves for the true/false) & 518 \\
-Two-dimensional (with constant, no \code{select}, max of 7 leaves) & 348 \\
-\bottomrule
-\end{tabular}
-\end{center}
-\label{default}
-\end{table*}
+%\begin{center}
+%\begin{tabular}{p{10cm}d}
+%\toprule
+%\multicolumn{1}{C{10cm}}{Tuple Size} & \multicolumn{1}{C{3cm}}{Size}\\
+%\midrule
+%Single-dimensional (with constant, no \code{select}, max of 8 leaves) & 5813 \\
+%Single-dimensional (with constant, \code{select} only, max of 3 leaves for conditional, 4 leaves for the true/false) & 518 \\
+%Two-dimensional (with constant, no \code{select}, max of 7 leaves) & 348 \\
+%\bottomrule
+%\end{tabular}
+%\end{center}
+%\label{default}
+%\end{table*}
 
 %Discussion
 

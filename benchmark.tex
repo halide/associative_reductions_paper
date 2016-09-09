@@ -3,20 +3,19 @@
 \begin{lstlisting}[caption={Benchmark code for histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
 Func hist;
 Var x, y;
-RDom r(0, W, 0, H);
+RDom r(0, size, 0, size);
 
 hist(x) = 0;
 hist(in(r.x, r.y)) += 1;
 
-Var u;
 RVar ryo, ryi;
 hist
   .update()
   .split(r.y, ryo, ryi, 16)
-  .rfactor(ryo, u)
+  .rfactor(ryo, y)
   .compute_root()
   .vectorize(x, 8)
-  .update().parallel(u);
+  .update().parallel(y);
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Benchmark code for argmin over 4D array}, label={lst:benchmark_argmin}]
@@ -26,24 +25,25 @@ RDom r(0, size, 0, size, 0, size, 0, size);
 amin() = {255, 0, 0, 0, 0};
 amin() = {
   min(amin()[0], input(r.x, r.y, r.z, r.w)),
-  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+  select(amin()[0] < input(r.x, r.y, r.z, r.w),
          amin()[1], r.x),
-  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+  select(amin()[0] < input(r.x, r.y, r.z, r.w),
          amin()[2], r.y),
-  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+  select(amin()[0] < input(r.x, r.y, r.z, r.w),
          amin()[3], r.z),
-  select(amin()[0] < input(r.x, r.y, r.z, r.w), 
+  select(amin()[0] < input(r.x, r.y, r.z, r.w),
          amin()[4], r.w)
 };
-Var u;
+
+Var u, v;
 Func intm1 = amin.update().rfactor(r.w, u);
 intm1.compute_root().update().parallel(u);
-Var v;
 RVar rxo, rxi;
-Func intm2 = intm1.update()
-                  .split(r.x, rxo, rxi, 16)
-                  .rfactor(rxi, v);
-intm2.compute_at(intm1, u).update().vectorize(v);                   
+Func intm2 =
+  intm1.update()
+       .split(r.x, rxo, rxi, 16)
+       .rfactor(rxi, v);
+intm2.compute_at(intm1, u).update().vectorize(v);
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Benchmark code for complex product}, label={lst:benchmark_complex_multiply}]
@@ -52,15 +52,16 @@ RDom r(0, size);
 
 mult() = {1, 0};
 mult() = {
- mult()[0]*input0(r.x) - mult()[1]*input1(r.x),
- mult()[0]*input1(r.x) + mult()[1]*input0(r.x)
+ mult()[0]*input0(r) - mult()[1]*input1(r),
+ mult()[0]*input1(r) + mult()[1]*input0(r)
 };
 
 RVar rxi, rxo, rxii, rxio;
-mult.update().split(r.x, rxo, rxi, 2*8192);
-
 Var u, v;
-Func intm = mult.update().rfactor(rxo, u);
+Func intm =
+  mult.update()
+      .split(r.x, rxo, rxi, 2*8192)
+      .rfactor(rxo, u);
 intm.compute_root()
     .vectorize(u, 8)
     .update()
@@ -78,12 +79,14 @@ Func maxf;
 RDom r(0, size);
 
 maxf() = 0;
-RVar rxo, rxi, rxio, rxii;
 maxf() = max(maxf(), A(r));
-maxf.update().split(r.x, rxo, rxi, 4*8192);
 
+RVar rxo, rxi, rxio, rxii;
 Var u, v;
-Func intm = maxf.update().rfactor(rxo, u);
+Func intm =
+  maxf.update()
+      .split(r.x, rxo, rxi, 4*8192)
+      .rfactor(rxo, u);
 intm.compute_root()
     .update()
     .parallel(u)
@@ -101,11 +104,13 @@ RDom r(0, size);
 
 dot() = 0;
 dot() += cast<int>(A(r.x))*B(r.x);
-RVar rxo, rxi, rxio, rxii;
-dot.update().split(r.x, rxo, rxi, 4*8192);
 
+RVar rxo, rxi, rxio, rxii;
 Var u, v;
-Func intm = dot.update().rfactor(rxo, u);
+Func intm =
+  dot.update()
+     .split(r.x, rxo, rxi, 4*8192)
+     .rfactor(rxo, u);
 intm.compute_root()
     .update()
     .parallel(u)
@@ -122,25 +127,26 @@ Func sink;
 RDom r(0, size);
 
 sink() = {
-  0, 0, int(0x80000000), 0, 
+  0, 0, int(0x80000000), 0,
   int(0x7fffffff), 0, 0, 0
 };
 sink() = {
-  sink()[0] * A(r),  // Product
-  sink()[1] + A(r),  // Sum
-  max(sink()[2], A(r)),  // Max
-  select(sink()[2] > A(r), sink()[3], r), // Argmax
-  min(sink()[4], A(r)),  // Min
-  select(sink()[4] < A(r), sink()[5], r), // Argmin
-  sink()[6] + A(r)*A(r),  // Sum of squares
-  sink()[7] + select(A(r) % 2 == 0, 1, 0) // Number of even items
+  sink()[0] * A(r),
+  sink()[1] + A(r),
+  max(sink()[2], A(r)),
+  select(sink()[2] > A(r), sink()[3], r),
+  min(sink()[4], A(r)),
+  select(sink()[4] < A(r), sink()[5], r),
+  sink()[6] + A(r)*A(r),
+  sink()[7] + select(A(r) % 2 == 0, 1, 0)
 };
 
 RVar rxo, rxi, rxio, rxii;
-sink.update().split(r.x, rxo, rxi, 8192);
-
 Var u, v;
-Func intm = sink.update().rfactor(rxo, u);
+Func intm =
+  sink.update()
+      .split(r.x, rxo, rxi, 8192)
+      .rfactor(rxo, u);
 intm.compute_root()
     .update()
     .parallel(u)
