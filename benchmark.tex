@@ -99,6 +99,7 @@ intm.compute_root()
     .vectorize(v);
 \end{lstlisting}
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Dot product}, label={lst:benchmark_dot_product}]
 Func dot;
 RDom r(0, size);
@@ -122,6 +123,7 @@ intm.compute_root()
     .update()
     .vectorize(v);
 \end{lstlisting}
+\end{minipage}
 
 \begin{lstlisting}[caption={Everything but the kitchen sink.}, label={lst:benchmark_kitchen_sink}]
 Func sink;
