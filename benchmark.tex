@@ -1,5 +1,6 @@
 \lstset{basicstyle=\fontsize{9pt}{10pt}\ttfamily}
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
 Func hist;
 Var x, y;
@@ -17,7 +18,35 @@ hist
   .vectorize(x, 8)
   .update().parallel(y);
 \end{lstlisting}
+\end{minipage}
 
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Maximum value over a 1D array}, label={lst:benchmark_max}]
+Func maxf;
+RDom r(0, size);
+
+maxf() = 0;
+maxf() = max(maxf(), A(r));
+
+RVar rxo, rxi, rxio, rxii;
+Var u, v;
+Func intm =
+  maxf.update()
+      .split(r.x, rxo, rxi, 4*8192)
+      .rfactor(rxo, u);
+intm.compute_root()
+    .update()
+    .parallel(u)
+    .split(rxi, rxio, rxii, 8)
+    .rfactor(rxii, v)
+    .compute_at(intm, u)
+    .vectorize(v)
+    .update()
+    .vectorize(v);
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Argmin over 4D array}, label={lst:benchmark_argmin}]
 Func amin;
 RDom r(0, size, 0, size, 0, size, 0, size);
@@ -46,7 +75,9 @@ Func intm2 =
 intm2.compute_at(intm1, u)
      .update().vectorize(v);
 \end{lstlisting}
+\end{minipage}
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Complex product}, label={lst:benchmark_complex_multiply}]
 Func mult;
 RDom r(0, size);
@@ -74,30 +105,7 @@ intm.compute_root()
     .update()
     .vectorize(v);
 \end{lstlisting}
-
-\begin{lstlisting}[caption={Maximum value over a 1D array}, label={lst:benchmark_max}]
-Func maxf;
-RDom r(0, size);
-
-maxf() = 0;
-maxf() = max(maxf(), A(r));
-
-RVar rxo, rxi, rxio, rxii;
-Var u, v;
-Func intm =
-  maxf.update()
-      .split(r.x, rxo, rxi, 4*8192)
-      .rfactor(rxo, u);
-intm.compute_root()
-    .update()
-    .parallel(u)
-    .split(rxi, rxio, rxii, 8)
-    .rfactor(rxii, v)
-    .compute_at(intm, u)
-    .vectorize(v)
-    .update()
-    .vectorize(v);
-\end{lstlisting}
+\end{minipage}
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Dot product}, label={lst:benchmark_dot_product}]
@@ -125,6 +133,7 @@ intm.compute_root()
 \end{lstlisting}
 \end{minipage}
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Everything but the kitchen sink.}, label={lst:benchmark_kitchen_sink}]
 Func sink;
 RDom r(0, size);
@@ -160,3 +169,4 @@ intm.compute_root()
     .update()
     .vectorize(v);
 \end{lstlisting}
+\end{minipage}
