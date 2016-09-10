@@ -98,6 +98,7 @@ max_val.compute_root();
 
 Using \code{rfactor} in the schedule, the programmer can produce the same machine code from the simpler form of the algorithm:
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
 Func max_val;
@@ -113,6 +114,7 @@ Func intm = max_val.update().rfactor(r.y, y);
 intm.compute_root();
     .update().parallel(y);
 \end{lstlisting}
+\end{minipage}
 
 In both of these examples we factored a two-dimensional reduction into two one-dimensional reductions. In general, one can simultaneously factor out any subset of the dimensions of an N-dimensional reduction. Recall that low-dimensional reductions can be reshaped into higher-dimensional ones using \code{split}, as in Figure~\ref{fig:rfactor}.
 
