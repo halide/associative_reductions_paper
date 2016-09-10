@@ -1,26 +1,6 @@
 \lstset{basicstyle=\fontsize{9pt}{10pt}\ttfamily}
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[caption={Histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
-Func hist;
-Var x, y;
-RDom r(0, size, 0, size);
-
-hist(x) = 0;
-hist(in(r.x, r.y)) += 1;
-
-RVar ryo, ryi;
-hist
-  .update()
-  .split(r.y, ryo, ryi, 16)
-  .rfactor(ryo, y)
-  .compute_root()
-  .vectorize(x, 8)
-  .update().parallel(y);
-\end{lstlisting}
-\end{minipage}
-
-\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Maximum value over a 1D array}, label={lst:benchmark_max}]
 Func maxf;
 RDom r(0, size);
@@ -45,6 +25,26 @@ intm.compute_root()
     .vectorize(v);
 \end{lstlisting}
 \end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Histogram of a two-dimensional image.}, label={lst:benchmark_histogram}]
+Func hist;
+Var x, y;
+RDom r(0, size, 0, size);
+
+hist(x) = 0;
+hist(in(r.x, r.y)) += 1;
+
+RVar ryo, ryi;
+hist.update()
+    .split(r.y, ryo, ryi, 16)
+    .rfactor(ryo, y)
+    .compute_root()
+    .vectorize(x, 8)
+    .update().parallel(y);
+\end{lstlisting}
+\end{minipage}
+
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption={Argmin over 4D array}, label={lst:benchmark_argmin}]
