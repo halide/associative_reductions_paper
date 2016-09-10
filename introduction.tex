@@ -4,6 +4,11 @@ Data-parallel operations, such as resizing an image, can be easily parallelized 
 
 In this work, we present a new Halide scheduling primitive called \code{rfactor}, which moves this factoring of a reduction into the \emph{schedule}, while maintaining Halide's consistency guarantees. \code{rfactor} takes a Halide serial reduction (expressed with an unstructured Halide \emph{update} definition), and synthesizes the equivalent binary associative reduction operator and its identity. In some cases this synthesis problem is trivial. For example, given Halide code that sums a one-dimensional vector (Listing~\ref{lst:sum}), it is straightforward to deduce that the binary operator involved is addition, and its identity is zero. In other cases this synthesis problem is more challenging. Listing~\ref{lst:complex_magnitude} shows Halide code that finds the complex number with the greatest magnitude and its location within a two-dimensional array. It is not obvious what the equivalent associative binary operator is for this algorithm.
 
+
+During the compilation process, \code{rfactor} splits the original serial reduction into a pair of stages: The \emph{intermediate} stage computes partial results over slices of the domain of the reduction, and the \emph{merge} stage combines those partial results. The intermediate stage is now data parallel over the slices, which means that it can now be vectorized or parallelized using Halide's existing scheduling primitives.
+
+Combined with other Halide scheduling primitives, such as \code{split}, \code{rfactor} allows Halide to represent a broad class of schedules for parallel and vectorized reductions. For example, rfactor can express several divide-and-conquer strategies for parallelizing and vectorizing the summation of a one-dimensional array (see Figure~\ref{fig:rfactor}).
+
 \begin{lstlisting}[float,
 caption = {Halide sum reduction over a one-dimensional vector.}, label={lst:sum}]
 Func out;
@@ -11,8 +16,6 @@ out() = 0;
 RDom r(0, input.width());
 out() = out() + input(r.x);
 \end{lstlisting}
-
-
 \begin{lstlisting}[float,
 caption = {Halide reduction which finds the complex number with the greatest magnitude and its location in a two-dimensional array.}, label={lst:complex_magnitude}]
 Func out;
@@ -29,11 +32,6 @@ out() = {select(c, real, out()[0]),
          select(c, r.x, out()[2]),
          select(c, r.y, out()[3])};
 \end{lstlisting}
-
-During the compilation process, \code{rfactor} splits the original serial reduction into a pair of stages: The \emph{intermediate} stage computes partial results over slices of the domain of the reduction, and the \emph{merge} stage combines those partial results. The intermediate stage is now data parallel over the slices, which means that it can now be vectorized or parallelized using Halide's existing scheduling primitives.
-
-Combined with other Halide scheduling primitives, such as \code{split}, \code{rfactor} allows Halide to represent a broad class of schedules for parallel and vectorized reductions. For example, rfactor can express several divide-and-conquer strategies for parallelizing and vectorizing the summation of a one-dimensional array (see Figure~\ref{fig:rfactor}).
-
 
 \code{rfactor} further separates the \emph{algorithm} from its \emph{schedule} by making it possible to factor reductions using the schedule alone. In addition to the readability and portability benefits, this means that tools that automatically generate schedules \cite{Mullapudi:2016:ASH:2897824.2925952, Ragan-Kelley:2013:HLC:2491956.2462176} are now capable of parallelizing reductions, which was previously a task outside of their purview.
 

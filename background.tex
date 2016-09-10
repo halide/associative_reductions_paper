@@ -14,7 +14,6 @@ for y:
    for rx:
     blur(x, y) += k(rx, ry) * in(x-rx, y-ry);
 \end{lstlisting}
-
 \begin{lstlisting}[float,caption={Computing the histogram of an image is hard to parallelize in Halide, since its update stage would be expressed with serial \code{RVar}s.}, label={lst:histogram_loopness}]
 // First stage
 for x:
