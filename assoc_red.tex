@@ -22,6 +22,7 @@ hist.compute_root();
 
 The \code{RDom} defines an implicit loop nest over \code{r.x} and \code{r.y}. Halide will not permit either of these loops to be parallelized, as that would introduce a race condition on the \code{+=} operation. Without the \code{rfactor} transformation, a user would need to rewrite the algorithm to manually factor the histogram:
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
 Func intm;
@@ -39,11 +40,13 @@ hist(i) += intm(i, ry);
 intm.compute_root().update().parallel(y);
 hist.compute_root().update().vectorize(i, 4);
 \end{lstlisting}
+\end{minipage}
 
 Above, the programmer introduced an intermediate function \code{intm} that computes the histogram over each row of the input. This intermediate function is data-parallel over \code{y}, and so it can be parallelized. The original function \code{hist} now merely sums these partial histograms; since \code{hist} is data-parallel over histogram buckets, the programmer has vectorized it.
 
 Using \code{rfactor}, the programmer can produce the same machine code as the manually-transformed version, using the simpler algorithm in the original \code{hist} implementation. While the schedule is more complex, recall that it is only the five lines of the algorithm that determine correctness. The programmer can freely transform the code to exploit parallelism without risking introducing a correctness bug:
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
 Func hist;
@@ -59,6 +62,7 @@ Func intm = hist.update().rfactor(r.y, y);
 intm.compute_root().update().parallel(y);
 hist.update().vectorize(i, 4);
 \end{lstlisting}
+\end{minipage}
 
 Reduction domains need not be rectangular. Consider the function below, which computes the maximum over a circular domain using \code{RDom::where} to restrict the reduction domain to the points that lie within a circle of radius 10.
 
