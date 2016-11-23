@@ -46,10 +46,11 @@
 % For tracking purposes - this is V2.0 - May 2012
 
 \documentclass[10pt]{main}
-\pagenumbering{arabic}
+%\pagenumbering{arabic}
+\pdfpagewidth=8.5in 
+\pdfpageheight=11in 
 
-
-\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
 \usepackage{tabularx, booktabs, array, dcolumn}
@@ -60,11 +61,11 @@
 %\usepackage{microtype}
 \usepackage{float}
 
-\newcolumntype{Z}{>{\raggedright}X}
-\setlength{\textfloatsep}{5pt plus 1.0pt minus 1.0pt}
-\setlength{\dbltextfloatsep}{5pt plus 1.0pt minus 1.0pt}
-\setlength{\floatsep}{1pt plus 1.0pt minus 2.0pt}
-\setlength{\dblfloatsep}{1pt plus 1.0pt minus 2.0pt}
+%\newcolumntype{Z}{>{\raggedright}X}
+%\setlength{\textfloatsep}{5pt plus 1.0pt minus 1.0pt}
+%\setlength{\dbltextfloatsep}{5pt plus 1.0pt minus 1.0pt}
+%\setlength{\floatsep}{1pt plus 1.0pt minus 2.0pt}
+%\setlength{\dblfloatsep}{1pt plus 1.0pt minus 2.0pt}
 
 \definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
 \definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
@@ -95,50 +96,41 @@ belowskip=3pt
 
 \newcommand{\code}[1]{\texttt{#1}}
 
-\newdef{definition}{Definition}
-
 \newcolumntype{d}{D{.}{.}{2.3}}
 \newcolumntype{C}{>{\centering}p}
 
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+
+\usepackage{flushend}
+
 \begin{document}
 
-% Copyright
-%\setcopyright{acmcopyright}
-%\setcopyright{acmlicensed}
-%\setcopyright{rightsretained}
-%\setcopyright{usgov}
-%\setcopyright{usgovmixed}
-%\setcopyright{cagov}
-%\setcopyright{cagovmixed}
+\makeatletter
+\def\@copyrightspace{\relax}
+\makeatother
 
 
 \title{Parallel Associative Reductions in Halide}
 
-%\numberofauthors{3}
-%\author{
-%% 1st. author
-%\alignauthor
-%Ben Trovato\titlenote{Dr.~Trovato insisted his name be first.}\\
-%       \affaddr{Institute for Clarity in Documentation}\\
-%       \affaddr{1932 Wallamaloo Lane}\\
-%       \affaddr{Wallamaloo, New Zealand}\\
-%       \email{trovato@corporation.com}
-%% 2nd. author
-%\alignauthor
-%G.K.M. Tobin\titlenote{The secretary disavows
-%any knowledge of this author's actions.}\\
-%       \affaddr{Institute for Clarity in Documentation}\\
-%       \affaddr{P.O. Box 1212}\\
-%       \affaddr{Dublin, Ohio 43017-6221}\\
-%       \email{webmaster@marysville-ohio.com}
-%% 3rd. author
-%\alignauthor Lars Th{\o}rv{\"a}ld\titlenote{This author is the
-%one who did all the really hard work.}\\
-%       \affaddr{The Th{\o}rv{\"a}ld Group}\\
-%       \affaddr{1 Th{\o}rv{\"a}ld Circle}\\
-%       \affaddr{Hekla, Iceland}\\
-%       \email{larst@affiliation.org}
-%}
+\numberofauthors{3}
+\author{
+% 1st. author
+\alignauthor
+Patricia Suriana\\
+       \affaddr{Google, USA}\\
+       \email{psuriana@google.com}
+% 2nd. author
+\alignauthor
+Andrew Adams\\
+       \affaddr{Google, USA}\\
+       \email{abadams@google.com}
+% 3rd. author
+\alignauthor Shoaib Kamil\\
+       \affaddr{Adobe, USA}\\
+       \email{kamil@adobe.com}
+}
 
 \maketitle
 \begin{abstract}
