@@ -95,7 +95,7 @@ RDom ry(0, input.height());
 max_val() = max(max_val(), intm(ry));
 
 // Schedule
-intm.compute_root();
+intm.compute_root()
     .update().parallel(y);
 max_val.compute_root();
 \end{lstlisting}
@@ -115,7 +115,7 @@ max_val() = max(max_val(), input(r.x, r.y));
 Var y;
 max_val.compute_root();
 Func intm = max_val.update().rfactor(r.y, y);
-intm.compute_root();
+intm.compute_root()
     .update().parallel(y);
 \end{lstlisting}
 \end{minipage}

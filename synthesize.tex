@@ -94,7 +94,7 @@ f() = {
   select(f()[0] < in(r.x, r.y), f()[2], r.y)}
 \end{lstlisting}
 
-The three tuple elements are the minimum value, and its $x$ and $y$ coordinate. All three tuple elements depend on the minimum value \code{f()[0]}, so we can't decompose this into independent reductions immediately. Let's duplicate the first tuple element to break the dependency:
+The three tuple elements are the minimum value, and its $x$ and $y$ coordinate. All three tuple elements depend on the minimum value \code{f()[0]}, so we cannot decompose this into independent reductions immediately. Let us duplicate the first tuple element to break the dependency:
 
 \begin{lstlisting}
 f() = {

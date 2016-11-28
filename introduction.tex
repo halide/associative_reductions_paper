@@ -46,7 +46,7 @@ out() = {select(c, real, out()[0]),
 
 Our work makes the following contributions:
 \begin{itemize}
-  \item We introduce a new Halide scheduling primitive \code{rfactor} which factors a Halide reduction into pair of reductions: an \emph{intermediate} stage that computes partial results over slices of reduction domain and \emph{merge} stage that combines those partial results;
+  \item We introduce a new Halide scheduling primitive \code{rfactor} which factors a Halide reduction into a pair of reductions: an \emph{intermediate} stage that computes partial results over slices of reduction domain and \emph{merge} stage that combines those partial results;
   \item We describe a method for automatically discovering an equivalent associative binary reduction operator and its identity from a serial reduction expressed as an imperative Halide \emph{update}.
   \item We implement a new stage in the Halide compiler that matches arbitrary reductions with a set of 17,905 fragments that are pre-generated using our synthesis method, and show that this enables the compiler to effectively transform a large set of reductions into their parallel equivalents.
 \end{itemize}
