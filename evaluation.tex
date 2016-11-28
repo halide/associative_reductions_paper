@@ -2,18 +2,19 @@
 \centering
 %\setlength\tabcolsep{3.5pt} % default value: 6pt
 \begin{center}
-\begin{tabular}{p{1in}ddd}
+\begin{tabular}{p{1in}dddd}
 \toprule
-\multicolumn{1}{C{1.5cm}}{Benchmark} & \multicolumn{1}{C{1.5cm}}{Serial (ms)} & \multicolumn{1}{C{1.5cm}}{\code{rfactor} (ms)} & \multicolumn{1}{C{1.5cm}}{Speed-up}\\
+\multicolumn{1}{C{1.5cm}}{Benchmark} & \multicolumn{1}{C{1.5cm}}{Serial (ms)} & \multicolumn{1}{C{1.5cm}}{\code{rfactor} (ms)} & \multicolumn{1}{C{1.5cm}}{Speed-up}
+& \multicolumn{1}{C{1.5cm}}{Data Type} \\
 % Benchmark & Serial (ms) & \code{rfactor} (ms) & Speed-up \\
 \midrule \\
-Maximum                 &  5.54 & 1.22 &  4.5 \\
-2D histogram            &  8.80 & 1.71 &  5.1 \\
-4D \code{argmin}               & 28.52 & 1.07 & 26.6 \\
-Complex                 & 28.53 & 2.47 & 11.5 \\
-  multiplication        &       &      &      \\
-Dot product 	        &  2.34 & 0.52 &  4.5 \\
-Kitchen sink            & 30.13 & 1.91 & 15.7 \\
+Maximum                 &  5.54 & 1.22 &  4.5 & int32 \\
+2D histogram            &  8.80 & 1.71 &  5.1 & int32 \\
+4D \code{argmin}        & 28.52 & 1.07 & 26.6 & int8 \\
+Complex                 & 28.53 & 2.47 & 11.5 & int32 \\
+  multiplication        &       &      &      & \\
+Dot product 	        &  2.34 & 0.52 &  4.5 & int8 \\
+Kitchen sink            & 30.13 & 1.91 & 15.7 & int32 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -32,9 +33,32 @@ In this section we discuss the speed-ups one can expect by using \code{rfactor} 
 \item Kitchen sink: An 8-tuple-element reduction that simultaneously computes the sum, product, minimum, maximum, \code{argmin}, \code{argmax}, sum-of-squares, and a count of the number of even values in a list of integers. This tests exists to demonstrate we can decompose multi-valued reductions into primitive ones.
 \end{itemize}
 
-All benchmarks run on an inputs of size $2^{24}$, which is a typical number of pixels for an input image to a Halide program. We run the benchmarks on 8 cores of a Xeon E5-2690. In each case we use the same Halide \emph{algorithm} code, and compare the performance attainable with \code{rfactor} to the performance attainable without it. Table~\ref{tab:table} shows the results. Without \code{rfactor}, each algorithm would require twice as much algorithm code to reach the same performance. We also measured the increase in compile times due to the call to \code{rfactor}, and found it to be consistently under three milliseconds.
+All benchmarks run on an inputs of size $2^{24}$, which is a typical number of pixels for an input image to a Halide program. The input image data types are specified in Table~\ref{tab:table}. We run the benchmarks on 8 cores of a Xeon E5-2690. In each case we use the same Halide \emph{algorithm} code, and compare the performance attainable with \code{rfactor} to the performance attainable without it. For each benchmark, we took the minimum across 10 trials where each trial is the average of 10 iterations. We measure the execution time of the pipeline, not including the compilation time. Table~\ref{tab:table} shows the results. Without \code{rfactor}, each algorithm would require twice as much algorithm code to reach the same performance. We also measured the increase in compile times due to the call to \code{rfactor}, and found it to be consistently under three milliseconds. The time taken to search the table for a matching operator is shown in Table~\ref{tab:search_time}. These are fast because the tables are split into subtables by the root IR node type (the largest subtable has $\thicksim 2800$ entries), and the most common operations are simple, and so they are close to the top of the tables. For a non-associative operation, \code{rfactor} must search all the way to the end of the table, and ultimately returns a compile error, which takes around 1.2 ms. 
 
-Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram, maximum, and dot-product fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The dot-product and maximum benchmarks do vectorize cleanly, but underneath Halide LLVM auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. 4D \code{argmin}, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
+Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram, maximum, and dot-product fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The dot-product and maximum benchmarks do vectorize cleanly, but underneath Halide LLVM auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. We used trunk LLVM as of Sept 9, 2016 to compile the benchmarks. 4D \code{argmin}, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
+
+\begin{table}[t]
+\centering
+%\setlength\tabcolsep{3.5pt} % default value: 6pt
+\begin{center}
+\begin{tabular}{p{1in}dd}
+\toprule
+\multicolumn{1}{C{1.5cm}}{Benchmark} & \multicolumn{1}{C{1.5cm}}{Search time (ms)} & \multicolumn{1}{C{1.5cm}}{Total compilation time (ms)} \\
+% Benchmark & Serial (ms) & \code{rfactor} (ms) & Speed-up \\
+\midrule \\
+Maximum                 &  0.08 & 127.5 \\
+2D histogram            &  0.09 & 220.9 \\
+4D \code{argmin}        &  0.57 & 196.2 \\
+Complex                 &  0.21 & 150.4 \\
+  multiplication        &       &       \\
+Dot product 	        &  0.12 & 131.2 \\
+Kitchen sink            &  0.55 & 187.1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Time taken to search the tables to find a matching operator.}
+\label{tab:search_time}
+\end{table}
 
 %We ran the binary associative operator generator for 1.5 days for both the single- and two- dimensional tuples of signed 32-bit integers and unsigned 32-bit integers. We found around 10,000 associative operators in total for signed 32-bit integer single-dimensional tuple and around 6,000 for unsigned 32-bit integer single-dimensional tuple. For the two-dimensional tuple, we found around 300 operators for both signed 32-bit integer and unsigned 32-bit integer (see Table \ref{tab:int32_ops} and \ref{tab:uint32_ops}). Note that there are quite a few associative operators for the two-dimensional tuple we rejected during generation as they are decomposable into two one-dimensional associative operator.
 
