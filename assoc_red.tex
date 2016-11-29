@@ -2,12 +2,13 @@
 
 Serial reductions in Halide (e.g.\ summation over an array, histogram, etc.) are implemented using \code{RVar}s or \code{RDom}s. An \code{RVar} is an implicit serial loop, and an \code{RDom} is an ordered list of \code{RVar}s specifying a serial loop nest. Since \code{RVar}s are not trivially parallelizable or vectorizable, a programmer must manually \emph{factor} a reduction into an \emph{intermediate} function that performs reduction over distinct slices of the domain, and a \emph{merge} function that combines those partial results.
 
-To further complicate matters, it is hard to infer what binary reduction operator is equivalent to a Halide update definition, and even then, many binary operators are not obviously associative (e.g. $x + y + 7xy$ is in fact associative). We will defer these issues to Section~\ref{synthesize}, and for now assume that given a Halide update definition we can deduce the equivalent associative binary operator and its identity. Note that we do not require the binary operators to be commutative.
+To further complicate matters, it is hard to infer what binary reduction operator is equivalent to a Halide update definition, and even then, many binary operators are not obviously associative (e.g. $x + y + 7xy$ is in fact associative). We will defer these issues to Section~\ref{synthesize}, and for now assume that given a Halide update definition we can deduce the equivalent associative binary operator and its identity. Note that some transformations (e.g. factoring the inner loop of a reduction as in Figure~\ref{fig:rfactor}-3b) require the binary operators to be commutative in addition to being associative as they may change the order of computation.
 
 To remove the burden of factoring a reduction from the programmer, we introduce a new scheduling primitive called \code{rfactor}. This splits a reduction into a pair of reductions, which we will call the \emph{intermediate} function and the \emph{merge} function. \code{rfactor} takes a list of (\code{RVar}, \code{Var}) pairs. The \emph{intermediate} reduces only over the \code{RVar}s \emph{not} mentioned in the list, and gains the associated \code{Var}s as new pure data-parallel dimensions. The \emph{merge} then reduces over these additional dimensions using \code{RVar}s that \emph{are} mentioned the list. The intermediate is thus \emph{higher}-dimensional than the original, but both the intermediate and merge do \emph{lower}-dimensional reductions than the original. We will specify the transformation in more detail after looking at several examples.
 
 As a first example, consider computing the histogram of an image in Halide:
 
+\noindent
 \begin{lstlisting}
 // Algorithm
 Func hist;
@@ -22,6 +23,7 @@ hist.compute_root();
 
 The \code{RDom} defines an implicit loop nest over \code{r.x} and \code{r.y}. Halide will not permit either of these loops to be parallelized, as that would introduce a race condition on the \code{+=} operation. Without the \code{rfactor} transformation, a user would need to rewrite the algorithm to manually factor the histogram:
 
+\noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
@@ -46,6 +48,7 @@ Above, the programmer introduced an intermediate function \code{intm} that compu
 
 Using \code{rfactor}, the programmer can produce the same machine code as the manually-transformed version, using the simpler algorithm in the original \code{hist} implementation. While the schedule is more complex, recall that it is only the five lines of the algorithm that determine correctness. The programmer can freely transform the code to exploit parallelism without risking introducing a correctness bug:
 
+\noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
@@ -65,7 +68,8 @@ hist.update().vectorize(i, 4);
 \end{minipage}
 
 Reduction domains need not be rectangular. Consider the function below, which computes the maximum over a circular domain using \code{RDom::where} to restrict the reduction domain to the points that lie within a circle of radius 10.
-%\vspace*{-5pt}
+\vspace*{-3pt}
+\noindent
 \begin{lstlisting}
 // Algorithm
 Func max_val;
@@ -79,7 +83,8 @@ max_val.compute_root();
 \end{lstlisting}
 
 In this case, manually factoring the reduction requires also manipulating the predicate associated with the \code{RDom}. The identity for \code{max} is the minimum value of the type in question, so the newly-factored algorithm becomes:
-
+\noindent
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
 Func intm;
@@ -95,13 +100,14 @@ RDom ry(0, input.height());
 max_val() = max(max_val(), intm(ry));
 
 // Schedule
-intm.compute_root()
-    .update().parallel(y);
+intm.compute_root().update().parallel(y);
 max_val.compute_root();
 \end{lstlisting}
+\end{minipage}
 
 Using \code{rfactor} in the schedule, the programmer can produce the same machine code from the simpler form of the algorithm:
 
+\noindent
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
@@ -115,8 +121,7 @@ max_val() = max(max_val(), input(r.x, r.y));
 Var y;
 max_val.compute_root();
 Func intm = max_val.update().rfactor(r.y, y);
-intm.compute_root()
-    .update().parallel(y);
+intm.compute_root().update().parallel(y);
 \end{lstlisting}
 \end{minipage}
 

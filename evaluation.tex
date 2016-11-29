@@ -36,7 +36,7 @@ All benchmarks run on an inputs of size $2^{24}$, which is a typical number of p
 
 Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram, maximum, and dot-product fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The dot-product and maximum benchmarks do vectorize cleanly, but underneath Halide LLVM auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. We used trunk LLVM as of Sept 9, 2016 to compile the benchmarks. 4D \code{argmin}, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
 
-\textbf{TODO: the HDR result}
+\textbf{TODO: the HDR+ result}
 
 Note that we did not add any patterns to the tables manually; the generated fragments were sufficient for the benchmarks, the applications in the Halide open source repository, and for the HDR+ pipeline. We could, however, manually add operators to the table if necessary in the future. An example of something that would have to be added manually is quaternion multiplication as we do not generate patterns that large during table generation.
 
