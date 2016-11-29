@@ -131,4 +131,4 @@ With these concrete examples in mind, we now specify the general form of the tra
 \item The original update definition being factored is deleted, and a new update definition is injected in its place which reduces over the \emph{intermediate} using the associative operator. The domain of this reduction is the set of \code{RVar}s which were factored out of the intermediate. The update operates element-wise along any pure dimensions of the merge stage (which may create yet more data parallelism, as in the histogram example). Other stages of the original function (e.g.\ its pure definition) are left unchanged.
 \end{enumerate}
 
-Note that this transformation requires that the associative operator has an identity. This is not true for all associative operators, such as $2xy$, where $x, y \in \mathds{Z}$.
+Note that this transformation requires that the associative operator has an identity. This is not true for all associative operators, such as $2xy$, where $x, y \in \mathds{Z}$; while $2xy$ has an identity in the real domain, it does not have an identity as a function of integers.
