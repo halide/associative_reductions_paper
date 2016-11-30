@@ -34,7 +34,7 @@ ref() = Tuple(min(ref()[0], input(r.x, r.y, r.y, r.z)),
 */
 
 int main() {
-	std::cout << "Input size: " << size << "\n";
+    std::cout << "Input size: " << size << "\n";
 
     bs::pack<uint8_t, size*4> vec;
 
@@ -43,10 +43,10 @@ int main() {
         for (int iz = 0; iz < size; iz++) {
             for (int iy = 0; iy < size; iy++) {
                 for (int ix = 0; ix < size; ix++) {
-                	int coordinate = ix + iy*4 + iz*16 + iw * 64;
+                    int coordinate = ix + iy*4 + iz*16 + iw * 64;
                     vec[coordinate] = (rand() % 0xff);
                     /*std::cout << "(" << ix << ", " << iy << ", " << iz << ", "
-                    		  << iw << "): " << (int)vec[coordinate] << "\n";*/
+                              << iw << "): " << (int)vec[coordinate] << "\n";*/
                 }
             }
         }
@@ -54,8 +54,8 @@ int main() {
 
     std::cout << "Done initializing\n";
 
-   	uint8_t min_val = bs::minimum(vec);
-   	std::cout << "Min value: " << (int) min_val << "\n";
+    uint8_t min_val = bs::minimum(vec);
+    std::cout << "Min value: " << (int) min_val << "\n";
 
     std::cout << "Start benchmarking...\n";
     double t = benchmark(trials, iterations, [&]() {
