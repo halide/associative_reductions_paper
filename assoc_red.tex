@@ -1,4 +1,4 @@
-%\subsection{Reductions in Halide}
+\textbf{TODO: Add explanations on pure and compute\_root}
 
 Serial reductions in Halide (e.g.\ summation over an array, histogram, etc.) are implemented using \code{RVar}s or \code{RDom}s. An \code{RVar} is an implicit serial loop, and an \code{RDom} is an ordered list of \code{RVar}s specifying a serial loop nest. Since \code{RVar}s are not trivially parallelizable or vectorizable, a programmer must manually \emph{factor} a reduction into an \emph{intermediate} function that performs reduction over distinct slices of the domain, and a \emph{merge} function that combines those partial results.
 
@@ -9,6 +9,7 @@ To remove the burden of factoring a reduction from the programmer, we introduce 
 As a first example, consider computing the histogram of an image in Halide:
 
 \noindent
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
 Func hist;
@@ -20,6 +21,7 @@ hist(input(r.x, r.y)) += 1;
 // Schedule
 hist.compute_root();
 \end{lstlisting}
+\end{minipage}
 
 The \code{RDom} defines an implicit loop nest over \code{r.x} and \code{r.y}. Halide will not permit either of these loops to be parallelized, as that would introduce a race condition on the \code{+=} operation. Without the \code{rfactor} transformation, a user would need to rewrite the algorithm to manually factor the histogram:
 
@@ -68,8 +70,10 @@ hist.update().vectorize(i, 4);
 \end{minipage}
 
 Reduction domains need not be rectangular. Consider the function below, which computes the maximum over a circular domain using \code{RDom::where} to restrict the reduction domain to the points that lie within a circle of radius 10.
-\vspace*{-3pt}
+
+%\vspace*{-3pt}
 \noindent
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 // Algorithm
 Func max_val;
@@ -81,6 +85,7 @@ max_val() = max(max_val(), input(r.x, r.y));
 // Schedule
 max_val.compute_root();
 \end{lstlisting}
+\end{minipage}
 
 In this case, manually factoring the reduction requires also manipulating the predicate associated with the \code{RDom}. The identity for \code{max} is the minimum value of the type in question, so the newly-factored algorithm becomes:
 \noindent
