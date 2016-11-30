@@ -45,20 +45,27 @@ In the table of expressions that this produces, $x$ represents the partial resul
 
 \noindent This would match against the pattern $x = x + y$, where $x$ matches \code{f(in(r)\&1)}, and $y$ matches \code{in(r)*in(r)}.
 
-We terminate the enumeration at trees with 8 leaves for the purposes of the experiments described in this work. Since some operations are associative in certain scalar types and not others, we generate different tables for each of Halide's scalar types.  This takes 1.5 days and generates around 9,000 elementary operators to match against per type\footnote{Due to deadline constraints, we only ran the enumeration for \code{uint32} and \code{int32} types, generating a total of 17,905 fragments.  We plan to run the enumeration for all additional elementary types supported by Halide.}. Many of the operators are simple operators written in a complex way: as we wish to catch all ways in which a programmer might write a reduction, we make no attempt to exclude these from the table. For faster retrieval, the table of each Halide's scalar type is split into subtables based on the root IR node (e.g. \code{Add}, \code{Mul}, etc.) of the expression. Within each subtable, the operators are ordered based on the total number of leaves (simple expressions are located at the top of the table since they are more likely to be encountered in practice). The operators we use are \code{Add}, \code{Sub}, \code{Mul}, \code{Min}, \code{Max}, comparisons, and \code{Select} (Halide’s if-then-else construct). We then linearly scan the sub-table searching for a matching expression. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{lst:top10}. (\textbf{TODO: change the listing into subtable figures})
+We terminate the enumeration at trees with 8 leaves for the purposes of the experiments described in this work. Since some operations are associative in certain scalar types and not others, we generate different tables for each of Halide's scalar types.  This takes 1.5 days and generates around 9,000 elementary operators to match against per type\footnote{Due to deadline constraints, we only ran the enumeration for \code{uint32} and \code{int32} types, generating a total of 17,905 fragments.  We plan to run the enumeration for all additional elementary types supported by Halide.}. Many of the operators are simple operators written in a complex way: as we wish to catch all ways in which a programmer might write a reduction, we make no attempt to exclude these from the table. For faster retrieval, the table of each Halide's scalar type is split into subtables based on the root IR node (e.g. \code{Add}, \code{Mul}, etc.) of the expression. Within each subtable, the operators are ordered based on the total number of leaves (simple expressions are located at the top of the table since they are more likely to be encountered in practice). The operators we use are \code{Add}, \code{Sub}, \code{Mul}, \code{Min}, \code{Max}, comparisons, and \code{Select} (Halide’s if-then-else construct). We then linearly scan the sub-table searching for a matching expression. The first 10 elementary associative operators for signed 32-bit integers are shown in Listing~\ref{fig:top10}. 
 
-\begin{lstlisting}[float,caption={The first 10 elementary associative operators for 32-bit signed integers}, label={lst:top10}]
-x + y
-x * y
-min(x, y)
-max(x, y)
-max(min(x, k), y)
-min(max(x, k), y)
-max(min(y, k), x)
-min(max(y, k), x)
-max(min(k - x, y), x)
-min(max(k - x, y), x)
-\end{lstlisting}
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{tables}
+\caption{The first 10 elementary associative operators for 32-bit signed integers organized into subtables.}
+\label{fig:top10}
+\end{figure}
+
+%\begin{lstlisting}[float,caption={The first 10 elementary associative operators for 32-bit signed integers}, label={lst:top10}]
+%x + y
+%x * y
+%min(x, y)
+%max(x, y)
+%max(min(x, k), y)
+%min(max(x, k), y)
+%max(min(y, k), x)
+%min(max(y, k), x)
+%max(min(k - x, y), x)
+%min(max(k - x, y), x)
+%\end{lstlisting}
 
 %As the list grows, operators become more and more esoteric. An example 8-leaf operator from the list for unsigned integers is TODO
 
