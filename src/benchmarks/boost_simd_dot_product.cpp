@@ -6,20 +6,24 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <cblas.h>
+#include <boost/simd/function/dot.hpp>
+#include <boost/simd/pack.hpp>
 
 #include "benchmark.h"
 
-//g++ --std=c++11 -o dot_product dot_product.cpp -I/usr/local/opt/openblas/include -L/usr/local/opt/openblas/lib -lopenblas -lpthread
+//g++ boost_simd_dot_product.cpp -o boost_simd_dot_product -std=c++11 -O3 -msse4.2 -I/Users/psuriana/boost/include/ -I/Users/psuriana/boost/simd/include/
 
-//g++ --std=c++11 -o dot_product dot_product.cpp -I/usr/local/google/home/psuriana/OpenBLAS/include -L/usr/local/google/home/psuriana/OpenBLAS/lib -lopenblas -lpthread
+//g++ boost_simd_dot_product.cpp -o boost_simd_dot_product -std=c++11 -O3 -msse4.2 -I/usr/local/google/home/psuriana/boost/boost_1_62_0 -I/usr/local/google/home/psuriana/boost/simd/include/ -L/usr/local/google/home/psuriana/boost/boost_1_62_0/stage/lib
+
+namespace bs = boost::simd;
 
 // dot product sdot
 #define N1 4
 #define N2 4
-const int size = 1024 * 1024 * N1 * N2;
-const int trials = 10;
-const int iterations = 10;
+//const int size = 1024 * 1024 * N1 * N2;
+const int size = 1024;
+const int trials = 1;
+const int iterations = 1;
 
 /*
 RDom r(0, size);
@@ -30,8 +34,8 @@ dot_ref() += cast<int>(A(r.x))*B(r.x);
 
 int main() {
 	std::cout << "Input size: " << size << "\n";
-	std::vector<float> vec_A(size);
-    std::vector<float> vec_B(size);
+	bs::pack<float, size> vec_A;
+    bs::pack<float, size> vec_B;
 
     // init randomly
     for (int ix = 0; ix < size; ix++) {
@@ -40,11 +44,13 @@ int main() {
         //std::cout << "i: " << ix << ", va: " << vec_A[ix] << ", vb: " << vec_B[ix] << "\n";
     }
 
+    //std::cout << "Result " << bs::dot(vec_A, vec_B) << "\n";
+
     std::cout << "Done initializing\n";
 
     std::cout << "Start benchmarking...\n";
     double t = benchmark(trials, iterations, [&]() {
-        cblas_sdot(size, &(vec_A[0]), 1, &(vec_B[0]), 1);
+        bs::dot(vec_A, vec_B);
     });
 
     float gbits = 32 * size * (2.0 / 1e9); // bits per seconds
