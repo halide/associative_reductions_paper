@@ -10,6 +10,15 @@ An alternative approach is to use program synthesis techniques~\cite{Solar-Lezam
 % Our solution
 We use a hybrid of the two approaches, amplified with a strategy for decomposing each synthesis problem into several simpler problems. The overall strategy is shown in Figure~\ref{fig:system}.  Offline, we generate a large finite table of one- and two-dimensional \emph{elementary} associative binary operators and their identities. These are akin to primes -- they are the associative operators which cannot be decomposed into a combination of simpler associative binary operators. The table also contains flags that indicate if the operators are also commutative. At compile-time, we decompose the given Halide update definition into a composition of simpler, lower-dimensional definitions in the same way, then search the table for the elementary operator corresponding to each. If consistent matches are found, we reassemble the results into a composite associative operator equivalent to the original update definition. In Section~\ref{subsec:generation} we describe how we generate the table, and in Section~\ref{subsec:decomposition} we describe the decomposition procedure.
 
+\begin{figure}[tb]
+\centering
+\includegraphics[width=3.2in]{system}
+\caption{To factor a reduction written as a Halide update definition, we must first synthesize the equivalent associative binary operator. We generate a large table of elementary associative operators offline by enumerating all non-trivial expression trees and filtering out the ones that are not associative operators. At compile-time, we then decompose the given update definition into simpler definitions and match each against the table. Combining the results gives us the equivalent associative binary operator, which we can use to generate the factored form of the reduction.}
+\label{fig:system}
+\end{figure}
+
+
+
 \subsection{Generating Elementary Operators}
 \label{subsec:generation}
 
@@ -131,10 +140,3 @@ f() = {f()[0] * in(r)[0]) + f()[1] * in(r)[2]),
 \end{lstlisting}
 
 Decomposition based on $x$ alone (i.e. \code{f()[i]}) results in 2 subgraphs: one containing the 1st and 2nd tuple elements and one containing the 3rd and 4th tuple elements. Including $y$ (i.e. \code{in(r)[i]}) tells us that the two subgraphs are indeed connected. Therefore, if we fail to find a match for the initial subgraphs (the ones decomposed based on $x$ only), we need to consider other possible grouping of those initial subgraphs. The total number of possible grouping is the Bell number of the initial number of subgraphs. However, we only need to consider grouping expressions which share a common subexpression, and we do not need to consider groups of size greater than the maximum tuple size in our precomputed table. If we do not find a matching associative operator under all possible groupings of the initial subgraphs, we terminate and return an error.
-
-\begin{figure}[tb]
-\centering
-\includegraphics[width=3.2in]{system}
-\caption{To factor a reduction written as a Halide update definition, we must first synthesize the equivalent associative binary operator. We generate a large table of elementary associative operators offline by enumerating all non-trivial expression trees and filtering out the ones that are not associative operators. At compile-time, we then decompose the given update definition into simpler definitions and match each against the table. Combining the results gives us the equivalent associative binary operator, which we can use to generate the factored form of the reduction.}
-\label{fig:system}
-\end{figure}
