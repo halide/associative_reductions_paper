@@ -49,8 +49,8 @@ int main() {
 
     std::cout << "Start benchmarking...\n";
     double t = benchmark(trials, iterations, [&]() {
-        LAPACKE_slange(LAPACK_ROW_MAJOR, 'm', 1, size, &(vec[0]), size);
-        //LAPACKE_slange(LAPACK_COL_MAJOR, 'm', size, 1, &(vec[0]), 1);
+        //LAPACKE_slange(LAPACK_ROW_MAJOR, 'm', 1, size, &(vec[0]), size);
+        LAPACKE_slange(LAPACK_COL_MAJOR, 'm', size, 1, &(vec[0]), 1);
     });
 
     float gbits = 32 * size * (2.0 / 1e9); // bits per seconds
