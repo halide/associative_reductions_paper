@@ -15,9 +15,8 @@
 #include "benchmark.h"
 
 //g++ --std=c++11 -o mkl_dot_product mkl_dot_product.cpp -I/opt/intel/mkl/include -L/opt/intel/mkl/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -L/opt/intel/lib/intel64_lin -liomp5 -lpthread -ldl -lm
-//LD_LIBRARY_PATH=/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64_lin:$LD_LIBRARY_PATH OMP_NUM_THREADS=8 numactl --cpunodebind=1 ./mkl_dot_product
+//LD_LIBRARY_PATH=/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64_lin:$LD_LIBRARY_PATH OMP_NUM_THREADS=8 numactl --cpunodebind=0 ./mkl_dot_product
 
-// dot product sdot
 #define N1 4
 #define N2 4
 const int size = 1024 * 1024 * N1 * N2;
@@ -40,7 +39,6 @@ int main() {
     for (int ix = 0; ix < size; ix++) {
         vec_A[ix] = (rand() & 0xffff);
         vec_B[ix] = (rand() & 0xffff);
-        //std::cout << "i: " << ix << ", va: " << vec_A[ix] << ", vb: " << vec_B[ix] << "\n";
     }
 
     std::cout << "Done initializing\n";

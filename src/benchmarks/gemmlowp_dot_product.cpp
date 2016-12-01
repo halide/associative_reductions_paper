@@ -13,7 +13,6 @@
 
 //g++ --std=c++11 -o gemmlowp_dot_product gemmlowp_dot_product.cpp /usr/local/google/home/psuriana/gemmlowp/eight_bit_int_gemm/eight_bit_int_gemm.cc -I/usr/local/google/home/psuriana/gemmlowp -lpthread
 
-// dot product sdot
 #define N1 4
 #define N2 4
 const int size = 1024 * 1024 * N1 * N2;
@@ -39,7 +38,6 @@ int main() {
     for (int ix = 0; ix < size; ix++) {
         vec_A[ix] = (rand() & 0xff);
         vec_B[ix] = (rand() & 0xff);
-        //std::cout << "i: " << ix << ", va: " << (int)vec_A[ix] << ", vb: " << (int)vec_B[ix] << "\n";
     }
 
     std::cout << "Done initializing\n";

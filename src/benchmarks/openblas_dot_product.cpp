@@ -10,11 +10,10 @@
 
 #include "benchmark.h"
 
-//g++ --std=c++11 -o dot_product dot_product.cpp -I/usr/local/opt/openblas/include -L/usr/local/opt/openblas/lib -lopenblas -lpthread
+//g++ --std=c++11 -o openblas_dot_product openblas_dot_product.cpp -I/usr/local/opt/openblas/include -L/usr/local/opt/openblas/lib -lopenblas -lpthread
 
-//g++ --std=c++11 -o dot_product dot_product.cpp -I/usr/local/google/home/psuriana/OpenBLAS/installed/include -L/usr/local/google/home/psuriana/OpenBLAS/installed/lib -lopenblas -lpthread -fopenmp
+//g++ --std=c++11 -o openblas_dot_product openblas_dot_product.cpp -I/usr/local/google/home/psuriana/OpenBLAS/installed/include -L/usr/local/google/home/psuriana/OpenBLAS/installed/lib -lopenblas -lpthread -fopenmp
 
-// dot product sdot
 #define N1 4
 #define N2 4
 const int size = 1024 * 1024 * N1 * N2;
@@ -37,7 +36,6 @@ int main() {
     for (int ix = 0; ix < size; ix++) {
         vec_A[ix] = (rand() & 0xffff);
         vec_B[ix] = (rand() & 0xffff);
-        //std::cout << "i: " << ix << ", va: " << vec_A[ix] << ", vb: " << vec_B[ix] << "\n";
     }
 
     std::cout << "Done initializing\n";

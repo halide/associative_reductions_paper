@@ -17,11 +17,9 @@
 
 namespace bs = boost::simd;
 
-// dot product sdot
 #define N1 4
 #define N2 4
-//const int size = 1024 * 1024 * N1 * N2;
-const int size = 1024;
+const int size = 1024 * 1024 * N1 * N2;
 const int trials = 1;
 const int iterations = 1;
 
@@ -41,10 +39,7 @@ int main() {
     for (int ix = 0; ix < size; ix++) {
         vec_A[ix] = (rand() & 0xffff);
         vec_B[ix] = (rand() & 0xffff);
-        //std::cout << "i: " << ix << ", va: " << vec_A[ix] << ", vb: " << vec_B[ix] << "\n";
     }
-
-    //std::cout << "Result " << bs::dot(vec_A, vec_B) << "\n";
 
     std::cout << "Done initializing\n";
 
