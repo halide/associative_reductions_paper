@@ -12,12 +12,12 @@ Maximum                 & int32 &  5.54 & 1.22 &  4.5 \\
 4D \code{argmin}        & int8 & 28.52 & 1.07 & 26.6 \\
 Complex                 & int32 & 28.53 & 2.47 & 11.5 \\
   multiplication        &       &      &      & \\
-Dot product 	        & int8 & 2.34 & 0.52 &  4.5 \\
+Dot product 	        & float & 33.6 & 2.63 \dagger & 12.8 \\
 Kitchen sink            & int32 & 30.13 & 1.91 & 15.7 \\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Benchmark results: serial reductions vs. parallel reductions using \code{rfactor}}
+ \caption{Benchmark results: serial reductions vs. parallel reductions using \code{rfactor}. $\dagger$ To give the numbers some context, Intel's MKL~\cite{MKL} takes 2.8ms on the dot product task.}
 \label{tab:table}
 \end{table}
 
@@ -34,13 +34,9 @@ In this section we discuss the speed-ups one can expect by using \code{rfactor} 
 
 All benchmarks run on an inputs of size $2^{24}$, which is a typical number of pixels for an input image to a Halide program. The input image data types are specified in Table~\ref{tab:table}. We run the benchmarks on 8 cores of a Xeon E5-2690. In each case we use the same Halide \emph{algorithm} code, and compare the performance attainable with \code{rfactor} to the performance attainable without it. For each benchmark, we took the minimum across 10 trials where each trial is the average of 10 iterations. We measure the execution time of the pipeline, not including the compilation time. Table~\ref{tab:table} shows the results. Without \code{rfactor}, each algorithm would require almost twice as much algorithm code to reach the same performance (see Table~\ref{tab:code_reduction}). Most importantly, \code{rfactor} provides a much less error-prone way of factoring a reduction as more of the logic is in the schedule instead of the algorithm. We also measured the increase in compile times due to the call to \code{rfactor}, and found it to be consistently under three milliseconds. The time taken to search the table for a matching operator is shown in Table~\ref{tab:search_time}. The search is fast because the table is split into subtables by the root IR node type (the largest subtable has $\thicksim 2800$ entries), and the most common operations are simple, and so they are close to the top of the tables. For a non-associative operation, \code{rfactor} must search all the way to the end of the table, and ultimately returns a compile error, which takes around 1.2 ms.
 
-Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram, maximum, and dot-product fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The dot-product and maximum benchmarks do vectorize cleanly, but underneath Halide LLVM auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. We used trunk LLVM as of Sept 9, 2016 to compile the benchmarks. 4D \code{argmin}, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
+Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram, maximum, and dot-product fall into the second category \textbf{TODO: is this still true for dot product?}. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The dot-product and maximum benchmarks do vectorize cleanly, but underneath Halide LLVM\footnote{trunk LLVM as of Sept 9, 2016} auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. 4D \code{argmin}, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
 
-\textbf{TODO: the HDR+ result}
-
-\textbf{TODO: non-Halide manually parallelized version}
-
-Note that we did not add any patterns to the tables manually; the generated fragments were sufficient for the benchmarks, the applications in the Halide open source repository, and for the HDR+ pipeline. We could, however, manually add operators to the table if necessary in the future. An example of something that would have to be added manually is quaternion multiplication as we do not generate patterns that large during table generation.
+Note that we did not add any patterns to the tables manually; the generated fragments were sufficient for the benchmarks and the applications in the Halide open source repository. The generated fragments were also sufficient for the reductions present in the HDR+ pipeline~\cite{HDRPlus}, which is the largest Halide pipeline of which we are aware. We could, however, manually add operators to the table if necessary in the future. An example of something that would have to be added manually is quaternion multiplication as we do not generate patterns that large during table generation.
 
 \begin{table}[t]
 \centering
