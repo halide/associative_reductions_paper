@@ -38,6 +38,8 @@ Recent work has applied program synthesis, which automatically discovers executa
 Superoptimization~\cite{Granlund:1992:EBU:143095.143146, Massalin:1987:SLS:36206.36194} searches for the shortest or most optimized way to compute a branch-free sequence of instructions by exhaustively searching over a space of possible programs. These rewrites can then be turned into peephole optimizations in compilers. More recent work has used stochastic search~\cite{Phothilimthana:2016:SUS:2872362.2872387, Schkufza:2013:SS:2490301.2451150} and program synthesis~\cite{Lopes:2015:PCP:2737924.2737965} to find replacements for larger sequences of instructions.
 In this work, we use a combination of enumeration and synthesis; in addition, though our domain is more restricted, we search for larger replacements than most superoptimizers.
 
-\textbf{TODO: Add reference to Reddy et al., URUK / WRaP-IT by Girbal et al (ICS 2005, IJPP 2006)
-and CHiLL by Chen et al. (Loop Transformation Recipes for Code
-Generation and Auto-Tuning, LCPC 2010, and other papers)}
+CHiLL~\cite{Hall2010} and URUK~\cite{Girbal2006} allow users to apply a series of high-level transformations to Fortran and C code, freeing users from needing to hand-rewrite code to implement complicated optimizations.  These code transformation systems use the polyhedral framework~\cite{IRIGOIN1988,FEAUTRIER1991} to represent loops and transformations, but do not support reductions.  More recent work~\cite{Reddy:2016:RDL:2967938.2967950} adds new language constructs that allow users to express arbitrary reductions in the polyhedral model, enabling transformations to optimize such reductions.
+
+%\textbf{TODO: Add reference to Reddy et al., URUK / WRaP-IT by Girbal et al (ICS 2005, IJPP 2006)
+%and CHiLL by Chen et al. (Loop Transformation Recipes for Code
+%Generation and Auto-Tuning, LCPC 2010, and other papers)}
