@@ -91,8 +91,6 @@ As we only consider one- and two-dimensional expressions, there are meaningful p
 \subsection{Subgraph Decomposition}
 \label{subsec:decomposition}
 
-\textbf{TODO: make this clearer}
-
 To describe how we decompose reductions into elementary operators, we must first discuss how one might \emph{compose} elementary reductions. The simplest way to compose two reductions into a higher-dimensional reduction is to compute them at the same time, independently. This means that reductions that are a concatenation of smaller independent associative reductions are also associative. For example, the tuple computation:
 
 \code{f() = \{f()[0] + in(r), f()[1] * in(r)\}}
@@ -153,4 +151,11 @@ Decomposition based on $x$ alone (i.e. \code{f()[i]}) results in 2 subgraphs: on
 \subsection{Algorithm}
 \label{subsec:algorithm}
 
-\textbf{TODO: Add summary of how the algorithm works from decomposition + matching + recomposed}
+To summarize, synthesizing an equivalent binary associative operator from a Halide reduction involves the following steps:
+\begin{enumerate}
+ 	\item Replace all references to the partial results being reduced onto with $x_i$ where $0 \le i < n$ and $n$ is the dimensionality of the reduction (i.e. the tuple size).			  	\item Canonicalize the expressions to the following form: wherever possible, $x_i$ is to the left of $x_{i+1}$ and constants to the right. 
+	\item Decompose the reduction into an initial subgraphs $S_0$ based on the dependency graphs.
+	\item Pick a grouping $S$ from all possible grouping of $S_0$ (see Section \ref{subsec:decomposition}). For the first iteration, we pick $S = S_0$ as the grouping. \label{list:restart_decompose}
+	\item For each subgraph in $S$, search the appropriate subtable (based on the data type and root IR node) for a matching associative operator via wildcard matching. If any of the subgraph is non-associative, return to step \ref{list:restart_decompose}.
+	\item Combine the results into a single multi-valued associative operator equivalent to the entire reduction. If the results are consistent (see Section \ref{subsec:decomposition}), we have found an equivalent associative operator; otherwise, return to step \ref{list:restart_decompose}. If we do not find a matching associative operator after exhausting all possible groupings, we terminate and return an error. 
+\end{enumerate}
