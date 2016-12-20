@@ -45,7 +45,7 @@
 %
 % For tracking purposes - this is V2.0 - May 2012
 
-\documentclass[10pt]{main}
+\documentclass[10pt,numbers]{sigplanconf}
 %\pagenumbering{arabic}
 \pdfpagewidth=8.5in 
 \pdfpageheight=11in 
@@ -56,11 +56,12 @@
 \usepackage{tabularx, booktabs, array, dcolumn}
 \usepackage{dsfont}
 \usepackage{listings}
-\usepackage{caption}
+%\usepackage{caption}
 \usepackage{xcolor}
+\usepackage{graphicx}
 %\usepackage{microtype}
 \usepackage{float}
-\usepackage[sectionbib]{natbib}
+%\usepackage[sectionbib]{natbib}
 \renewcommand{\bibsection}{\section*{REFERENCES}}
 
 %\newcolumntype{Z}{>{\raggedright}X}
@@ -116,23 +117,18 @@ belowskip=3pt
 
 \title{Parallel Associative Reductions in Halide}
 
-\numberofauthors{3}
-\author{
 % 1st. author
-\alignauthor
-Patricia Suriana\\
-       \affaddr{Google, USA}\\
-       \email{psuriana@google.com}
+\authorinfo{Patricia Suriana}
+           {Google, USA}
+           {psuriana@google.com}
 % 2nd. author
-\alignauthor
-Andrew Adams\\
-       \affaddr{Google, USA}\\
-       \email{abadams@google.com}
+\authorinfo{Andrew Adams}
+           {Google, USA}
+           {abadams@google.com}
 % 3rd. author
-\alignauthor Shoaib Kamil\\
-       \affaddr{Adobe, USA}\\
-       \email{kamil@adobe.com}
-}
+\authorinfo{Shoaib Kamil}
+           {Adobe, USA}
+           {kamil@adobe.com}
 
 \maketitle
 \begin{abstract}
@@ -147,7 +143,7 @@ Andrew Adams\\
 %
 %  Use this command to print the description
 %
-\printccsdesc
+%\printccsdesc
 
 %\keywords{ACM proceedings; \LaTeX; text tagging}
 
