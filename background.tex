@@ -4,7 +4,7 @@ Each of these loop types, defined by \code{Var}s and \code{RVar}s, can be manipu
 
 While \code{Var}s are safe to parallelize or vectorize by construction -- \code{Var}s represents the naturally data-parallel axes of an \emph{algorithm} -- \code{RVar}s can be parallelized or vectorized if and only if Halide can prove that no race condition exists (we call such \code{RVar}s \emph{pure}). This makes parallelizing or vectorizing stages that use only \code{RVar}s difficult. For example, consider the two-dimensional convolution shown in Listing~\ref{lst:blur_loopness}, which is parallelizable across \code{Var}s $x$ and $y$. Computing the histogram of an image (see Listing~\ref{lst:histogram_loopness}) is harder to parallelize since its update stage only involves \code{RVar}s.
 
-\begin{lstlisting}[float,caption={Pseudocode for convolution. This algorithm reduces over \code{rx} and \code{ry} and is data-parallel over \code{x} and \code{y}. In the Halide source, \code{rx} and \code{ry} would be \code{RVar}s in a two-dimensional \code{RDom}. \code{x} and \code{y} would be \code{Var}s.}, label={lst:blur_loopness}]
+\begin{lstlisting}[float, frame=t, caption={Pseudocode for convolution. This algorithm reduces over \code{rx} and \code{ry} and is data-parallel over \code{x} and \code{y}. In the Halide source, \code{rx} and \code{ry} would be \code{RVar}s in a two-dimensional \code{RDom}. \code{x} and \code{y} would be \code{Var}s.}, label={lst:blur_loopness}]
 // First stage
 for y:
  for x:
@@ -16,7 +16,7 @@ for y:
    for rx:
     blur(x, y) += k(rx, ry) * in(x-rx, y-ry);
 \end{lstlisting}
-\begin{lstlisting}[float,caption={Computing the histogram of an image is hard to parallelize in Halide, since its update stage would be expressed with serial \code{RVar}s.}, label={lst:histogram_loopness}]
+\begin{lstlisting}[float, frame=t, caption={Computing the histogram of an image is hard to parallelize in Halide, since its update stage would be expressed with serial \code{RVar}s.}, label={lst:histogram_loopness}]
 // First stage
 for x:
  hist(x) = 0

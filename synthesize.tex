@@ -34,9 +34,9 @@ We begin with an enumeration of all one- and two-dimensional tuples of expressio
 After generating a large set of candidate expressions in this manner, we then subject the expressions to a battery of tests so that only elementary associative operators remain. The tests are arranged in increasing order of expense, so that we can cheaply reject most expressions.
 
 \begin{enumerate}
-\item For an operator $f$, we construct the expressions $f(f(x, y), z)$ and $f(x, f(y, z))$, and substitute in 100 randomly-selected values for $x, y, z, k$. If the two expressions don't evaluate to the same thing, the expression is not associative and can be rejected.
+\item For an operator $f$, we construct the expressions $f(f(x, y),$ $z)$ and $f(x, f(y, z))$, and substitute in 100 randomly-selected values for $x, y, z, k$. If the two expressions don't evaluate to the same thing, the expression is not associative and can be rejected.
 \item We then reject operators which can be decomposed using the decomposition procedure in Subsection~\ref{subsec:decomposition}.
-\item Finally, to \emph{prove} that the expression is associative, we use the Z3~\cite{DeMoura:2008:ZES:1792734.1792766} SMT solver to verify that $\forall x, y, z, k \;f(f(x, y), z) = f(x, f(y, z))$, where $k$ is the constant contained within the function $f$. If this proof succeeds, we then ask Z3 to solve\\ $\forall x, k \;f(id, x) = x$ to synthesize the identity $id$ and to decide its commutativity. This commutativity flag is used to determine the validity of calling \code{rfactor} on the inner loop dimensions of an associative reduction.
+\item Finally, to \emph{prove} that the expression is associative, we use the Z3~\cite{DeMoura:2008:ZES:1792734.1792766} SMT solver to verify that $\forall x, y, z, k \;\;f(f(x, y), $ $z) = f(x, f(y, z))$, where $k$ is the constant contained within the function $f$. If this proof succeeds, we then ask Z3 to solve $\forall x, k \;f(id, x) = x$ to synthesize the identity $id$ and to decide its commutativity. This commutativity flag is used to determine the validity of calling \code{rfactor} on the inner loop dimensions of an associative reduction.
 \end{enumerate}
 
 In the table of expressions that this produces, $x$ represents the partial result being reduced onto, and $y$ is a wildcard which could match any expression. When matching, $x$ must also appear on the left-hand-side of the update definition. $y$ may depend on the reduction domain coordinates, but may not depend on the partial results. The constant $k$, if it exists, may match anything which neither depends on the reduction domain coordinates nor the partial result. For example, the update definition which separately computes the sum-of-squares of the even and odd values of some input \code{in} could be written as:
@@ -139,7 +139,7 @@ After finding the associative operator equivalent to each subgraph separately, w
 
 In some cases, this procedure over-partitions the graph. We are searching for an associative operator in $x$ and $y$. Only the $x$ is apparent from the Halide update definition -- it is the term that also appears on the left-hand-side. If we decompose based on cross-dependencies within $x$ alone we will miss dependencies between tuple elements that exist only in $y$. Consider 2x2 matrix multiplication written as a four-dimensional reduction:
 
-\begin{lstlisting}
+\begin{lstlisting}[frame=tb]
 f() = {f()[0] * in(r)[0]) + f()[1] * in(r)[2]),
        f()[0] * in(r)[1]) + f()[1] * in(r)[3]),
        f()[2] * in(r)[0]) + f()[3] * in(r)[2]),

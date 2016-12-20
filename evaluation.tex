@@ -2,16 +2,16 @@
 \centering
 %\setlength\tabcolsep{3.5pt} % default value: 6pt
 \begin{center}
-\begin{tabular}{p{1in}p{1cm}ddd}
+\begin{tabular}{p{2.2cm}p{0.7cm}ddd}
 \toprule
-\multicolumn{1}{C{1.3cm}}{Benchmark} & \multicolumn{1}{C{1cm}}{Data Type} & \multicolumn{1}{C{1.2cm}}{Serial (ms)} & \multicolumn{1}{C{1.2cm}}{\code{rfactor} (ms)} & \multicolumn{1}{C{1cm}}{Speed-up} \\
+\multicolumn{1}{C{2.2cm}}{\bfseries Benchmark} & \multicolumn{1}{C{0.7cm}}{\bfseries Data Type} & \multicolumn{1}{C{1.1cm}}{\bfseries Serial (ms)} & \multicolumn{1}{C{1.1cm}}{\bfseries \code{rfactor} (ms)} & \multicolumn{1}{C{1cm}}{\bfseries Speed-up} \\
 % Benchmark & Serial (ms) & \code{rfactor} (ms) & Speed-up \\
 \midrule
 Maximum                 & int32 &  5.54 & 1.22 &  4.5 \\
 2D histogram            & int32 & 8.80 & 1.71 &  5.1 \\
 4D \code{argmin}        & int8 & 28.52 & 1.07 & 26.6 \\
-Complex                 & int32 & 28.53 & 2.47 & 11.5 \\
-  multiplication        &       &      &      & \\
+Complex  & int32 & 28.53 & 2.47 & 11.5 \\
+  multiplication        &       &       \\
 Dot product 	        & float & 25.9 & 2.66 \dagger & 9.7 \\
 Kitchen sink            & int32 & 30.13 & 1.91 & 15.7 \\
 \bottomrule
@@ -34,7 +34,7 @@ In this section we discuss the speed-ups one can expect by using \code{rfactor} 
 
 All benchmarks run on an inputs of size $2^{24}$, which is a typical number of pixels for an input image to a Halide program. The input image data types are specified in Table~\ref{tab:table}. We run the benchmarks on 8 cores of a Xeon E5-2690. In each case we use the same Halide \emph{algorithm} code, and compare the performance attainable with \code{rfactor} to the performance attainable without it. For each benchmark, we took the minimum across 10 trials where each trial is the average of 10 iterations. We measure the execution time of the pipeline, not including the compilation time. Table~\ref{tab:table} shows the results. Without \code{rfactor}, each algorithm would require almost twice as much algorithm code to reach the same performance (see Table~\ref{tab:code_reduction}). Most importantly, \code{rfactor} provides a much less error-prone way of factoring a reduction as more of the logic is in the schedule instead of the algorithm. We also measured the increase in compile times due to the call to \code{rfactor}, and found it to be consistently under three milliseconds. The time taken to search the table for a matching operator is shown in Table~\ref{tab:search_time}. The search is fast because the table is split into subtables by the root IR node type (the largest subtable has $\sim 2800$ entries), and the most common operations are simple, and so they are close to the top of the tables. For a non-associative operation (which ultimately returns a compile error) \code{rfactor} must search to the end of the table. This takes around 1.2 ms.
 
-Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram and maximum, fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The maximum benchmark does vectorize cleanly, but underneath Halide LLVM\footnote{trunk LLVM as of Sept 9, 2016} auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. Dot product, 4D \code{argmin}, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
+Benchmarks generally fall into two categories. Either we benefit from from vectorization \emph{and} multi-core parallelism, or we benefit from multi-core parallelism alone. Histogram and maximum, fall into the second category. The histogram benchmark cannot be cleanly vectorized, because the bulk of the work involves scattering to data-dependent locations. The maximum benchmark does vectorize cleanly, but underneath Halide LLVM\footnote{Trunk LLVM as of Sept 9, 2016} auto-vectorizes the reference code without \code{rfactor}, so we only see a speed-up from multi-core parallelism. Dot product, 4D \code{argmin}, complex multiplication, and the kitchen sink test all benefit from parallelism and vectorization. Complex multiplication, dot product, and maximum all hit the memory bandwidth limit, limiting the possible benefit from parallelism.
 
 Note that we did not add any patterns to the tables manually; the generated fragments were sufficient for the benchmarks and the applications in the Halide open source repository. The generated fragments were also sufficient for the reductions present in the HDR+ pipeline~\cite{HDRPlus}, which is the largest Halide pipeline of which we are aware. We could, however, manually add operators to the table if necessary in the future (for example for quaternion multiplication).
 
@@ -44,7 +44,7 @@ Note that we did not add any patterns to the tables manually; the generated frag
 \begin{center}
 \begin{tabular}{p{1in}ddd}
 \toprule
-\multicolumn{1}{C{1.5cm}}{Benchmark} & \multicolumn{1}{C{1.3cm}}{Serial (lines)} & \multicolumn{1}{C{1.3cm}}{\code{rfactor} (lines)} & \multicolumn{1}{C{1.5cm}}{Reduction (\%)} \\
+\multicolumn{1}{C{1.5cm}}{\bfseries Benchmark} & \multicolumn{1}{C{1.2cm}}{\bfseries Serial (lines)} & \multicolumn{1}{C{1.3cm}}{\bfseries \code{rfactor} (lines)} & \multicolumn{1}{C{1.5cm}}{\bfseries Reduction (\%)} \\
 % Benchmark & Serial (ms) & \code{rfactor} (ms) & Speed-up \\
 \midrule
 Maximum                 &  9 & 5 & 44.4 \\
@@ -67,7 +67,7 @@ Kitchen sink            & 45 & 17 & 62.2 \\
 \begin{center}
 \begin{tabular}{p{1in}dd}
 \toprule
-\multicolumn{1}{C{1.5cm}}{Benchmark} & \multicolumn{1}{C{1.5cm}}{Search time (ms)} & \multicolumn{1}{C{2cm}}{Total compilation time (ms)} \\
+\multicolumn{1}{C{1.5cm}}{\bfseries Benchmark} & \multicolumn{1}{C{1.5cm}}{\bfseries Search time (ms)} & \multicolumn{1}{C{2cm}}{\bfseries Total compilation time (ms)} \\
 % Benchmark & Serial (ms) & \code{rfactor} (ms) & Speed-up \\
 \midrule
 Maximum                 &  0.08 & 127.5 \\

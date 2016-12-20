@@ -10,6 +10,7 @@ During the compilation process, \code{rfactor} splits the original serial reduct
 Combined with other Halide scheduling primitives, such as \code{split}, \code{rfactor} allows Halide to represent a broad class of schedules for parallel and vectorized reductions. For example, \code{rfactor} can express several divide-and-conquer strategies for parallelizing and vectorizing the summation of a one-dimensional array (see Figure~\ref{fig:rfactor}).
 
 \begin{lstlisting}[float,
+frame=t,
 caption = {Halide sum reduction over a one-dimensional vector.}, label={lst:sum}]
 Func out;
 out() = 0;
@@ -17,6 +18,7 @@ RDom r(0, input.width());
 out() = out() + input(r.x);
 \end{lstlisting}
 \begin{lstlisting}[float,
+frame=t,
 caption = {Halide reduction which finds the complex number with the greatest magnitude and its location in a two-dimensional array.}, label={lst:complex_magnitude}]
 Func out;
 out() = {0, 0, 0, 0};
