@@ -21,7 +21,7 @@ Kitchen sink            & int32 & 30.13 & 1.91 & 15.7 \\
 \label{tab:table}
 \end{table}
 
-In this section we discuss the speed-ups one can expect by using \code{rfactor} to vectorize and parallelize serial reductions. These numbers are unsurprising -- they are equivalent to the speed-ups one can attain by manually factoring Halide reductions. We benchmark the feature using a suite of reductions of varying complexity. Some operations, like large matrix multiplication or convolution, reduce along some axes and are data parallel along others. \code{rfactor} provides little benefit in these cases, as they are already straight-forward to vectorize and parallelize, so we do not include such cases. Our benchmarks are:
+In this section we discuss the speed-ups one can expect by using \code{rfactor} to vectorize and parallelize serial reductions. These numbers are unsurprising -- they are equivalent to the speed-ups one can attain by manually factoring Halide reductions. We benchmark the feature using a suite of reductions of varying complexity\footnote{https://github.com/halide/rfactor\_benchmarks}. Some operations, like large matrix multiplication or convolution, reduce along some axes and are data parallel along others. \code{rfactor} provides little benefit in these cases, as they are already straight-forward to vectorize and parallelize, so we do not include such cases. Our benchmarks are:
 
 \begin{itemize}
 \item Maximum: The maximum integer in a list.
